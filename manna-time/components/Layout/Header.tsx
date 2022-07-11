@@ -3,14 +3,12 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 
 
-function Header() {
+function Header({title}) {
     const { t } = useTranslation(['common'])
-    const router = useRouter()
-    const pageName = router.asPath.match(/[^/?]*[^/?]/g)![1]
     return (
         <>
             <Head>
-                <title>{t(pageName)} | {t('service')}</title>
+                <title>{title} | {t('service')}</title>
             </Head>
         </>
     )

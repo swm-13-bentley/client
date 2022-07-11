@@ -1,7 +1,7 @@
 import { Button, Circle, Flex, Heading, HStack, Input } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
-import Header from '../../components/Layout/Header'
+import Layout from '../../components/Layout/Layout'
 import { getStaticPaths, makeStaticProps } from '../../lib/getStatic'
 
 
@@ -10,7 +10,6 @@ const MakeRoom = () => {
 
     return (
         <>
-            <Header/>
             <Flex height="100vh" alignItems = "center" justifyContent="center">
                 <Flex direction="column" background = "white" p ="20%" rounded={6}>
                     <Flex mb="10">
