@@ -1,0 +1,4 @@
+{
+  "change-locale": "지역 바꾸기",
+  "description": "This is a non-page component that requires its own namespace"
+}
