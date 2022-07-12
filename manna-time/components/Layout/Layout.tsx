@@ -11,7 +11,7 @@ function Layout({children}) {
 
     return (
         <>
-            <Header title={pageName} />
+            <Header title={t(pageName)} service={t('service')} />
             <div>{children}</div>
         </>
     )
