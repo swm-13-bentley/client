@@ -1,9 +1,11 @@
+import { Flex } from "@chakra-ui/react"
 import { useTranslation } from "next-i18next"
 import { useRouter } from "next/router"
+import { Props } from "next/script"
 import Header from "./Header"
 import Navbar from "./Navbar"
 
-function Layout({children}) {
+function Layout({children}:Props) {
     const router = useRouter()
     const match = router.asPath.match(/[^/?]*[^/?]/g)
     const pageName = match![1]
@@ -14,7 +16,7 @@ function Layout({children}) {
         <>
             <Header title={t(pageName)} service={t('service')} />
             <Navbar/>
-            <div>{children}</div>
+            <Flex paddingTop={"5rem"}>{children}</Flex>
         </>
     )
 }

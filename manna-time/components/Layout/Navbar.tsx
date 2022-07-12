@@ -1,35 +1,36 @@
 import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
-import { Link } from "react-scroll";
 import Image from "next/image";
 import Logo from "../public/streamlineLogo.png";
+import { Link } from "react-scroll";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	return (
-		<div>
+        <Box>
 			<nav className=" shadow-sm fixed w-full z-10">
 				<div className="w-full">
 					<div className="flex items-center h-20 w-full">
 						<div className="flex items-center  mx-20  justify-between w-full">
 							<div className="flex justify-center items-center flex-shrink-0 ">
 								<h1 className=" font-bold text-xl cursor-pointer">
-									Stream<span className="text-blue-500">line</span>
+									<span className="text-blue-500">언제 만나</span>
 								</h1>
 							</div>
 							<div className="hidden md:block">
 								<div className="ml-10 flex items-baseline space-x-4">
 									<Link
 										activeClass="Home"
-										to="about"
+										to="/"
 										smooth={true}
 										offset={50}
 										duration={500}
 										className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
 									>
-										Home
+										고객센터
 									</Link>
-									<Link
+									{/* <Link
 										activeClass="about"
 										to="about"
 										smooth={true}
@@ -70,7 +71,7 @@ function Navbar() {
 										className="cursor-pointer bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-black"
 									>
 										Contact
-									</Link>
+									</Link> */}
 								</div>
 							</div>
 						</div>
@@ -136,7 +137,7 @@ function Navbar() {
 								ref={ref}
 								className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3"
 							>
-								<Link
+								{/* <Link
 									href="/home"
 									activeClass="home"
 									to="home"
@@ -192,13 +193,13 @@ function Navbar() {
 									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 								>
 									Contact
-								</Link>
+								</Link> */}
 							</div>
 						</div>
 					)}
 				</Transition>
 			</nav>
-		</div>
+		</Box>
 	);
 }
 
