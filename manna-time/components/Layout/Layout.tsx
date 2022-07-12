@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next"
 import { useRouter } from "next/router"
 import Header from "./Header"
+import Navbar from "./Navbar"
 
 function Layout({children}) {
     const router = useRouter()
@@ -12,6 +13,7 @@ function Layout({children}) {
     return (
         <>
             <Header title={t(pageName)} service={t('service')} />
+            <Navbar/>
             <div>{children}</div>
         </>
     )

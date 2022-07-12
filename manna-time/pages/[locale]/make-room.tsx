@@ -9,6 +9,7 @@ import { Calendar, DateObject } from "react-multi-date-picker"
 import type{Value} from "react-multi-date-picker"
 import { useState } from 'react'
 import { Button, ButtonGroup, TextField } from '@mui/material'
+import Navbar from '../../components/Layout/Navbar'
 
 const MakeRoom = () => {
     const { t } = useTranslation(['make-room', 'common'])
@@ -16,9 +17,9 @@ const MakeRoom = () => {
     const [value, setValue] = useState<Value>(new Date());
 
     return (
-        <>
+        <Flex>
             {/* <Flex height="100vh" justifyContent="center"> */}
-            <Center margin="185px auto 150px">
+            <Flex margin="185px auto 150px">
                 <Flex direction="column" background="white" width="100%" rounded={6} maxW="690px" ml="20px" mr="20px">
                     <Box mb="10">
                         <HStack cursor={"pointer"} onClick={()=>{}} width="100%">
@@ -67,9 +68,9 @@ const MakeRoom = () => {
                     
                     
                 </Flex>
-            </Center>
+            </Flex>
             {/* </Flex> */}
-        </>
+        </Flex>
     )
 }
 export default MakeRoom
