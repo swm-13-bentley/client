@@ -11,7 +11,7 @@ const Header: React.FC<Props>= function ({title, service}:Props) {
     return (
         <>
             <Head>
-                <title>{title} | {service}</title>
+                <title>{`${title} | ${service}`}</title>
             </Head>
         </>
     )

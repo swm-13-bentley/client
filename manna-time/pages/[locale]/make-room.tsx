@@ -5,14 +5,13 @@
 import { Box, Center, Circle, Flex, Heading, HStack, Input, VStack } from '@chakra-ui/react'
 import type { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
-import Layout from '../../components/Layout/Layout'
 import { getStaticPaths, makeStaticProps } from '../../lib/getStatic'
 
 import { Calendar, DateObject } from "react-multi-date-picker"
 import type{Value} from "react-multi-date-picker"
 import { ReactNode, useState } from 'react'
 import { Button, ButtonGroup, ButtonTypeMap, ExtendButtonBase, TextField } from '@mui/material'
-import ProcedureLayout from '../../components/Layout/ProcedureLayout'
+import ProcedureLayout from '../../components/Layout/ProcedureLayout/ProcedureLayout'
 import "react-multi-date-picker/styles/layouts/mobile.css"
 
 
@@ -42,6 +41,7 @@ const MakeRoom: NextPage = () => {
     const buttonMap: ReactNode = buttonText.map((e, idx) => {
         return (
             <Button
+                key={idx}
                 sx={{backgroundColor:'orange'}}
                 variant={checked[idx] ? "contained" : "outlined"}
                 onClick={() => {
@@ -57,6 +57,7 @@ const MakeRoom: NextPage = () => {
         )
     })
 
+
     return (
         <Flex margin="50px auto 30px">
             {/* <Flex height="100vh" justifyContent="center"> */}
@@ -64,7 +65,7 @@ const MakeRoom: NextPage = () => {
             <Flex direction="column" background="white" width="100%" rounded={6} maxW="690px" ml="20px" mr="20px">
 
                 <Center mb="30">
-                    <p className="text-2xl font-bold">약속 만들기</p>
+                    <p className="text-2xl font-bold">{t('common:make-room')}</p>
                 </Center>
                 <ProcedureLayout index={1} title={t('set-date')}>
                     <Calendar className="rmdp-mobile" range value={dateRange} onChange={setDateRange} zIndex={1} />

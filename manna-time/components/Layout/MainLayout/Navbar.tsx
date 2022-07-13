@@ -3,9 +3,13 @@ import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import { Link } from "react-scroll";
 import { Box } from "@chakra-ui/react";
+import Logo from "../public/streamlineLogo.png";
+import { useTranslation } from "next-i18next";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const {t} = useTranslation(['common'])
+
 	return (
         <Box>
 			<nav className=" shadow-sm fixed w-full z-10 bg-white" >
@@ -17,8 +21,8 @@ function Navbar() {
                                 onClick={() => {
                                     window.location.href = `/`;
                                   }}
-                                >
-									<span className="text-blue-500">언제 만나</span>
+								>
+									<span className="text-blue-500">{t('service')}</span>
 								</h1>
 							</div>
 							<div className="hidden md:block">
