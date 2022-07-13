@@ -14,9 +14,9 @@ function Layout({children}:Props) {
 
     return (
         <>
-            <Header title={t(pageName)} service={t('service')} />
+            <Header title={t(pageName) as string} service={t('service') as string} />
             <Navbar/>
-            <Flex paddingTop={"5rem"}>{children}</Flex>
+            <Flex paddingTop={"5rem"} paddingBottom={"1rem"}>{children}</Flex>
         </>
     )
 }
