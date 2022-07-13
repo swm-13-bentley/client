@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import { Transition } from "@headlessui/react";
 import Image from "next/image";
-import Logo from "../public/streamlineLogo.png";
 import { Link } from "react-scroll";
-import { Box, Flex, Spacer } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	return (
         <Box>
-			<nav className=" shadow-sm fixed w-full z-10">
+			<nav className=" shadow-sm fixed w-full z-10 bg-white" >
 				<div className="w-full">
 					<div className="flex items-center h-20 w-full">
-						<div className="flex items-center  mx-20  justify-between w-full">
+						<div className="flex items-center  mx-10  justify-between w-full">
 							<div className="flex justify-center items-center flex-shrink-0 ">
-								<h1 className=" font-bold text-xl cursor-pointer">
+                                <h1 className="font-extrabold text-xl cursor-pointer"
+                                onClick={() => {
+                                    window.location.href = `/`;
+                                  }}
+                                >
 									<span className="text-blue-500">언제 만나</span>
 								</h1>
 							</div>
 							<div className="hidden md:block">
 								<div className="ml-10 flex items-baseline space-x-4">
-									<Link
+                                    <Link
+                                        onClick={() => {
+                                            window.location.href = `/make-room`;
+                                          }}
 										activeClass="Home"
 										to="/"
 										smooth={true}
@@ -30,48 +36,6 @@ function Navbar() {
 									>
 										고객센터
 									</Link>
-									{/* <Link
-										activeClass="about"
-										to="about"
-										smooth={true}
-										offset={50}
-										duration={500}
-										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-									>
-										About
-									</Link>
-									<Link
-										activeClass="work"
-										to="work"
-										smooth={true}
-										offset={50}
-										duration={500}
-										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-									>
-										Projects
-									</Link>
-
-									<Link
-										activeClass="Services"
-										to="work"
-										smooth={true}
-										offset={50}
-										duration={500}
-										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-									>
-										Services
-									</Link>
-
-									<Link
-										activeClass="contact"
-										to="contact"
-										smooth={true}
-										offset={50}
-										duration={500}
-										className="cursor-pointer bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-black"
-									>
-										Contact
-									</Link> */}
 								</div>
 							</div>
 						</div>
@@ -134,66 +98,23 @@ function Navbar() {
 					{(ref) => (
 						<div className="md:hidden" id="mobile-menu" >
 							<div
-								ref={ref}
-								className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3"
+								ref={React.createRef}
+                                className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3"
 							>
-								{/* <Link
-									href="/home"
-									activeClass="home"
-									to="home"
+                                <Link
+                                    onClick={() => {
+                                        window.location.href = `/make-room`;
+                                      }}
+									href="/make-room"
+									activeClass="make-room"
+									to="make-room"
 									smooth={true}
 									offset={50}
 									duration={500}
 									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 								>
-									Home
+									고객센터
 								</Link>
-								<Link
-									href="/about"
-									activeClass="about"
-									to="about"
-									smooth={true}
-									offset={50}
-									duration={500}
-									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-								>
-									About
-								</Link>
-
-								<Link
-									href="/work"
-									activeClass="work"
-									to="work"
-									smooth={true}
-									offset={50}
-									duration={500}
-									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-								>
-									Projects
-								</Link>
-								<Link
-									href="/services"
-									activeClass="services"
-									to="services"
-									smooth={true}
-									offset={50}
-									duration={500}
-									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-								>
-									Services
-								</Link>
-
-								<Link
-									href="/contact"
-									activeClass="work"
-									to="work"
-									smooth={true}
-									offset={50}
-									duration={500}
-									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
-								>
-									Contact
-								</Link> */}
 							</div>
 						</div>
 					)}
