@@ -12,7 +12,7 @@ function Navbar() {
 
 	return (
         <Box>
-			<nav className=" shadow-sm fixed w-full z-10 bg-white" >
+			<nav className=" shadow fixed w-full z-10 bg-white" >
 				<div className="w-full">
 					<div className="flex items-center h-20 w-full">
 						<div className="flex items-center  mx-10  justify-between w-full">
@@ -54,7 +54,7 @@ function Navbar() {
 								<span className="sr-only">Open main menu</span>
 								{!isOpen ? (
 									<svg
-										className="block h-6 w-6"
+										className="block h-5 w-5"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
 										viewBox="0 0 24 24"
@@ -70,7 +70,7 @@ function Navbar() {
 									</svg>
 								) : (
 									<svg
-										className="block h-6 w-6"
+										className="block h-5 w-5"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="none"
 										viewBox="0 0 24 24"

@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true, //development mode
   trailingSlash: true, // i18n
   async redirects() {
     return [
