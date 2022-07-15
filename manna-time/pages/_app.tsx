@@ -12,6 +12,7 @@ const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+  // return (<Component />)
   return (
     <CacheProvider value={clientSideEmotionCache}>
       <ChakraProvider>

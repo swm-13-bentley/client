@@ -1,35 +1,5 @@
-/* @tailwind base; */
-/* @tailwind components; */
-@tailwind utilities;
+/* this doesn't work */
 
-@layer utilities {
-  .h-20 {
-    height: 59px;
-  }
-}
-
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-button {
-  background-color: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-
-/* Scheduler css */
 .flash {
   animation-name: flash;
   animation-duration: 0.5s;
@@ -44,6 +14,7 @@ button {
     background-color: #fbf1e8;
   }
 }
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -66,18 +37,22 @@ button {
 
 /* Table cells */
 .table-drag-select td {
-  height: 3em;
+  /* height: 1.5em; */
   text-align: center;
+  border-bottom: 0.1px solid;
+  border-top: 0.1px solid;
+
+
   /* Cut off long strings of text with ... */
   text-overflow: ellipsis;
   overflow: hidden;
   /* Make transparent gaps between cells. Better than relying on margin
-   * because clicking an element's margin doesn't trigger events */
+     * because clicking an element's margin doesn't trigger events */
   /* border: 0.7rem solid transparent; */
   /* border-radius: 5px; */
   background-clip: padding-box;
   /* Make cells reasonable size */
-  line-height: 3rem;
+  line-height: 1.5rem;
   /* Shows more text when text too big to fit into cell */
   padding-left: 0rem;
   padding-right: 0rem;
@@ -100,45 +75,54 @@ button {
 .table-drag-select td.cell-white-disabled {
   /* Put yer css here */
   background-color: rgb(255, 255, 255);
+  border-bottom: 0.0px solid;
+  border-top: 0.0px solid;
+
+
 }
 
 /* Cells that have been selected */
 .table-drag-select td.cell-selected {
-  background-color: #45d084;
+  background-color: #f19c9c;
   border-bottom: 0.1px solid;
 }
 
 /* Cells that are in the process of being selected */
 .table-drag-select td.cell-being-selected {
   /* This is the blue color y//ou see when you select text with the cursor */
-  background-color: #24b867;
-
+  background-color: #ee7e7e;
 }
 
 .table-drag-select td.mon {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.tue {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.wed {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.thu {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.fri {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.sat {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
 }
+
 .table-drag-select td.sun {
   border-left: 0.1px solid grey;
   border-right: 0.2px solid grey;
