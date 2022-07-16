@@ -97,12 +97,12 @@ const MakeRoom: NextPage = () => {
 }
 
 const randomNameGenerator = (locale: string) => {
-    const korean = ["우리 이때 만나요~", "그룹 약속", "언제 볼까?"]
+    const korean = ["우리 이때 만나요~", "그룹 약속", "우리 언제 만나?", "몇 시에 볼지 정해요"]
     const english = ["Let's meet then", "See you soon~", "When to meet?"]
     const tmpArr:string[] = []
 
     const randomNum = Math.ceil((Math.random()) * 10) % korean.length
-    return korean[randomNum] + Math.random().toString(36).substring(2, 5);
+    return korean[randomNum];
 }
 
 

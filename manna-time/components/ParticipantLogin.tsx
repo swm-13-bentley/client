@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Avatar, Button, Checkbox, CssBaseline, FormControl, FormControlLabel, Input, InputLabel, Paper, TextField, Typography, withStyles } from "@mui/material"
 import { Center } from "@chakra-ui/react";
 
-function Login() {
+function ParticipantLogin() {
 
     return (
         <main>
@@ -59,5 +59,5 @@ function Login() {
     );
 }
 
-export default Login
+export default ParticipantLogin
 // export default withStyles(styles)(Login);

@@ -89,6 +89,16 @@ export default class TableDragSelect extends React.Component {
   render = () => {
     return (
       <table className="table-drag-select">
+        <colgroup>
+          <col width={"20px"}/>
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+          <col />
+        </colgroup>
         <tbody>{this.renderRows()}</tbody>
       </table>
     );
@@ -129,6 +139,7 @@ export default class TableDragSelect extends React.Component {
         endColumn: column,
         addMode: !this.props.value[row][column]
       });
+      console.log(!this.props)
     }
   };
 
@@ -230,6 +241,7 @@ class Cell extends React.Component {
       className = "",
       white,
       disabled,
+      time,
       beingSelected,
       selected,
       onTouchStart,
@@ -239,6 +251,9 @@ class Cell extends React.Component {
     if (disabled) {
       if (white) {
         className += " cell-white-disabled";
+        if (time) {
+          className += "-time"
+        }
       } else{
         className += " cell-disabled";
       }

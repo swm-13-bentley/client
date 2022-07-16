@@ -22,7 +22,7 @@ function Navbar() {
                                     window.location.href = `/`;
                                   }}
 								>
-									<span className="text-blue-500">{t('service')}</span>
+									<span className="text-blue-500">언제 만나</span>
 								</h1>
 							</div>
 							<div className="hidden md:block">

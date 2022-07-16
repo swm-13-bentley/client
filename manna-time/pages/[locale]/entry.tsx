@@ -1,12 +1,13 @@
-import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, VStack } from "@chakra-ui/react"
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, VStack } from "@chakra-ui/react"
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material"
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NextPage } from "next"
 import { useState } from "react"
 import CenterFlexLayout from "../../components/Layout/CenterFlexLayout"
-import Login from "../../components/Login"
+import ParticipantLogin from "../../components/ParticipantLogin"
 import Scheduler from "../../components/Scheduler/Scheduler"
 
 const Entry: NextPage = function () {
-    console.log("hey")
     const [id, setId] = useState("")
     const [password, setPassword] = useState("")
 
@@ -14,9 +15,22 @@ const Entry: NextPage = function () {
         <>
             <CenterFlexLayout>
                 <Center>
-                    <Login />
+                    <ParticipantLogin />
                 </Center>
-                <Box p={10}>
+
+                <Accordion disableGutters className=" mt-10">
+                    <AccordionSummary aria-controls="panel1d-content"
+                        expandIcon={<ExpandMoreIcon />}
+                        id="panel1a-header"
+                    >
+                        <Typography>현재 그룹 스케줄 확인하기</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Scheduler/>
+                    </AccordionDetails>
+                </Accordion>
+                {/* chakra version */}
+                {/* <Box p={10}>
                     <Accordion defaultIndex={[0]} allowMultiple>
                         <AccordionItem>
                             <h2>
@@ -32,7 +46,7 @@ const Entry: NextPage = function () {
                             </AccordionPanel>
                         </AccordionItem>
                     </Accordion>
-                </Box>
+                </Box> */}
             </CenterFlexLayout>
         </>
     )

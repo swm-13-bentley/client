@@ -5,6 +5,9 @@ import React, { useState, forwardRef, useImperativeHandle } from "react"
 import TableDragSelect from "./TableDragSelect"
 import styles from "/styles/Scheduler.module.css"
 import hours from "./Hours"
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { IconButton } from "@mui/material";
 
 
 let toggle = [false, false, false, false, false, false, false];
@@ -196,7 +199,7 @@ const Scheduler = forwardRef((props, ref) => {
       changeCurrIdx({ index: currIdx.index - 1 });
       var currWeek = weeks[currIdx.index - 1];
       dayChanges.forEach(
-        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString() })
+        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
       )
       // console.log(getSelectionState());
     }
@@ -208,7 +211,7 @@ const Scheduler = forwardRef((props, ref) => {
       dayChanges.forEach(
         (changeText, idx) => {
           // console.log(currWeek[idx].toLocaleDateString())
-          changeText({ text: currWeek[idx].toLocaleDateString() })
+          changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
         }
       )
       var temp = [...currTot.cellsTot]
@@ -223,7 +226,7 @@ const Scheduler = forwardRef((props, ref) => {
   return (
     <div>
       <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
-        <tr className={styles.tr}>
+        <tr>
           <td white disabled />
           {
             dayTexts.map(
@@ -244,7 +247,7 @@ const Scheduler = forwardRef((props, ref) => {
         {
           times.map(t =>
             <tr>
-              <td white disabled>{hours[t].time}</td>
+              <td white disabled time>{hours[t].time}</td>
               <td disabled={!validDaysList[currIdx.index][0] || groupState[currIdx.index][t - startTime][0]} className="mon" />
               <td disabled={!validDaysList[currIdx.index][1] || groupState[currIdx.index][t - startTime][1]} className="tue" />
               <td disabled={!validDaysList[currIdx.index][2] || groupState[currIdx.index][t - startTime][2]} className="wed" />
@@ -256,8 +259,12 @@ const Scheduler = forwardRef((props, ref) => {
           )
         }
       </TableDragSelect>
-      <button onClick={handleRight}>next</button>
-      <button onClick={handleLeft}>prev</button>
+      <IconButton  onClick={handleLeft}>
+        <ArrowBackIosIcon />
+      </IconButton>
+      <IconButton onClick={handleRight}>
+        <ArrowForwardIosIcon />
+      </IconButton>
     </div>
   );
 
