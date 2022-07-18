@@ -7,21 +7,28 @@ import type { NextPage } from 'next'
 import { useTranslation } from 'next-i18next'
 import { getStaticPaths, makeStaticProps } from '../../lib/getStatic'
 
-import { Calendar, DateObject } from "react-multi-date-picker"
+import { Calendar, DateObject, getAllDatesInRange } from "react-multi-date-picker"
 import type{Value} from "react-multi-date-picker"
 import { ReactNode, useState } from 'react'
 import { Button, ButtonGroup, ButtonTypeMap, ExtendButtonBase, TextField } from '@mui/material'
 import ProcedureLayout from '../../components/Layout/ProcedureLayout'
 import "react-multi-date-picker/styles/layouts/mobile.css"
 import CenterFlexLayout from '../../components/Layout/CenterFlexLayout'
+import axios from 'axios'
+import { ConstructionOutlined } from '@mui/icons-material'
+import { useRouter } from 'next/router'
 
+const dateRangeFormat = "YYYY-MM-DD"
+const timeRangeFormat = "HH:mm";
+const googleTimeRangeFormat = "HH:mm:ss";
 
 const MakeRoom: NextPage = () => {
+    const router = useRouter()
     const { t } = useTranslation(['make-room', 'common'])
 
     const defaultTime: string[] = []
     
-    const [dateRange, setDateRange] = useState<Value>(new Date());
+    const [dateRange, setDateRange] = useState<Value>([new Date()]);
     const [timeRange, setTimeRange] = useState(defaultTime)
     const [roomName, setRoomName] = useState("")
 
@@ -66,7 +73,17 @@ const MakeRoom: NextPage = () => {
             </Center>
 
             <ProcedureLayout index={1} title={t('set-date')}>
-                <Calendar className="rmdp-mobile" range value={dateRange} onChange={setDateRange} zIndex={1} />
+                <Calendar className="rmdp-mobile" range value={dateRange}
+                    onChange={(dateObjects) => {
+                        if (dateObjects) {
+                            // .map((date)=>{date.format()})
+                            let tmpArr = getAllDatesInRange(dateObjects as DateObject[])
+                            let newDate: string[] = []
+                            tmpArr.map((date) => { newDate.push((date as DateObject).format(dateRangeFormat) ) })
+                            setDateRange(newDate)
+                        }
+                      }}
+                    zIndex={1} />
             </ProcedureLayout>
 
             <ProcedureLayout index={2} title={t('set-timezone')}>
@@ -84,16 +101,44 @@ const MakeRoom: NextPage = () => {
                     <Button
                         className="md:text-lg text-xs"
                         variant='outlined'
-                        onClick={()=>{setRoomName(randomNameGenerator)}}
+                        onClick={()=>{setRoomName(randomNameGenerator(router.query.locale as string))}}
                     >랜덤 생성</Button>
                 </HStack>
             </ProcedureLayout>
             <Button
                 className="md:text-lg text-xs"
                 variant='outlined'
+                onClick={sendRoomRequest}
             >방 생성하기</Button>
         </CenterFlexLayout>
     )
+
+    function sendRoomRequest() {        // console.log(roomName, dateRange, timeRange)
+        const srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room'
+
+
+        let sendFlag = (roomName != "") && (dateRange != undefined) && (timeRange != defaultTime)
+        if (!sendFlag) {
+            alert("날짜, 시간, 이름을 정확히 입력하세요")
+        }
+        else {
+            axios({
+                method: 'post',
+                url: srcUrl,
+                data: {
+                    "title": roomName,
+                    "dates": dateRange,
+                    "startTime": timeRange[0],
+                    "endTime": timeRange[1]
+                }
+            })
+                .then((result) => {
+                    // console.log(result.data.roomUuid)
+                    router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
+                })
+                .catch((e) => { console.log(e) })
+        }
+    }
 }
 
 const randomNameGenerator = (locale: string) => {
@@ -101,8 +146,12 @@ const randomNameGenerator = (locale: string) => {
     const english = ["Let's meet then", "See you soon~", "When to meet?"]
     const tmpArr:string[] = []
 
-    const randomNum = Math.ceil((Math.random()) * 10) % korean.length
-    return korean[randomNum];
+    const randomNum = Math.ceil((Math.random()) * 10)
+    if (locale == "ko") {
+        return korean[randomNum % korean.length];
+    } else {
+        return english[randomNum % english.length];
+    }
 }
 
 

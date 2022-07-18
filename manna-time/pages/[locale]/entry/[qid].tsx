@@ -1,16 +1,14 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, VStack } from "@chakra-ui/react"
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material"
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { NextPage } from "next"
+import { GetServerSideProps, NextPage } from "next"
 import { useState } from "react"
-import CenterFlexLayout from "../../components/Layout/CenterFlexLayout"
-import ParticipantLogin from "../../components/ParticipantLogin"
-import Scheduler from "../../components/Scheduler/Scheduler"
+import CenterFlexLayout from "../../../components/Layout/CenterFlexLayout"
+import ParticipantLogin from "../../../components/ParticipantLogin"
+import Scheduler from "../../../components/Scheduler/Scheduler"
+import { useRouter } from "next/router";
 
 const Entry: NextPage = function () {
-    const [id, setId] = useState("")
-    const [password, setPassword] = useState("")
-
     return (
         <>
             <CenterFlexLayout>
@@ -51,5 +49,9 @@ const Entry: NextPage = function () {
         </>
     )
 }
+
+// export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
+//     const qid = getStringValueFromQuery({query, field: 'qid'})
+// }
 
 export default Entry
