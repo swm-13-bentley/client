@@ -1,9 +1,10 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/display-name */
 
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
+
 import React, { useState, forwardRef, useImperativeHandle } from "react"
 import TableDragSelect from "./TableDragSelect"
-import styles from "/styles/Scheduler.module.css"
 import hours from "./Hours"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -19,33 +20,39 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
 
-  var startDate, endDate, startTime, endTime, isGroup, groupSchedule;
+  var startDate, endDate, startTime, endTime, isGroup, available;
   if (props.roomInfo == undefined) {
     // Dummy args
     startDate = new Date('2022-06-09');
     endDate = new Date('2022-06-15');
     startTime = 1;
     endTime = 5;
-    isGroup = true;
-    groupSchedule = [
+
+    isGroup = props.isGroup;
+    available = [
       {
-        scheduledDate: "2022-06-10",
-        scheduledTimeList: [2, 3]
+        availableDate: "2022-06-10",
+        availableTimeList: [2, 3]
       },
       {
-        scheduledDate: "2022-06-12",
-        scheduledTimeList: [2, 3]
+        availableDate: "2022-06-12",
+        availableTimeList: [2, 3]
       }
     ]
   } else {
     // props args
-    console.log(props)
-    startDate = new Date(props.roomInfo.startDay)
-    endDate = new Date(props.roomInfo.endDay)
+    // console.log(props)
+    startDate = new Date(props.roomInfo.dates[0])
+    endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length -1])
     startTime = props.roomInfo.startTime
     endTime = props.roomInfo.endTime
+    // startTime = 1;
+    // endTime = 5;
     isGroup = props.isGroup
-    groupSchedule = props.groupSchedule
+    if (props.groupSchedule != undefined && props.groupSchedule.length > 0) {
+      available = props.groupSchedule[0].available
+      // console.log(available)
+    } else { available = [] }
   }
   endTime += 1;
 
@@ -111,13 +118,13 @@ const Scheduler = forwardRef((props, ref) => {
     }
   )
   var times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
-  if (groupSchedule != null && groupSchedule != 0 && isGroup) {
-    groupSchedule.forEach(
+  if (available != null && available != 0 && isGroup) {
+    available.forEach(
       obj => {
-        var diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+        var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
         var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
         var dayIdx = (startDate.getDay() + diff + 6) % 7;
-        obj.scheduledTimeList.forEach(
+        obj.availableTimeList.forEach(
           timeIdx => {
             groupState[weekIdx][timeIdx - startTime][dayIdx] = true;
           }
@@ -157,20 +164,20 @@ const Scheduler = forwardRef((props, ref) => {
           }
           return `0${value}`
         }
-        var scheduledDate = [
+        var availableDate = [
           weeks[i][j].getFullYear(),
           leftPad(weeks[i][j].getMonth() + 1),
           leftPad(weeks[i][j].getDate())
         ].join("-");
-        var scheduledTimeList = []
+        var availableTimeList = []
         for (var k = 0; k < (endTime - startTime); k++) {
           if (temp[i][k + 2][j + 1]) {
-            scheduledTimeList.push(startTime + k)
+            availableTimeList.push(startTime + k)
           }
         }
         apiRequestBody.push({
-          scheduledDate: scheduledDate,
-          scheduledTimeList: scheduledTimeList
+          availableDate: availableDate,
+          availableTimeList: availableTimeList
         })
       }
     }
@@ -221,6 +228,7 @@ const Scheduler = forwardRef((props, ref) => {
       changeCurrIdx({ index: currIdx.index + 1 })
     }
   }
+
 
 
   return (

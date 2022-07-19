@@ -38,7 +38,7 @@ function ParticipantLogin() {
                 </Center>
                 <form>
                     <FormControl margin="dense" required fullWidth>
-                        <InputLabel className="md:text-md text-sm" >내 이름</InputLabel>
+                        <InputLabel className="md:text-md text-sm" >내 이름 (필수)</InputLabel>
                         <Input
                             onChange={(e) => { setUserName(e.target.value) }}
                             size="small"
@@ -46,8 +46,8 @@ function ParticipantLogin() {
                             name="myname"
                             autoFocus />
                     </FormControl>
-                    <FormControl margin="dense" required fullWidth>
-                        <InputLabel className="md:text-md text-sm" htmlFor="password">비밀번호</InputLabel>
+                    <FormControl margin="dense" fullWidth>
+                        <InputLabel className="md:text-md text-sm" htmlFor="password">비밀번호 (선택)</InputLabel>
                         <Input
                             onChange={(e) => { setPassword(e.target.value) }}
                             size="small"
@@ -79,23 +79,26 @@ function ParticipantLogin() {
         let srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room/' + qid + '/participant/entry'
         // console.log(srcUrl)
 
-        let sendFlag = (userName != "" && password !="")
+        let sendFlag = (userName != "")
         if (!sendFlag) {
-            alert("이름과 비밀번호를 입력해주세요.")
+            alert("이름을 입력해주세요.")
         }
         else {
             axios({
                 method: 'post',
                 url: srcUrl,
                 data: {
-                    "username": userName,
+                    "participantName": userName,
                     "password": password
                 }
             })
                 .then((result) => {
-                    console.log(result)
+                    // console.log(result)
+                    router.push(`/${router.query.locale}/room/${qid}/${userName}`);
                 })
-                .catch((e) => { console.log(e) })
+                .catch((e) => {
+                    console.log(e)
+                })
         }
     }
 }

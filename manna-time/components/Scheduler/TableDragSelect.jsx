@@ -139,7 +139,7 @@ export default class TableDragSelect extends React.Component {
         endColumn: column,
         addMode: !this.props.value[row][column]
       });
-      console.log(!this.props)
+      // console.log(!this.props)
     }
   };
 
