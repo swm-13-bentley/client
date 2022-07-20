@@ -74,6 +74,7 @@ const MakeRoom: NextPage = () => {
 
             <ProcedureLayout index={1} title={t('set-date')}>
                 <Calendar className="rmdp-mobile" range value={dateRange}
+                    showOtherDays
                     onChange={(dateObjects) => {
                         if (dateObjects) {
                             // .map((date)=>{date.format()})

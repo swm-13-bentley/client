@@ -10,6 +10,7 @@ import Scheduler from "../../../../components/Scheduler/Scheduler"
 import '/styles/test.module.css'
 
 import LinkIcon from '@mui/icons-material/Link'
+import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
 
 
 const Room: NextPage = function () {
@@ -66,63 +67,53 @@ const Room: NextPage = function () {
                     <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label="내 일정" />
-                            <Tab label="그룹 필터" />
+                            <Tab label="그룹 일정" />
                             <Tab label="방 정보" />
                         </Tabs>
                     </Box>
                     {(
                         tab == 0 ?
-                            <HStack mb="10" >
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    className="md:text-xs text-xs"
-                                >
-                                    캘린더
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    color="error"
-                                    className="md:text-xs text-xs"
-                                >
-                                    시간표
-                                </Button>
-                                <Button
-                                    variant="outlined"
-                                    color="info"
-                                    className="md:text-xs text-xs"
-                                >
-                                    필터1
-                                </Button>
-
+                            <>
+                                <HStack mb="10" mt="10" >
+                                    <Button
+                                        variant="outlined"
+                                        color="primary"
+                                        className="md:text-xs text-xs"
+                                    >
+                                        캘린더
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        className="md:text-xs text-xs"
+                                    >
+                                        시간표
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        color="info"
+                                        className="md:text-xs text-xs"
+                                    >
+                                        필터1
+                                    </Button>
+                                </HStack>
                                 <FormGroup>
                                     <FormControlLabel
                                         className="md:text-2xs text-xs"
                                         sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                                         control={<Checkbox defaultChecked />}
-                                        label="그룹 필터 적용하기" />
+                                        label="그룹 일정 적용하기" />
                                 </FormGroup>
-                            </HStack>
+                            </>
                             : null
                     )}
 
                     {(
                         tab == 1 ?
-                            <HStack mb={10}>
-                                <FormGroup row>
-                                    <FormControlLabel
-                                        className="md:text-2xs text-xs"
-                                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                        control={<Checkbox defaultChecked />}
-                                        label="그룹 필터 적용하기" />
-                                    <FormControlLabel
-                                        className="md:text-2xs text-xs"
-                                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                        control={<Checkbox defaultChecked />}
-                                        label="그룹 필터 적용하기" />
-                                </FormGroup>
-                            </HStack>
-                            
+                            <IndeterminateCheckbox
+                                participantNames={["hey", "helo", "whssup"]}
+                            />
+
                             : null
                     )}
 
@@ -157,7 +148,7 @@ const Room: NextPage = function () {
                                 const mySchedule = scheduleRef.current.testFn()
                                 submitMySchedule(mySchedule)
                             }}
-                        >제출하기</Button>
+                        >등록하기</Button>
                     </HStack>
                 </Paper>
             </CenterFlexLayout>
