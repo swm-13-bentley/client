@@ -9,21 +9,22 @@ import ParticipantLogin from "../../../../components/ParticipantLogin"
 import Scheduler from "../../../../components/Scheduler/Scheduler"
 import '/styles/test.module.css'
 
-import LinkIcon from '@mui/icons-material/Link'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
+
 
 
 const Room: NextPage = function () {
     const [tab, setTab] = useState(0); // 0: 내 스케줄 , 1: 그룹 스케줄
 
     const router = useRouter()
-    // console.log(router)
     const { qid, participantName } = router.query
-    // console.log(qid)
+
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
     let [groupSchedule, setGroupSchedule] = useState(null)
+    let [groupButtonChecked, setGroupButtonChecked] = useState(false)
 
     let scheduleRef = useRef()
 
@@ -80,9 +81,9 @@ const Room: NextPage = function () {
                                         color="primary"
                                         className="md:text-xs text-xs"
                                     >
-                                        캘린더
+                                        캘린더 연동
                                     </Button>
-                                    <Button
+                                    {/* <Button
                                         variant="outlined"
                                         color="error"
                                         className="md:text-xs text-xs"
@@ -95,15 +96,20 @@ const Room: NextPage = function () {
                                         className="md:text-xs text-xs"
                                     >
                                         필터1
-                                    </Button>
+                                    </Button> */}
                                 </HStack>
-                                <FormGroup>
+                                <div className="items-baseline">
                                     <FormControlLabel
                                         className="md:text-2xs text-xs"
                                         sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                        control={<Checkbox defaultChecked />}
-                                        label="그룹 일정 적용하기" />
-                                </FormGroup>
+                                        label={"그룹 일정 적용하기"}
+                                        control={<Checkbox
+                                            checked={groupButtonChecked}
+                                            onChange={(e) => setGroupButtonChecked(e.target.checked)}
+                                            defaultChecked={groupButtonChecked}
+                                        />}
+                                    />
+                                </div>
                             </>
                             : null
                     )}
@@ -119,14 +125,15 @@ const Room: NextPage = function () {
 
                     {(
                         loader ? <h1>로딩중</h1> :
-                            groupSchedule !== null
+                            groupSchedule !== null && tab != 2
                                 ?
                                 <Scheduler
                                     // roomInfo={props.roomInfo}
+                                    isDisabled={tab==0?false:true}
                                     ref={scheduleRef}
                                     groupSchedule={groupSchedule}
                                     roomInfo={roomInfo}
-                                    isGroup={tab === 0 ? false : true}
+                                    isGroup={(tab == 1) || groupButtonChecked ? true : false}
                                 // groupSchedule={props.groupSchedule}
                                 />
                                 :
@@ -137,10 +144,10 @@ const Room: NextPage = function () {
                     <HStack>
                         <Button
                             variant="outlined"
-                            startIcon={<LinkIcon />}
+                            startIcon={<ContentCopyIcon />}
                             onClick={copyTextUrl}
                         >
-                            링크 복사
+                            방 링크 복사
                         </Button>
                         <Button
                             variant="outlined"

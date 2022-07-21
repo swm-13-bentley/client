@@ -129,14 +129,29 @@ button {
 /* Cells that have been selected */
 .table-drag-select td.cell-selected {
   background-color: #45d084;
-  border-bottom: 0.1px solid;
+  /* border-bottom: 0.1px solid; */
 }
 
 /* Cells that are in the process of being selected */
 .table-drag-select td.cell-being-selected {
   /* This is the blue color y//ou see when you select text with the cursor */
   background-color: #24b867;
+}
 
+.table-drag-select td.opacity-0-25 {
+  background-color: #0008ff80;
+}
+
+.table-drag-select td.opacity-0-50 {
+  background-color: #0008ff96;
+}
+
+.table-drag-select td.opacity-0-75 {
+  background-color: #0008ffd2;
+}
+
+.table-drag-select td.opacity-1-00 {
+  background-color: #0008ff;
 }
 
 .table-drag-select td.mon {

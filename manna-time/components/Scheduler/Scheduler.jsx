@@ -10,8 +10,22 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
 
+class CellProperty {
+  opacity = 1
+
+  constructor(isDisabled, opacity, color) {
+    this.isDisabled = isDisabled
+    this.opacity = opacity
+    this.color = color
+  }
+
+  setOpacity(total, availableNum) {
+    this.opacity = availableNum / total
+  }
+}
 
 let toggle = [false, false, false, false, false, false, false];
+
 const Scheduler = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     testFn: () => {
@@ -19,8 +33,9 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }))
 
-
-  var startDate, endDate, startTime, endTime, isGroup, available;
+  var startDate, endDate, startTime, endTime, isGroup;
+  let groupSchedule, totalNum
+  let isDisabled = false
   if (props.roomInfo == undefined) {
     // Dummy args
     startDate = new Date('2022-06-09');
@@ -29,14 +44,30 @@ const Scheduler = forwardRef((props, ref) => {
     endTime = 5;
 
     isGroup = props.isGroup;
-    available = [
+    groupSchedule = [
       {
-        availableDate: "2022-06-10",
-        availableTimeList: [2, 3]
+        available: [
+          {
+            availableDate: "2022-06-10",
+            availableTimeList: [2, 3]
+          },
+          {
+            availableDate: "2022-06-12",
+            availableTimeList: [2, 3]
+          }
+        ]
       },
       {
-        availableDate: "2022-06-12",
-        availableTimeList: [2, 3]
+        available: [
+          {
+            availableDate: "2022-06-10",
+            availableTimeList: [2, 4]
+          },
+          {
+            availableDate: "2022-06-12",
+            availableTimeList: [1, 3]
+          }
+        ]
       }
     ]
   } else {
@@ -49,10 +80,16 @@ const Scheduler = forwardRef((props, ref) => {
     // startTime = 1;
     // endTime = 5;
     isGroup = props.isGroup
-    if (props.groupSchedule != undefined && props.groupSchedule.length > 0) {
-      available = props.groupSchedule[0].available
+    groupSchedule = props.groupSchedule
+    if (groupSchedule != undefined && groupSchedule.length > 0) {
+      totalNum = groupSchedule.length
+      // available = props.groupSchedule[0].available
       // console.log(available)
-    } else { available = [] }
+    } else {
+      groupSchedule = []
+      totalNum = 0
+    }
+    isDisabled = props.isDisabled
   }
   endTime += 1;
 
@@ -63,9 +100,11 @@ const Scheduler = forwardRef((props, ref) => {
   const dateDiff = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
 
   var initCells = [];
+  var initGroupCells = [];
   var temp;
   for (temp = 0; temp < (endTime - startTime + 2); temp++) {
     initCells.push([false, false, false, false, false, false, false])
+    initGroupCells.push(new Array(7).fill(0))
   }
 
   const [curr, changeCurr] = useState({
@@ -73,13 +112,19 @@ const Scheduler = forwardRef((props, ref) => {
   });
 
   var tableState = [];
+  var filterState = [];
   var groupState = [];
+
   for (temp = 0; temp < parseInt((startDay + dateDiff - 1) / 7 + 1); temp++) {
     tableState.push([...initCells]);
-    groupState.push([...initCells]);
+    filterState.push([...initCells]);
+    groupState.push([...initGroupCells]);
   }
   tableState = JSON.parse(JSON.stringify(tableState));
+  filterState = JSON.parse(JSON.stringify(filterState));
   groupState = JSON.parse(JSON.stringify(groupState));
+
+  
 
   var currDate = startDate; // Object.assign({}, startDate);
   var tableList = [];
@@ -118,20 +163,29 @@ const Scheduler = forwardRef((props, ref) => {
     }
   )
   var times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
-  if (available != null && available != 0 && isGroup) {
-    available.forEach(
-      obj => {
-        var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-        var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-        var dayIdx = (startDate.getDay() + diff + 6) % 7;
-        obj.availableTimeList.forEach(
-          timeIdx => {
-            groupState[weekIdx][timeIdx - startTime][dayIdx] = true;
-          }
-        )
-      }
-    )
+  
+  function groupScheduleElements(element, index, array) {
+    let available = element.available
+    // console.log(available)
+
+    if (available != null && available != 0 && isGroup) {
+      available.forEach(
+        obj => {
+          var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+          var dayIdx = (startDate.getDay() + diff + 6) % 7;
+          obj.availableTimeList.forEach(
+            timeIdx => {
+              filterState[weekIdx][timeIdx - startTime][dayIdx] = true;
+              groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
+            }
+          )
+        }
+      )
+    }
   }
+
+  groupSchedule.forEach(groupScheduleElements)
 
 
 
@@ -191,7 +245,7 @@ const Scheduler = forwardRef((props, ref) => {
 
   function setSelectionState(cells_json) {
     var temp = JSON.parse(cells_json);
-    console.log(temp);
+    // console.log(temp);
     changeCurrTot({ cellsTot: temp });
     changeCurr({ cells: [...temp[0]] });
     changeCurrIdx({ index: 0 });
@@ -229,7 +283,35 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }
 
+  const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+  const eachRow = times.map(t => {
 
+    const eachCell = weekDays.map((weekDay, weekIdx) => {
+      // const isDisabled = (groupState[currIdx.index][t - startTime][weekIdx] ==0 ? false : true)
+      const opacity = groupState[currIdx.index][t - startTime][weekIdx] / (totalNum == 1 ? 1 : totalNum - 1)
+      // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
+      // console.log(opacity)
+      const color = "#FFFFFF"
+  
+      let cellProperty = new CellProperty(
+        isDisabled, //isDisabled
+        opacity,
+        color
+      )
+      
+      const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}`
+      return (
+        <td key={key} disabled={!validDaysList[currIdx.index][weekIdx] } cellProperty={cellProperty} className={weekDay} />
+      )
+    })
+
+    return (
+      <tr>
+        <td white disabled time>{hours[t].time}</td>
+        {eachCell}
+      </tr>
+    )
+  })
 
   return (
     <div>
@@ -252,20 +334,7 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled>토</td>
           <td white disabled>일</td>
         </tr>
-        {
-          times.map(t =>
-            <tr>
-              <td white disabled time>{hours[t].time}</td>
-              <td disabled={!validDaysList[currIdx.index][0] || groupState[currIdx.index][t - startTime][0]} className="mon" />
-              <td disabled={!validDaysList[currIdx.index][1] || groupState[currIdx.index][t - startTime][1]} className="tue" />
-              <td disabled={!validDaysList[currIdx.index][2] || groupState[currIdx.index][t - startTime][2]} className="wed" />
-              <td disabled={!validDaysList[currIdx.index][3] || groupState[currIdx.index][t - startTime][3]} className="thu" />
-              <td disabled={!validDaysList[currIdx.index][4] || groupState[currIdx.index][t - startTime][4]} className="fri" />
-              <td disabled={!validDaysList[currIdx.index][5] || groupState[currIdx.index][t - startTime][5]} className="sat" />
-              <td disabled={!validDaysList[currIdx.index][6] || groupState[currIdx.index][t - startTime][6]} className="sun" />
-            </tr>
-          )
-        }
+        {eachRow}
       </TableDragSelect>
       <IconButton  onClick={handleLeft}>
         <ArrowBackIosIcon />
@@ -277,5 +346,6 @@ const Scheduler = forwardRef((props, ref) => {
   );
 
 })
+
 
 export default Scheduler

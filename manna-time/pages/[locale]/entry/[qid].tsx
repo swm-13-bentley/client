@@ -8,7 +8,7 @@ import ParticipantLogin from "../../../components/ParticipantLogin"
 import Scheduler from "../../../components/Scheduler/Scheduler"
 import { useRouter } from "next/router";
 
-import LinkIcon from '@mui/icons-material/Link'
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const Entry: NextPage = function () {
 
@@ -37,10 +37,10 @@ const Entry: NextPage = function () {
                         <Scheduler />
                         <Button
                             variant="outlined"
-                            startIcon={<LinkIcon />}
+                            startIcon={<ContentCopyIcon />}
                             onClick={copyTextUrl}
                         >
-                            링크 복사
+                            방 링크 복사
                         </Button>
                     </AccordionDetails>
                 </Accordion>

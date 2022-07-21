@@ -237,6 +237,7 @@ class Cell extends React.Component {
   };
 
   render = () => {
+    // console.log(this.props)
     let {
       className = "",
       white,
@@ -246,8 +247,11 @@ class Cell extends React.Component {
       selected,
       onTouchStart,
       onTouchMove,
+
+      cellProperty,
       ...props
     } = this.props;
+    // console.log(cellProperty)
     if (disabled) {
       if (white) {
         className += " cell-white-disabled";
@@ -259,12 +263,31 @@ class Cell extends React.Component {
       }
     } else {
       className += " cell-enabled";
+
+      
       if (selected) {
         className += " cell-selected";
       }
+      
       if (beingSelected) {
         className += " cell-being-selected";
       }
+      
+      if (!(selected || beingSelected)) {
+        if (cellProperty != undefined) {
+          if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
+            className += " opacity-0-25";
+          } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
+            className += " opacity-0-50";
+          } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
+            className += " opacity-0-75";
+          } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
+            className += " opacity-1-00";
+          }
+        }
+      }
+
+      
     }
     return (
       <td
@@ -281,13 +304,17 @@ class Cell extends React.Component {
 
   handleTouchStart = (e) => {
     if (!this.props.disabled) {
-      this.props.onTouchStart(e);
+      if ((this.props.cellProperty != undefined) && (!this.props.cellProperty.isDisabled)) {
+        this.props.onTouchStart(e);
+      }
     }
   };
 
   handleTouchMove = (e) => {
     if (!this.props.disabled) {
-      this.props.onTouchMove(e);
+      if ((this.props.cellProperty != undefined) && (!this.props.cellProperty.isDisabled)) {
+        this.props.onTouchMove(e);
+      }
     }
   };
 }
