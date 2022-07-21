@@ -5,14 +5,16 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 interface Props {
     // groupSchedule :
-    participantNames : string[]
+    participantNames: string[]
+    onChange(arg: boolean[]): void
 }
 
-const IndeterminateCheckbox : React.FC<Props> = ({participantNames}) => {
+const IndeterminateCheckbox = ({participantNames, onChange}: Props) => {
 
 
     const defaultChecked = Array(participantNames.length).fill(true)
     const [checked, setChecked] = React.useState(defaultChecked);
+    onChange(checked)
 
     const handleAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(Array(participantNames.length).fill(event.target.checked));

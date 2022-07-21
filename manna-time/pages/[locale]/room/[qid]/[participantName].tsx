@@ -12,7 +12,28 @@ import '/styles/test.module.css'
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
 
-
+const getParsedGroup = (data: object[], myName:string) => {
+    let namesExceptMe: string[] = []
+    
+    let schedulesExceptMe: object[] = []
+    let mySchedule: object = {}
+    
+    data.forEach(obj => {
+        if (obj.participantName != myName) {
+            schedulesExceptMe.push(obj)
+        } else {mySchedule =obj}
+    })
+    
+    schedulesExceptMe.forEach(obj => namesExceptMe.push(obj.participantName))
+    return (
+        {
+            namesExceptMe: namesExceptMe,
+            schedulesExceptMe: schedulesExceptMe,
+            mySchedule: mySchedule
+        }
+    )
+    // return(data)
+}
 
 const Room: NextPage = function () {
     const [tab, setTab] = useState(0); // 0: 내 스케줄 , 1: 그룹 스케줄
@@ -23,8 +44,14 @@ const Room: NextPage = function () {
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
-    let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupButtonChecked, setGroupButtonChecked] = useState(false)
+    
+    //parsed Group Schedule
+    let [groupSchedule, setGroupSchedule] = useState(null)
+    let [groupNamesExceptMe, setGroupNamesExceptMe] = useState([""])
+    let [mySchedule, setMySchedule] = useState(null)
+    let [groupFilterChecked, setGroupFilterChecked] = useState([false])
+
 
     let scheduleRef = useRef()
 
@@ -34,7 +61,6 @@ const Room: NextPage = function () {
     useEffect(() => {
         axios.get(srcUrl)
             .then((result) => {
-                // console.log(result.data);
                 setRoomInfo(result.data);
                 if (result.data?.title !== undefined) { setLoader(false); };
             })
@@ -44,8 +70,11 @@ const Room: NextPage = function () {
     useEffect(() => {
         axios.get(srcUrl + '/group')
             .then((result) => {
-                // console.log(result.data);
-                setGroupSchedule(result.data);
+                let parsedGroup = getParsedGroup(result.data, participantName)
+
+                setGroupSchedule(parsedGroup.schedulesExceptMe);
+                setGroupNamesExceptMe(parsedGroup.namesExceptMe)
+                setMySchedule(parsedGroup.mySchedule)
             })
     }, [qid]);
 
@@ -117,7 +146,8 @@ const Room: NextPage = function () {
                     {(
                         tab == 1 ?
                             <IndeterminateCheckbox
-                                participantNames={["hey", "helo", "whssup"]}
+                                participantNames={groupNamesExceptMe}
+                                onChange={checked=>setGroupFilterChecked(checked)}
                             />
 
                             : null
@@ -134,7 +164,8 @@ const Room: NextPage = function () {
                                     groupSchedule={groupSchedule}
                                     roomInfo={roomInfo}
                                     isGroup={(tab == 1) || groupButtonChecked ? true : false}
-                                // groupSchedule={props.groupSchedule}
+                                    mySchedule={mySchedule}
+                                    groupFilterChecked={groupFilterChecked}
                                 />
                                 :
                                 null

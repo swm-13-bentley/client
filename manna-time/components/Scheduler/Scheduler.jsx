@@ -34,7 +34,7 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
   var startDate, endDate, startTime, endTime, isGroup;
-  let groupSchedule, totalNum
+  let groupSchedule, totalNum, groupFilterChecked
   let isDisabled = false
   if (props.roomInfo == undefined) {
     // Dummy args
@@ -70,6 +70,7 @@ const Scheduler = forwardRef((props, ref) => {
         ]
       }
     ]
+    groupFilterChecked= [true,true]
   } else {
     // props args
     // console.log(props)
@@ -90,6 +91,7 @@ const Scheduler = forwardRef((props, ref) => {
       totalNum = 0
     }
     isDisabled = props.isDisabled
+    groupFilterChecked = props.groupFilterChecked
   }
   endTime += 1;
 
@@ -168,7 +170,7 @@ const Scheduler = forwardRef((props, ref) => {
     let available = element.available
     // console.log(available)
 
-    if (available != null && available != 0 && isGroup) {
+    if (available != null && available != 0 && isGroup && groupFilterChecked[index]) {
       available.forEach(
         obj => {
           var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
@@ -299,7 +301,7 @@ const Scheduler = forwardRef((props, ref) => {
         color
       )
       
-      const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}`
+      const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
       return (
         <td key={key} disabled={!validDaysList[currIdx.index][weekIdx] } cellProperty={cellProperty} className={weekDay} />
       )

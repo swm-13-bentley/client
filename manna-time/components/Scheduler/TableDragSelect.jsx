@@ -262,19 +262,21 @@ class Cell extends React.Component {
         className += " cell-disabled";
       }
     } else {
+      
       className += " cell-enabled";
 
-      
-      if (selected) {
-        className += " cell-selected";
-      }
-      
-      if (beingSelected) {
-        className += " cell-being-selected";
-      }
-      
-      if (!(selected || beingSelected)) {
-        if (cellProperty != undefined) {
+      if (cellProperty != undefined) {
+        if (!cellProperty.isDisabled) {
+          if (selected) {
+            className += " cell-selected";
+          }
+        
+          if (beingSelected) {
+            className += " cell-being-selected";
+          }
+        } 
+
+        if (!(selected || beingSelected) || cellProperty.isDisabled) {
           if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
             className += " opacity-0-25";
           } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
@@ -284,10 +286,10 @@ class Cell extends React.Component {
           } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
             className += " opacity-1-00";
           }
+        
         }
-      }
 
-      
+      }
     }
     return (
       <td
