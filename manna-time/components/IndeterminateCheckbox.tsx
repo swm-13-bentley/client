@@ -6,15 +6,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 interface Props {
     // groupSchedule :
     participantNames: string[]
+    isChecked: boolean[]
     onChange(arg: boolean[]): void
 }
 
-const IndeterminateCheckbox = ({participantNames, onChange}: Props) => {
+const IndeterminateCheckbox = ({participantNames, isChecked, onChange}: Props) => {
 
 
     const defaultChecked = Array(participantNames.length).fill(true)
-    const [checked, setChecked] = React.useState(defaultChecked);
-    onChange(checked)
+    const [checked, setChecked] = React.useState(isChecked);
+    onChange(checked) //checked 변하면 부모 컴포넌트에 자동 전달
+    // console.log(isChecked)
 
     const handleAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(Array(participantNames.length).fill(event.target.checked));
@@ -29,7 +31,7 @@ const IndeterminateCheckbox = ({participantNames, onChange}: Props) => {
     const formControlLabel = checked.map((event, idx: number) => {
         return (
             <FormControlLabel
-                key = {'form-control-label'+idx}
+                key = {'form-control-label'+participantNames[idx]}
                 label={participantNames[idx]}
                 control={<Checkbox checked={checked[idx]} onChange={(e) => handleChildrenChange(e, idx)} />}
             />

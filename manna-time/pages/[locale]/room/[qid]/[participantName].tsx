@@ -32,7 +32,6 @@ const getParsedGroup = (data: object[], myName:string) => {
             mySchedule: mySchedule
         }
     )
-    // return(data)
 }
 
 const Room: NextPage = function () {
@@ -51,7 +50,6 @@ const Room: NextPage = function () {
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState([""])
     let [mySchedule, setMySchedule] = useState(null)
     let [groupFilterChecked, setGroupFilterChecked] = useState([false])
-
 
     let scheduleRef = useRef()
 
@@ -75,6 +73,8 @@ const Room: NextPage = function () {
                 setGroupSchedule(parsedGroup.schedulesExceptMe);
                 setGroupNamesExceptMe(parsedGroup.namesExceptMe)
                 setMySchedule(parsedGroup.mySchedule)
+                setGroupFilterChecked(Array(parsedGroup.namesExceptMe.length).fill(true))
+
             })
     }, [qid]);
 
@@ -147,7 +147,8 @@ const Room: NextPage = function () {
                         tab == 1 ?
                             <IndeterminateCheckbox
                                 participantNames={groupNamesExceptMe}
-                                onChange={checked=>setGroupFilterChecked(checked)}
+                                onChange={checked => setGroupFilterChecked(checked)}
+                                isChecked={groupFilterChecked}
                             />
 
                             : null
@@ -186,7 +187,7 @@ const Room: NextPage = function () {
                                 const mySchedule = scheduleRef.current.testFn()
                                 submitMySchedule(mySchedule)
                             }}
-                        >등록하기</Button>
+                        >내 일정 등록</Button>
                     </HStack>
                 </Paper>
             </CenterFlexLayout>
