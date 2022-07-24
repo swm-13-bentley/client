@@ -31,9 +31,17 @@ const IndeterminateCheckbox = ({participantNames, isChecked, onChange}: Props) =
     const formControlLabel = checked.map((event, idx: number) => {
         return (
             <FormControlLabel
+                className="md:text-2xs text-xs"    
+                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                 key = {'form-control-label'+participantNames[idx]}
                 label={participantNames[idx]}
-                control={<Checkbox checked={checked[idx]} onChange={(e) => handleChildrenChange(e, idx)} />}
+                control={
+                    <Checkbox
+                        
+                        checked={checked[idx]}
+                        onChange={(e) => handleChildrenChange(e, idx)}
+                    />
+                }
             />
         )
     })
@@ -41,10 +49,11 @@ const IndeterminateCheckbox = ({participantNames, isChecked, onChange}: Props) =
     return (
         <div>
             <FormControlLabel
+                className="md:text-2xs text-xs mt-1"    
+                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
                 label="전체"
                 control={
                     <Checkbox
-                        
                         checked={checked.every(value=>value==true)}
                         indeterminate={!(checked.every(value=>value==true) || checked.every(value=>value==false))}
                         onChange={handleAllChange}

@@ -5,7 +5,13 @@ import { Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
-function ParticipantLogin() {
+interface Props{
+    eventName: string,
+    startDate: string,
+    endDate: string
+}
+
+const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
 
     const router = useRouter()
 
@@ -25,13 +31,10 @@ function ParticipantLogin() {
                     </Avatar>
                 </Center>
                 <Center mb="5">
-                    <p className="text-xl font-bold">약속 이름</p>
-                </Center>
-                <Center mb="5">
-                    <p className="text-lg font-bold">약속 시간</p>
+                    <p className="text-lg font-bold">{eventName}</p>
                 </Center>
                 <Center mb="15">
-                    <p className="text-xs font-bold text-blue-700">회원가입이 필요없어요!</p>
+                    <p className="text-sm font-bold">{startDate} ~ {endDate}</p>
                 </Center>
                 <Center>
                     <h1></h1>
@@ -61,8 +64,11 @@ function ParticipantLogin() {
                         control={<Checkbox value="remember" color="primary" />}
                         label="Remember me"
                     /> */}
+                    <Center className="mt-5 mb-2">
+                        <p className="text-xs font-bold text-blue-700">회원가입이 필요없어요!</p>
+                    </Center>
                     <Button
-                        className="mt-5"
+                        className="mt-0"
                         fullWidth
                         variant="contained"
                         color="primary"

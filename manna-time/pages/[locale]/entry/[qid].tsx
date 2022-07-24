@@ -47,57 +47,69 @@ const Entry: NextPage = function () {
     return (
         <>
             <CenterFlexLayout>
-                <Center>
-                    <ParticipantLogin />
-                </Center>
-
-                <Accordion disableGutters className=" mt-10">
-                    <AccordionSummary aria-controls="panel1d-content"
-                        expandIcon={<ExpandMoreIcon />}
-                        id="panel1a-header"
-                    >
-                        <Typography>현재 그룹 스케줄 확인하기</Typography>
-                    </AccordionSummary>
-                    {(
-                        !loader ?
-                            <AccordionDetails>
-
-                                <Scheduler
-                                    groupSchedule={groupSchedule}
-                                    isGroup={true}
-                                    roomInfo={roomInfo}
-                                    isDisabled={true}
+                {(
+                    roomInfo && roomInfo.title != undefined && roomInfo.dates != undefined
+                        ?
+                        <>
+                            <Center>
+                                <ParticipantLogin
+                                    eventName={roomInfo.title}
+                                    startDate={roomInfo.dates[0]}
+                                    endDate={roomInfo.dates[roomInfo.dates.length - 1]}
                                 />
-                                <Button
-                                    variant="outlined"
-                                    startIcon={<ContentCopyIcon />}
-                                    onClick={copyTextUrl}
+                            </Center>
+            
+                            <Accordion disableGutters className=" mt-10">
+                                <AccordionSummary aria-controls="panel1d-content"
+                                    expandIcon={<ExpandMoreIcon />}
+                                    id="panel1a-header"
                                 >
-                                    방 링크 복사
-                                </Button>
-                            </AccordionDetails>
-                            : null
-                    )}
-                    
-                </Accordion>
-                {/* chakra version */}
-                {/* <Box p={10}>
-                    <Accordion defaultIndex={[0]} allowMultiple>
-                        <AccordionItem>
-                            <h2>
-                                <AccordionButton>
-                                    <Box flex='1' textAlign='left'>
-                                        현재 그룹 스케줄 확인하기
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={4}>
-                                <Scheduler/>
-                            </AccordionPanel>
-                        </AccordionItem>
-                    </Accordion>
-                </Box> */}
+                                    <Typography>현재 그룹 스케줄 확인하기</Typography>
+                                </AccordionSummary>
+                                {(
+                                    !loader ?
+                                        <AccordionDetails>
+            
+                                            <Scheduler
+                                                groupSchedule={groupSchedule}
+                                                isGroup={true}
+                                                roomInfo={roomInfo}
+                                                isDisabled={true}
+                                            />
+                                            <Button
+                                                variant="outlined"
+                                                startIcon={<ContentCopyIcon />}
+                                                onClick={copyTextUrl}
+                                            >
+                                                방 링크 복사
+                                            </Button>
+                                        </AccordionDetails>
+                                        : null
+                                )}
+                                
+                            </Accordion>
+                            {/* chakra version */}
+                            {/* <Box p={10}>
+                                <Accordion defaultIndex={[0]} allowMultiple>
+                                    <AccordionItem>
+                                        <h2>
+                                            <AccordionButton>
+                                                <Box flex='1' textAlign='left'>
+                                                    현재 그룹 스케줄 확인하기
+                                                </Box>
+                                                <AccordionIcon />
+                                            </AccordionButton>
+                                        </h2>
+                                        <AccordionPanel pb={4}>
+                                            <Scheduler/>
+                                        </AccordionPanel>
+                                    </AccordionItem>
+                                </Accordion>
+                            </Box> */}
+                        </>
+                        :
+                        null
+                )}
             </CenterFlexLayout>
         </>
     )

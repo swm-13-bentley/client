@@ -104,7 +104,10 @@ const Room: NextPage = function () {
                     {(
                         tab == 0 ?
                             <>
-                                <HStack mb="10" mt="10" >
+                                <Center className="mt-2 mb-2">
+                                    <p className="text-sm font-normal">가능한 시간을 드래그하세요</p>
+                                </Center>
+                                <div className="mb-2">
                                     <Button
                                         variant="outlined"
                                         color="primary"
@@ -130,19 +133,20 @@ const Room: NextPage = function () {
                                     >
                                         필터1
                                     </Button> */}
-                                </HStack>
-                                <div className="items-baseline">
-                                    <FormControlLabel
-                                        className="md:text-2xs text-xs"
-                                        sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                        label={"그룹 일정 적용하기"}
-                                        control={<Checkbox
-                                            checked={groupButtonChecked}
-                                            onChange={(e) => setGroupButtonChecked(e.target.checked)}
-                                            defaultChecked={groupButtonChecked}
-                                        />}
-                                    />
+                                    <div className="float-right">
+                                        <FormControlLabel
+                                            className="md:text-2xs text-xs"
+                                            sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                            label={"그룹 일정 적용"}
+                                            control={<Checkbox
+                                                checked={groupButtonChecked}
+                                                onChange={(e) => setGroupButtonChecked(e.target.checked)}
+                                                defaultChecked={groupButtonChecked}
+                                            />}
+                                        />
+                                    </div>
                                 </div>
+
                             </>
                             : null
                     )}
@@ -177,7 +181,7 @@ const Room: NextPage = function () {
                     )}
                     
 
-                    <HStack>
+                    <HStack className="mt-5">
                         <Button
                             variant="outlined"
                             startIcon={<ContentCopyIcon />}
@@ -200,7 +204,7 @@ const Room: NextPage = function () {
 
     function submitMySchedule(props) {
 
-        console.log(props)
+        // console.log(props)
         axios({
             method: 'post',
             url: srcUrl + '/participant/available',
@@ -210,11 +214,10 @@ const Room: NextPage = function () {
             }
         })
             .then((result) => {
-                console.log(result.data)
                 alert('일정이 등록되었습니다.')
             })
             .catch((e) => {
-                console.log(e.response)
+                // console.log(e.response)
                 alert('일정등록이 실패하였습니다!')
             })
 
