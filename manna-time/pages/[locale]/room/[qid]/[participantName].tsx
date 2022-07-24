@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react"
 import CenterFlexLayout from "../../../../components/Layout/CenterFlexLayout"
 import ParticipantLogin from "../../../../components/ParticipantLogin"
 import Scheduler from "../../../../components/Scheduler/Scheduler"
-import '/styles/test.module.css'
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
