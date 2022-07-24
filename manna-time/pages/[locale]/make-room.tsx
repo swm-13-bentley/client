@@ -115,7 +115,7 @@ const MakeRoom: NextPage = () => {
     )
 
     function sendRoomRequest() {        // console.log(roomName, dateRange, timeRange)
-        const srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room'
+        const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
 
 
         let sendFlag = (roomName != "") && (dateRange != undefined) && (timeRange != defaultTime)

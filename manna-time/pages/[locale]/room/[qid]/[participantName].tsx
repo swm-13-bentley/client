@@ -53,7 +53,7 @@ const Room: NextPage = function () {
 
     let scheduleRef = useRef()
 
-    let srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room/' + qid
+    let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
@@ -84,7 +84,7 @@ const Room: NextPage = function () {
 
     const copyTextUrl = () => {
         //나중에 링크 바꿀 것
-        navigator.clipboard.writeText('localhost:3000/ko/entry/'+ (qid as string)).then(() => {
+        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/'+ (qid as string)).then(() => {
             alert("링크가 복사되었습니다")
         })
     }

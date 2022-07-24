@@ -16,14 +16,14 @@ const Entry: NextPage = function () {
     const router = useRouter()
     const { qid } = router.query
 
-    const srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room/' + qid
+    const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
 
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
     const [groupSchedule, setGroupSchedule] = useState(null)
 
     const copyTextUrl = () => {
-        navigator.clipboard.writeText('localhost:3000'+ (router.asPath as string)).then(() => {
+        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
             alert("링크가 복사되었습니다")
         })
     }

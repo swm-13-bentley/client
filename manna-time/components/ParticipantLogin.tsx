@@ -76,7 +76,7 @@ function ParticipantLogin() {
     );
 
     function sendLoginRequest() {
-        let srcUrl = process.env.NEXT_PUBLIC__API_URL + '/room/' + qid + '/participant/entry'
+        let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid + '/participant/entry'
         // console.log(srcUrl)
 
         let sendFlag = (userName != "")
