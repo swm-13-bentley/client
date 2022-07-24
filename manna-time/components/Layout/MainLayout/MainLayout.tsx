@@ -8,7 +8,9 @@ import Navbar from "./Navbar"
 function Layout({children}:ScriptProps) {
     const router = useRouter()
     const match = router.asPath.match(/[^/?]*[^/?]/g)
-    const pageName = match![1]
+
+    const pageName = match ? match[1] : ""
+
 
     const { t } = useTranslation(['common'])
 

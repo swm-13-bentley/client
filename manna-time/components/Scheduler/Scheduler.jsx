@@ -78,20 +78,18 @@ const Scheduler = forwardRef((props, ref) => {
     endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length -1])
     startTime = props.roomInfo.startTime
     endTime = props.roomInfo.endTime
-    // startTime = 1;
-    // endTime = 5;
     isGroup = props.isGroup
     groupSchedule = props.groupSchedule
     if (groupSchedule != undefined && groupSchedule.length > 0) {
       totalNum = groupSchedule.length
-      // available = props.groupSchedule[0].available
-      // console.log(available)
+      if (props.groupFilterChecked == undefined) {
+        groupFilterChecked = Array(totalNum).fill(true)
+      } else {groupFilterChecked = props.groupFilterChecked}
     } else {
       groupSchedule = []
       totalNum = 0
     }
     isDisabled = props.isDisabled
-    groupFilterChecked = props.groupFilterChecked
   }
   endTime += 1;
 
@@ -290,7 +288,7 @@ const Scheduler = forwardRef((props, ref) => {
 
     const eachCell = weekDays.map((weekDay, weekIdx) => {
       // const isDisabled = (groupState[currIdx.index][t - startTime][weekIdx] ==0 ? false : true)
-      const opacity = groupState[currIdx.index][t - startTime][weekIdx] / (totalNum == 1 ? 1 : totalNum - 1)
+      const opacity = groupState[currIdx.index][t - startTime][weekIdx] / totalNum
       // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
       // console.log(opacity)
       const color = "#FFFFFF"
