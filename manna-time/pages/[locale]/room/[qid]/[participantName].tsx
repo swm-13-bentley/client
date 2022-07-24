@@ -10,6 +10,7 @@ import Scheduler from "../../../../components/Scheduler/Scheduler"
 import '/styles/test.module.css'
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
 
 const getParsedGroup = (data: object[], myName:string) => {
@@ -43,7 +44,7 @@ const Room: NextPage = function () {
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
-    let [groupButtonChecked, setGroupButtonChecked] = useState(false)
+    let [groupButtonChecked, setGroupButtonChecked] = useState(true)
     
     //parsed Group Schedule
     let [groupSchedule, setGroupSchedule] = useState(null)
@@ -62,7 +63,7 @@ const Room: NextPage = function () {
                 setRoomInfo(result.data);
                 if (result.data?.title !== undefined) { setLoader(false); };
             })
-    }, [qid]);
+    }, [srcUrl]);
 
     // 전체 스케줄 가져오기
     useEffect(() => {
@@ -76,7 +77,7 @@ const Room: NextPage = function () {
                 setGroupFilterChecked(Array(parsedGroup.namesExceptMe.length).fill(true))
 
             })
-    }, [qid]);
+    }, [srcUrl]);
 
     const handleTabChange = (event: React.SyntheticEvent, tabValue: number) => {
         setTab(tabValue);
@@ -93,7 +94,7 @@ const Room: NextPage = function () {
         <>
             <CenterFlexLayout>
                 <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693 }}>
-                    <Center><h1>이영석 님의 스케줄러</h1></Center>
+                    <Center><h1>{participantName}님의 스케줄러</h1></Center>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label="내 일정" />
@@ -109,6 +110,10 @@ const Room: NextPage = function () {
                                         variant="outlined"
                                         color="primary"
                                         className="md:text-xs text-xs"
+                                        onClick={() => {
+                                            window.location.href = `/google/login`;
+                                        }}
+                                        startIcon={<CalendarMonthIcon/>}
                                     >
                                         캘린더 연동
                                     </Button>
