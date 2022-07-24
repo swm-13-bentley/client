@@ -3,7 +3,7 @@
 
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
 
-import React, { useState, forwardRef, useImperativeHandle } from "react"
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -34,7 +34,7 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
   var startDate, endDate, startTime, endTime, isGroup;
-  let groupSchedule, totalNum, groupFilterChecked
+  let groupSchedule, totalNum, groupFilterChecked, mySchedule
   let isDisabled = false
   if (props.roomInfo == undefined) {
     // Dummy args
@@ -70,12 +70,12 @@ const Scheduler = forwardRef((props, ref) => {
         ]
       }
     ]
-    groupFilterChecked= [true,true]
+    groupFilterChecked = [true, true]
   } else {
     // props args
     // console.log(props)
     startDate = new Date(props.roomInfo.dates[0])
-    endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length -1])
+    endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length - 1])
     startTime = props.roomInfo.startTime
     endTime = props.roomInfo.endTime
     isGroup = props.isGroup
@@ -84,10 +84,15 @@ const Scheduler = forwardRef((props, ref) => {
       totalNum = groupSchedule.length
       if (props.groupFilterChecked == undefined) {
         groupFilterChecked = Array(totalNum).fill(true)
-      } else {groupFilterChecked = props.groupFilterChecked}
+      } else { groupFilterChecked = props.groupFilterChecked }
     } else {
       groupSchedule = []
       totalNum = 0
+    }
+    if (props.mySchedule != undefined) {
+      mySchedule = props.mySchedule.available
+      // console.log(mySchedule)
+      // setSelectionState(mySchedule)
     }
     isDisabled = props.isDisabled
   }
@@ -243,14 +248,37 @@ const Scheduler = forwardRef((props, ref) => {
     return JSON.stringify(currTot.cellsTot);
   }
 
-  function setSelectionState(cells_json) {
-    var temp = JSON.parse(cells_json);
-    // console.log(temp);
-    changeCurrTot({ cellsTot: temp });
+  function setSelectionState(available) {
+    // var temp = JSON.parse(cells_json);
+
+    // changeCurrTot({ cellsTot: temp });
+    // changeCurr({ cells: [...temp[0]] });
+    // changeCurrIdx({ index: 0 });
+
+    temp = [...currTot.cellsTot]
+    console.log(temp)
+    available.forEach(
+      obj => {
+        var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+        var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+        var dayIdx = (startDate.getDay() + diff + 6) % 7;
+        obj.availableTimeList.forEach(
+          timeIdx => {
+            temp[weekIdx][timeIdx - startTime+2][dayIdx+1] = true; //행열 2개와 1개
+          }
+          )
+        }
+        )
+    console.log(temp)
+    // console.log(available)
+        
+    changeCurrTot({ cellsTot: temp })
     changeCurr({ cells: [...temp[0]] });
     changeCurrIdx({ index: 0 });
-  }
 
+    
+  }
+      
   const handleLeft = () => {
     if (currIdx.index > 0) {
       var temp = [...currTot.cellsTot];
@@ -283,6 +311,13 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }
 
+    
+  useEffect(() => {
+    if (mySchedule != undefined) {
+      setSelectionState(mySchedule)
+    }
+  }, [mySchedule])
+  
   const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
   const eachRow = times.map(t => {
 
@@ -339,7 +374,7 @@ const Scheduler = forwardRef((props, ref) => {
       <IconButton  onClick={handleLeft}>
         <ArrowBackIosIcon />
       </IconButton>
-      <IconButton onClick={handleRight}>
+      <IconButton onClick={handleRight} sx={"float:right"}>
         <ArrowForwardIosIcon />
       </IconButton>
     </div>
