@@ -256,7 +256,7 @@ const Scheduler = forwardRef((props, ref) => {
     // changeCurrIdx({ index: 0 });
 
     temp = [...currTot.cellsTot]
-    console.log(temp)
+    // console.log(temp)
     available.forEach(
       obj => {
         var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
@@ -269,7 +269,7 @@ const Scheduler = forwardRef((props, ref) => {
           )
         }
         )
-    console.log(temp)
+    // console.log(temp)
     // console.log(available)
         
     changeCurrTot({ cellsTot: temp })

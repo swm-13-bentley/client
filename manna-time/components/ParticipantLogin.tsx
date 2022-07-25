@@ -103,7 +103,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                     router.push(`/${router.query.locale}/room/${qid}/${userName}`);
                 })
                 .catch((e) => {
-                    console.log(e)
+                    // console.log(e)
                 })
         }
     }

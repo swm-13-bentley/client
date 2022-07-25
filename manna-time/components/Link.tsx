@@ -15,7 +15,7 @@ interface Props {
 
 const LinkComponent: React.FC<Props> = function ({ children, skipLocaleHandling, ...rest }) {
   const router = useRouter()
-  console.log(typeof(rest)) // 추후에 error handling할 것
+  // console.log(typeof(rest)) // 추후에 error handling할 것
   const locale = rest.locale || router.query.locale || ''
 
   let href = rest.href || router.asPath
