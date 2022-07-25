@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { useEffect } from 'react';
 
 interface Props {
     // groupSchedule :
@@ -10,13 +11,18 @@ interface Props {
     onChange(arg: boolean[]): void
 }
 
-const IndeterminateCheckbox = ({participantNames, isChecked, onChange}: Props) => {
-
-
-    const defaultChecked = Array(participantNames.length).fill(true)
-    const [checked, setChecked] = React.useState(isChecked);
-    onChange(checked) //checked 변하면 부모 컴포넌트에 자동 전달
+const IndeterminateCheckbox = ({ participantNames, isChecked, onChange }: Props) => {
+    
+    const [checked, setChecked] = React.useState([]);
     // console.log(isChecked)
+    onChange(checked)
+
+    useEffect(() => {
+        // console.log(participantNames)
+        if (participantNames != null) {
+            setChecked(Array(participantNames.length).fill(true));
+        }
+    },[participantNames])
 
     const handleAllChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(Array(participantNames.length).fill(event.target.checked));

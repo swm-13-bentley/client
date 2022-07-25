@@ -12,18 +12,18 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
 
-const getParsedGroup = (data: object[], myName:string) => {
+const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
-    
+
     let schedulesExceptMe: object[] = []
     let mySchedule: object = {}
-    
+
     data.forEach(obj => {
         if (obj.participantName != myName) {
             schedulesExceptMe.push(obj)
-        } else {mySchedule =obj}
+        } else { mySchedule = obj }
     })
-    
+
     schedulesExceptMe.forEach(obj => namesExceptMe.push(obj.participantName))
     return (
         {
@@ -44,12 +44,13 @@ const Room: NextPage = function () {
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
     let [groupButtonChecked, setGroupButtonChecked] = useState(true)
-    
+
     //parsed Group Schedule
     let [groupSchedule, setGroupSchedule] = useState(null)
-    let [groupNamesExceptMe, setGroupNamesExceptMe] = useState([""])
+    let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     let [mySchedule, setMySchedule] = useState(null)
-    let [groupFilterChecked, setGroupFilterChecked] = useState([false])
+    let [groupFilterChecked, setGroupFilterChecked] = useState(null)
+    // console.log(groupFilterChecked)
 
     let scheduleRef = useRef()
 
@@ -74,7 +75,6 @@ const Room: NextPage = function () {
                 setGroupNamesExceptMe(parsedGroup.namesExceptMe)
                 setMySchedule(parsedGroup.mySchedule)
                 setGroupFilterChecked(Array(parsedGroup.namesExceptMe.length).fill(true))
-
             })
     }, [srcUrl]);
 
@@ -84,104 +84,131 @@ const Room: NextPage = function () {
 
     const copyTextUrl = () => {
         //나중에 링크 바꿀 것
-        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/'+ (qid as string)).then(() => {
+        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)).then(() => {
             alert("링크가 복사되었습니다")
         })
     }
 
-    return (
-        <>
-            <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693 }}>
-                    <Center><h1>{participantName}님의 스케줄러</h1></Center>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider'}}>
-                        <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
-                            <Tab label="내 일정" />
-                            <Tab label="그룹 일정" />
-                            <Tab label="방 정보" />
-                        </Tabs>
-                    </Box>
-                    {(
-                        tab == 0 ?
-                            <>
-                                <Center className="mt-2 mb-2">
-                                    <p className="text-sm font-normal">가능한 시간을 드래그하세요</p>
-                                </Center>
-                                <div className="mb-2">
-                                    <Button
-                                        variant="outlined"
-                                        color="primary"
-                                        className="md:text-xs text-xs"
-                                        onClick={() => {
-                                            window.location.href = `/google/login`;
-                                        }}
-                                        startIcon={<CalendarMonthIcon/>}
-                                    >
-                                        캘린더 연동
-                                    </Button>
-                                    {/* <Button
-                                        variant="outlined"
-                                        color="error"
-                                        className="md:text-xs text-xs"
-                                    >
-                                        시간표
-                                    </Button>
-                                    <Button
-                                        variant="outlined"
-                                        color="info"
-                                        className="md:text-xs text-xs"
-                                    >
-                                        필터1
-                                    </Button> */}
-                                    <div className="float-right">
-                                        <FormControlLabel
-                                            className="md:text-2xs text-xs"
-                                            sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                            label={"그룹 일정 적용"}
-                                            control={<Checkbox
-                                                checked={groupButtonChecked}
-                                                onChange={(e) => setGroupButtonChecked(e.target.checked)}
-                                                defaultChecked={groupButtonChecked}
-                                            />}
-                                        />
-                                    </div>
-                                </div>
+    const tabLabel = ["그룹 시간", "내 시간", "약속 공유"]
 
-                            </>
-                            : null
-                    )}
+    const tabDescription = (tabIdx: number) => {
+        if (tabIdx == 0) {
+            return (
+                <>
+                    <Center>
+                        <p className="text-sm font-bold">
+                            약속 구성원들의
+                            <span className="text-sm font-bold text-blue-700">{" 함께 비는 시간"}</span>
+                            입니다
+                        </p>
+                    </Center >
+                </>
+            )
+        } else if (tabIdx == 1) {
+            return (
+                <>
+                    <Center>
+                        <p className="text-sm font-bold">
+                            {participantName}님의
+                            <span className="text-sm font-bold text-blue-700">{" 비는 시간을 드래그"}</span>
+                            해주세요
+                        </p>
+                    </Center >
+                </>
+            )
+        } else if (tabIdx == 2) {
+            return (
+                <Center>
+                    <p className="text-sm font-bold">
+                        약속 방에 관한 정보입니다.
+                    </p>
+                </Center >
+            )
+        }
+    }
 
-                    {(
-                        tab == 1 ?
-                            <IndeterminateCheckbox
-                                participantNames={groupNamesExceptMe}
-                                onChange={checked => setGroupFilterChecked(checked)}
-                                isChecked={groupFilterChecked}
+    const tabContainer = (tabIdx: number) => {
+        if (tabIdx == 0) {
+            return (
+                <>
+                    <IndeterminateCheckbox
+                        participantNames={groupNamesExceptMe}
+                        onChange={checked => setGroupFilterChecked(checked)}
+                        isChecked={groupFilterChecked}
+                    />
+                    {/* {(
+                        groupFilterChecked
+                        ?
+                        :
+                        <h1>그룹원 정보를 불러오는 중입니다..</h1>
+                    )} */}
+                </>
+            )
+        } else if (tabIdx == 1) {
+            return (
+                <>
+                    <div className="mb-2">
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            className="md:text-xs text-xs"
+                            onClick={() => {
+                                window.location.href = `/google/login`;
+                            }}
+                            startIcon={<CalendarMonthIcon />}
+                        >
+                            캘린더 연동
+                        </Button>
+                        <div className="float-right">
+                            <FormControlLabel
+                                className="md:text-2xs text-xs"
+                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                                label={"그룹 시간 보기"}
+                                control={<Checkbox
+                                    checked={groupButtonChecked}
+                                    onChange={(e) => setGroupButtonChecked(e.target.checked)}
+                                    defaultChecked={groupButtonChecked}
+                                />}
                             />
+                        </div>
+                    </div>
+                </>
+            )
+        } else if (tabIdx == 2) {
+            return (<></>)
+        }
+    }
 
-                            : null
-                    )}
-
-                    {(
-                        loader ? <h1>로딩중</h1> :
-                            groupSchedule !== null && tab != 2
-                                ?
-                                <Scheduler
-                                    // roomInfo={props.roomInfo}
-                                    isDisabled={tab==0?false:true}
-                                    ref={scheduleRef}
-                                    groupSchedule={groupSchedule}
-                                    roomInfo={roomInfo}
-                                    isGroup={(tab == 1) || groupButtonChecked ? true : false}
-                                    mySchedule={mySchedule}
-                                    groupFilterChecked={groupFilterChecked}
-                                />
-                                :
-                                null
-                    )}
-                    
-
-                    <HStack className="mt-5">
+    const tabFooterContainer = (tabIdx: number) => {
+        if (tabIdx == 0) {
+            return (
+                <Center>
+                    <Button
+                            variant="outlined"
+                            onClick={() => {
+                                setTab(1)
+                            }}
+                        >내 비는 시간 등록하러 가기</Button>
+                </Center>
+            )
+        } else if (tabIdx == 1) {
+            return (
+                <>
+                    <Center className="mt-3">
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                                const mySchedule = scheduleRef.current.testFn()
+                                submitMySchedule(mySchedule)
+                            }}
+                        >내 일정 등록하기</Button>
+                    </Center>
+                </>
+            )
+        } else if (tabIdx == 2) {
+            return (
+                <>
+                    <Center className="mt-3">
                         <Button
                             variant="outlined"
                             startIcon={<ContentCopyIcon />}
@@ -189,14 +216,44 @@ const Room: NextPage = function () {
                         >
                             방 링크 복사
                         </Button>
-                        <Button
-                            variant="outlined"
-                            onClick={() => {
-                                const mySchedule = scheduleRef.current.testFn()
-                                submitMySchedule(mySchedule)
-                            }}
-                        >내 일정 등록</Button>
-                    </HStack>
+                    </Center>
+                </>
+            )
+        }
+    }
+
+
+    return (
+        <>
+            <CenterFlexLayout>
+                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693 }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
+                        <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
+                            <Tab label={tabLabel[0]} />
+                            <Tab label={tabLabel[1]} />
+                            <Tab label={tabLabel[2]} />
+                        </Tabs>
+                    </Box>
+                    {tabDescription(tab)}
+                    {tabContainer(tab)}
+                    {(
+                        loader ? <h1>방 정보를 불러오는 중입니다</h1> :
+                            groupSchedule !== null && tab != 2
+                                ?
+                                <Scheduler
+                                    // roomInfo={props.roomInfo}
+                                    isDisabled={tab == 1 ? false : true}
+                                    ref={scheduleRef}
+                                    groupSchedule={groupSchedule}
+                                    roomInfo={roomInfo}
+                                    isGroup={(tab == 0) || groupButtonChecked ? true : false}
+                                    mySchedule={mySchedule}
+                                    groupFilterChecked={groupFilterChecked}
+                                />
+                                :
+                                null
+                    )}
+                    {tabFooterContainer(tab)}
                 </Paper>
             </CenterFlexLayout>
         </>
@@ -210,7 +267,7 @@ const Room: NextPage = function () {
             url: srcUrl + '/participant/available',
             data: {
                 "participantName": participantName,
-                "available" : props
+                "available": props
             }
         })
             .then((result) => {
