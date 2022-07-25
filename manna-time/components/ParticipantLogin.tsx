@@ -20,6 +20,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
 
     const [userName, setUserName] = useState("")
     const [password, setPassword] = useState("")
+    const [loginError, setLoginError] = useState(false)
     // console.log(userName, password)
     
     return (
@@ -65,7 +66,13 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         label="Remember me"
                     /> */}
                     <Center className="mt-5 mb-2">
-                        <p className="text-xs font-bold text-blue-700">회원가입이 필요없어요!</p>
+                        {(
+                            loginError
+                            ?
+                            <p className="text-xs font-bold text-red-600">이전에 입력하신 비밀번호를 입력해주세요!</p>
+                            :
+                            <p className="text-xs font-bold text-blue-700">회원가입이 필요없어요!</p>
+                        )}
                     </Center>
                     <Button
                         className="mt-0"
@@ -100,10 +107,12 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
             })
                 .then((result) => {
                     // console.log(result)
+                    setLoginError(false)
                     router.push(`/${router.query.locale}/room/${qid}/${userName}`);
                 })
                 .catch((e) => {
                     // console.log(e)
+                    setLoginError(true)
                 })
         }
     }
