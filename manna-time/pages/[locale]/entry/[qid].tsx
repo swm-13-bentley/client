@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import axios from "axios";
+import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
 
 const Entry: NextPage = function () {
 
@@ -21,6 +22,8 @@ const Entry: NextPage = function () {
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
     const [groupSchedule, setGroupSchedule] = useState(null)
+    const [groupFilterChecked, setGroupFilterChecked] = useState(null)
+    const [participantNames, setParticipantNames] = useState(null)
 
     const copyTextUrl = () => {
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
@@ -41,6 +44,12 @@ const Entry: NextPage = function () {
         axios.get(srcUrl + '/group')
             .then((result) => {
                 setGroupSchedule(result.data);
+
+                let tempParticipantNames: string[] = []
+                result.data.forEach(obj => {
+                    tempParticipantNames.push(obj.participantName)
+                })
+                setParticipantNames(tempParticipantNames)
             })
     }, [srcUrl]);
 
@@ -70,19 +79,27 @@ const Entry: NextPage = function () {
                                     !loader ?
                                         <AccordionDetails>
             
+                                            <IndeterminateCheckbox
+                                                participantNames={participantNames}
+                                                onChange={checked => setGroupFilterChecked(checked)}
+                                                isChecked={groupFilterChecked}
+                                            />
                                             <Scheduler
                                                 groupSchedule={groupSchedule}
                                                 isGroup={true}
                                                 roomInfo={roomInfo}
                                                 isDisabled={true}
+                                                groupFilterChecked={groupFilterChecked}
                                             />
-                                            <Button
-                                                variant="outlined"
-                                                startIcon={<ContentCopyIcon />}
-                                                onClick={copyTextUrl}
-                                            >
-                                                방 링크 복사
-                                            </Button>
+                                            <Center>
+                                                <Button
+                                                    variant="outlined"
+                                                    startIcon={<ContentCopyIcon />}
+                                                    onClick={copyTextUrl}
+                                                >
+                                                    방 링크 복사
+                                                </Button>
+                                            </Center>
                                         </AccordionDetails>
                                         : null
                                 )}
