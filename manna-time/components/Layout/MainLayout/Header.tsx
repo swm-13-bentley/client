@@ -12,6 +12,13 @@ const Header: React.FC<Props>= function ({title, service}:Props) {
         <>
             <Head>
                 <title>{`${title} | ${service}`}</title>
+                <link rel="icon" href="/public/images/favicon.ico" />
+
+                {/* open graph */}
+                <meta property="og:title" content="언제만나" />
+                <meta property="og:description" content="약속시간 정하기 어려울땐? 언제만나!" />
+                <meta property="og:url" content="https://mannatime.io/" />
+                <meta property="og:image" content="{{ url_for('public/image', filename='og_background.png') }}" />
             </Head>
         </>
     )
