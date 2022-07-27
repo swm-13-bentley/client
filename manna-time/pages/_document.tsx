@@ -9,7 +9,7 @@ class MyDocument extends Document {
       this.props.__NEXT_DATA__.query.locale || i18nextConfig.i18n.defaultLocale
     
     return (
-      <Html lang={currentLocale}>
+      <Html lang={currentLocale as string}>
         <Head>
           <link href='/app.css' rel='stylesheet' />
         </Head>

@@ -11,7 +11,7 @@ const Header: React.FC<Props>= function ({title, service}:Props) {
     return (
         <>
             <Head>
-                <title>{`${title} | ${service}`}</title>
+                <title>{`언제만나`}</title>
                 <link rel="shortcut icon" href="/images/favicon.ico" />
 
                 {/* open graph */}

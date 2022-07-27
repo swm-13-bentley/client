@@ -35,9 +35,9 @@ const MakeRoom: NextPage = () => {
     const [checked, setChecked] = useState([false,false,false])
 
     const buttonText = [
-        "아침 (7~12시)",
-        "점심 (10~15시)",
-        "저녁 (17~24시)"
+        ["아침","(7~12시)"],
+        ["점심","(10~15시)"],
+        ["저녁","(17~24시)"]
     ]
     
     const buttonTimeRange = [
@@ -49,7 +49,7 @@ const MakeRoom: NextPage = () => {
     const buttonMap: ReactNode = buttonText.map((e, idx) => {
         return (
             <Button
-                className="md:text-lg text-xs"
+                className="md:text-md text-xs"
                 key={idx}
                 sx={{borderColor : "#757ce8"}}
                 variant={checked[idx] ? "contained" : "outlined"}
@@ -61,7 +61,7 @@ const MakeRoom: NextPage = () => {
 
                     setChecked(tmpArr)
                 }}
-            >{buttonText[idx]}</Button>
+            >{buttonText[idx][0]}<br />{buttonText[idx][1]}</Button>
 
         )
     })
@@ -108,7 +108,7 @@ const MakeRoom: NextPage = () => {
                 </HStack>
             </ProcedureLayout>
             <Button
-                className="md:text-lg text-xs"
+                className="md:text-lg text-md"
                 variant='contained'
                 sx={{backgroundColor : "#757ce8"}}
                 onClick={sendRoomRequest}

@@ -2,13 +2,14 @@ import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Cen
 import { Accordion, AccordionDetails, AccordionSummary, Button, Typography } from "@mui/material"
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GetServerSideProps, NextPage } from "next"
-import { useEffect, useState } from "react"
+import React, { SyntheticEvent, useEffect, useState } from "react"
 import CenterFlexLayout from "../../../components/Layout/CenterFlexLayout"
 import ParticipantLogin from "../../../components/ParticipantLogin"
 import Scheduler from "../../../components/Scheduler/Scheduler"
 import { useRouter } from "next/router";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
 import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
 
@@ -18,6 +19,8 @@ const Entry: NextPage = function () {
     const { qid } = router.query
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
+
+    const [expanded, setExpanded] = useState(true)
 
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
@@ -60,7 +63,13 @@ const Entry: NextPage = function () {
                     roomInfo && roomInfo.title != undefined && roomInfo.dates != undefined
                         ?
                         <>
-                            <Accordion defaultExpanded={true} disableGutters className=" mb-10">
+                            <Accordion
+                                // defaultExpanded={true}
+                                disableGutters
+                                className=" mb-10"
+                                expanded={expanded}
+                                onClick={(e:SyntheticEvent)=>{setExpanded(!expanded)}}
+                            >
                                 <AccordionSummary aria-controls="panel1d-content"
                                     expandIcon={<ExpandMoreIcon />}
                                     id="panel1a-header"
@@ -85,11 +94,19 @@ const Entry: NextPage = function () {
                                             />
                                             <Center>
                                                 <Button
+                                                    className="mr-5"
                                                     variant="contained"
                                                     startIcon={<ContentCopyIcon />}
                                                     onClick={copyTextUrl}
                                                 >
                                                     방 링크 복사
+                                                </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    startIcon={<LoginIcon />}
+                                                    onClick={(e:React.SyntheticEvent)=>{setExpanded(false)}}
+                                                >
+                                                    내 시간 입력
                                                 </Button>
                                             </Center>
                                         </AccordionDetails>
