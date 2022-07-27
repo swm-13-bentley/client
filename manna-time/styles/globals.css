@@ -1,11 +1,22 @@
 /* @tailwind base; */
 /* @tailwind components; */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css');
+
 @tailwind utilities;
 
 @layer utilities {
   .h-20 {
     height: 59px;
   }
+}
+
+span {
+  font-family : "pretendard"
+}
+
+p {
+  font-family: "pretendard";
+  font-weight: 600;
 }
 
 /* body {
@@ -139,19 +150,19 @@ button {
 }
 
 .table-drag-select td.opacity-0-25 {
-  background-color: #0008ff38;
+  background-color: #9ca3ff4e;
 }
 
 .table-drag-select td.opacity-0-50 {
-  background-color: #0008ff70;
+  background-color: #6971e881;
 }
 
 .table-drag-select td.opacity-0-75 {
-  background-color: #0008ffb1;
+  background-color: #5d5be0cd;
 }
 
 .table-drag-select td.opacity-1-00 {
-  background-color: #0008ff;
+  background-color: #5d5be0;
 }
 
 .table-drag-select td.mon {

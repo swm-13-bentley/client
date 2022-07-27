@@ -51,6 +51,7 @@ const MakeRoom: NextPage = () => {
             <Button
                 className="md:text-lg text-xs"
                 key={idx}
+                sx={{borderColor : "#757ce8"}}
                 variant={checked[idx] ? "contained" : "outlined"}
                 onClick={() => {
                     setTimeRange(buttonTimeRange[idx])
@@ -69,7 +70,7 @@ const MakeRoom: NextPage = () => {
     return (
         <CenterFlexLayout>
             <Center mb="30">
-                <p className="text-2xl font-bold">{t('common:make-room')}</p>
+                <p className="text-2xl">{t('common:make-room')}</p>
             </Center>
 
             <ProcedureLayout index={1} title={t('set-date')}>
@@ -77,7 +78,6 @@ const MakeRoom: NextPage = () => {
                     showOtherDays
                     onChange={(dateObjects) => {
                         if (dateObjects) {
-                            // .map((date)=>{date.format()})
                             let tmpArr = getAllDatesInRange(dateObjects as DateObject[])
                             let newDate: string[] = []
                             tmpArr.map((date) => { newDate.push((date as DateObject).format(dateRangeFormat) ) })
@@ -102,23 +102,24 @@ const MakeRoom: NextPage = () => {
                     <Button
                         className="md:text-lg text-xs"
                         variant='outlined'
+                        sx={{ borderColor: "#757ce8" }}
                         onClick={()=>{setRoomName(randomNameGenerator(router.query.locale as string))}}
                     >랜덤 생성</Button>
                 </HStack>
             </ProcedureLayout>
             <Button
                 className="md:text-lg text-xs"
-                variant='outlined'
+                variant='contained'
+                sx={{backgroundColor : "#757ce8"}}
                 onClick={sendRoomRequest}
             >방 생성하기</Button>
         </CenterFlexLayout>
     )
 
-    function sendRoomRequest() {        // console.log(roomName, dateRange, timeRange)
+    function sendRoomRequest() {
         const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
 
-
-        let sendFlag = (roomName != "") && (dateRange != undefined) && (timeRange != defaultTime)
+        let sendFlag = (roomName != "") && (timeRange.length != 0)
         if (!sendFlag) {
             alert("날짜, 시간, 이름을 정확히 입력하세요")
         }
@@ -143,7 +144,7 @@ const MakeRoom: NextPage = () => {
 }
 
 const randomNameGenerator = (locale: string) => {
-    const korean = ["우리 이때 만나요~", "그룹 약속", "우리 언제 만나?", "몇 시에 볼지 정해요"]
+    const korean = ["우리 이때 만나요~", "그룹 약속", "우리 언제 만나?", "몇 시에 볼지 정해요", "약속 시간 정해요!"]
     const english = ["Let's meet then", "See you soon~", "When to meet?"]
     const tmpArr:string[] = []
 

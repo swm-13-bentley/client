@@ -26,7 +26,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
     return (
         <main>
             <CssBaseline />
-            <Paper sx={{boxShadow: 4, padding: 3, maxWidth: 400}}>
+            <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 400, borderRadius: 3 }}>
                 <Center mb="20">
                     <Avatar>
                     </Avatar>
@@ -48,7 +48,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                             size="small"
                             id="myname"
                             name="myname"
-                            autoFocus />
+                             />
                     </FormControl>
                     <FormControl margin="dense" fullWidth>
                         <InputLabel className="md:text-md text-sm" htmlFor="password">비밀번호 (선택)</InputLabel>
@@ -80,8 +80,9 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         variant="contained"
                         color="primary"
                         onClick={sendLoginRequest}
+                        sx ={{ borderRadius : 3 }}
                     >
-                        약속시간 정하기
+                        내 시간 입력하러 가기
                     </Button>
                 </form>
             </Paper>

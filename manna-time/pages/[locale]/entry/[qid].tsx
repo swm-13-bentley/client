@@ -27,7 +27,7 @@ const Entry: NextPage = function () {
 
     const copyTextUrl = () => {
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
-            alert("링크가 복사되었습니다")
+            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
     }
 
@@ -60,15 +60,7 @@ const Entry: NextPage = function () {
                     roomInfo && roomInfo.title != undefined && roomInfo.dates != undefined
                         ?
                         <>
-                            <Center>
-                                <ParticipantLogin
-                                    eventName={roomInfo.title}
-                                    startDate={roomInfo.dates[0]}
-                                    endDate={roomInfo.dates[roomInfo.dates.length - 1]}
-                                />
-                            </Center>
-            
-                            <Accordion disableGutters className=" mt-10">
+                            <Accordion defaultExpanded={true} disableGutters className=" mb-10">
                                 <AccordionSummary aria-controls="panel1d-content"
                                     expandIcon={<ExpandMoreIcon />}
                                     id="panel1a-header"
@@ -93,7 +85,7 @@ const Entry: NextPage = function () {
                                             />
                                             <Center>
                                                 <Button
-                                                    variant="outlined"
+                                                    variant="contained"
                                                     startIcon={<ContentCopyIcon />}
                                                     onClick={copyTextUrl}
                                                 >
@@ -105,6 +97,16 @@ const Entry: NextPage = function () {
                                 )}
                                 
                             </Accordion>
+
+                            <Center className="mb-10">
+                                <ParticipantLogin
+                                    eventName={roomInfo.title}
+                                    startDate={roomInfo.dates[0]}
+                                    endDate={roomInfo.dates[roomInfo.dates.length - 1]}
+                                />
+                            </Center>
+            
+                            
                             {/* chakra version */}
                             {/* <Box p={10}>
                                 <Accordion defaultIndex={[0]} allowMultiple>

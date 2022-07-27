@@ -85,7 +85,7 @@ const Room: NextPage = function () {
     const copyTextUrl = () => {
         //나중에 링크 바꿀 것
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)).then(() => {
-            alert("링크가 복사되었습니다")
+            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
     }
 
@@ -97,8 +97,8 @@ const Room: NextPage = function () {
                 <>
                     <Center>
                         <p className="text-sm font-bold">
-                            약속 구성원들의
-                            <span className="text-sm font-bold text-blue-700">{" 함께 비는 시간"}</span>
+                            참여자들의
+                            <span className="text-sm font-bold text-blue-700">{" 약속 가능한 시간"}</span>
                             입니다
                         </p>
                     </Center >
@@ -107,10 +107,10 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <Center>
+                    <Center className="mb-3">
                         <p className="text-sm font-bold">
                             {participantName}님의
-                            <span className="text-sm font-bold text-blue-700">{" 비는 시간을 드래그"}</span>
+                            <span className="text-sm font-bold text-blue-700">{" 약속 가능한 시간을 드래그"}</span>
                             해주세요
                         </p>
                     </Center >
@@ -184,11 +184,11 @@ const Room: NextPage = function () {
             return (
                 <Center>
                     <Button
-                            variant="outlined"
+                            variant="contained"
                             onClick={() => {
                                 setTab(1)
                             }}
-                        >내 비는 시간 등록하러 가기</Button>
+                        >내 시간 등록하러 가기</Button>
                 </Center>
             )
         } else if (tabIdx == 1) {
@@ -210,7 +210,7 @@ const Room: NextPage = function () {
                 <>
                     <Center className="mt-3">
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             startIcon={<ContentCopyIcon />}
                             onClick={copyTextUrl}
                         >
@@ -226,7 +226,7 @@ const Room: NextPage = function () {
     return (
         <>
             <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693 }}>
+                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693, borderRadius : 3 }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label={tabLabel[0]} />
@@ -272,6 +272,8 @@ const Room: NextPage = function () {
         })
             .then((result) => {
                 alert('일정이 등록되었습니다.')
+                router.push(`/${router.query.locale}/entry/${qid}/`);
+
             })
             .catch((e) => {
                 // console.log(e.response)
