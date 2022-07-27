@@ -9,16 +9,16 @@ import theme from '../src/theme'
 import MainLayout from '../components/Layout/MainLayout/MainLayout'
 
 import mixpanel from 'mixpanel-browser'
+import { useEffect } from 'react'
+import { MixpanelTracking } from '@/utils/mixpanel'
 
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps }: AppProps) {
 
-  mixpanel.init('de0053b0ed79028b519487b67141eb58', { debug: true })
-  mixpanel.track('Sign up')
-  console.log("hey")
-
-  // return (<Component />)
+  useEffect(() => { 
+    MixpanelTracking.getInstance().pageViewed()
+  },[])
   return (
     <CacheProvider value={clientSideEmotionCache}>
       <ChakraProvider>

@@ -11,6 +11,7 @@ import Scheduler from "../../../../components/Scheduler/Scheduler"
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
+import { MixpanelTracking } from "@/utils/mixpanel"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -187,6 +188,7 @@ const Room: NextPage = function () {
                             variant="contained"
                             onClick={() => {
                                 setTab(1)
+                                MixpanelTracking.getInstance().buttonClicked("내시간 등록")
                             }}
                         >내 시간 등록하러 가기</Button>
                 </Center>
@@ -200,6 +202,7 @@ const Room: NextPage = function () {
                             onClick={() => {
                                 const mySchedule = scheduleRef.current.testFn()
                                 submitMySchedule(mySchedule)
+                                MixpanelTracking.getInstance().buttonClicked("내 일정 등록")
                             }}
                         >내 일정 등록하기</Button>
                     </Center>
@@ -212,7 +215,10 @@ const Room: NextPage = function () {
                         <Button
                             variant="contained"
                             startIcon={<ContentCopyIcon />}
-                            onClick={copyTextUrl}
+                            onClick={() => {
+                                copyTextUrl()
+                                MixpanelTracking.getInstance().buttonClicked("링크 복사")
+                            }}
                         >
                             방 링크 복사
                         </Button>

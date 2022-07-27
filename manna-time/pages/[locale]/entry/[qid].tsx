@@ -12,6 +12,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
 import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
+import { MixpanelTracking } from "@/utils/mixpanel";
 
 const Entry: NextPage = function () {
 
@@ -29,6 +30,7 @@ const Entry: NextPage = function () {
     const [participantNames, setParticipantNames] = useState(null)
 
     const copyTextUrl = () => {
+        MixpanelTracking.getInstance().buttonClicked("링크 복사")
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
@@ -68,11 +70,11 @@ const Entry: NextPage = function () {
                                 disableGutters
                                 className=" mb-10"
                                 expanded={expanded}
-                                onClick={(e:SyntheticEvent)=>{setExpanded(!expanded)}}
                             >
                                 <AccordionSummary aria-controls="panel1d-content"
                                     expandIcon={<ExpandMoreIcon />}
                                     id="panel1a-header"
+                                    onClick={(e:SyntheticEvent)=>{setExpanded(!expanded)}}
                                 >
                                     <Typography>현재 그룹 스케줄 확인하기</Typography>
                                 </AccordionSummary>
@@ -104,7 +106,10 @@ const Entry: NextPage = function () {
                                                 <Button
                                                     variant="contained"
                                                     startIcon={<LoginIcon />}
-                                                    onClick={(e:React.SyntheticEvent)=>{setExpanded(false)}}
+                                                    onClick={(e: React.SyntheticEvent) => {
+                                                        setExpanded(false)
+                                                        MixpanelTracking.getInstance().buttonClicked("내 시간 입력")
+                                                    }}
                                                 >
                                                     내 시간 입력
                                                 </Button>

@@ -4,6 +4,7 @@ import { Avatar, Button, Checkbox, CssBaseline, FormControl, FormControlLabel, I
 import { Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { MixpanelTracking } from "@/utils/mixpanel";
 
 interface Props{
     eventName: string,
@@ -79,10 +80,13 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        onClick={sendLoginRequest}
+                        onClick={() => {
+                            sendLoginRequest()
+                            MixpanelTracking.getInstance().buttonClicked("비회원 로그인")
+                        }}
                         sx ={{ borderRadius : 3 }}
                     >
-                        내 시간 입력하러 가기
+                        비회원 로그인
                     </Button>
                 </form>
             </Paper>

@@ -17,6 +17,7 @@ import CenterFlexLayout from '../../components/Layout/CenterFlexLayout'
 import axios from 'axios'
 import { ConstructionOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/router'
+import { MixpanelTracking } from '@/utils/mixpanel'
 
 const dateRangeFormat = "YYYY-MM-DD"
 const timeRangeFormat = "HH:mm";
@@ -111,7 +112,10 @@ const MakeRoom: NextPage = () => {
                 className="md:text-lg text-md"
                 variant='contained'
                 sx={{backgroundColor : "#757ce8"}}
-                onClick={sendRoomRequest}
+                onClick={() => {
+                    sendRoomRequest()
+                    MixpanelTracking.getInstance().buttonClicked("방 생성")
+                }}
             >방 생성하기</Button>
         </CenterFlexLayout>
     )
