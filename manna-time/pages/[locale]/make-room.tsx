@@ -50,9 +50,9 @@ const MakeRoom: NextPage = () => {
     const buttonMap: ReactNode = buttonText.map((e, idx) => {
         return (
             <Button
-                className="md:text-md text-xs"
+                className="md:text-lg text-sm"
                 key={idx}
-                sx={{borderColor : "#757ce8"}}
+                sx={{borderColor : "#757ce8", display: "inline"}}
                 variant={checked[idx] ? "contained" : "outlined"}
                 onClick={() => {
                     setTimeRange(buttonTimeRange[idx])
@@ -62,7 +62,7 @@ const MakeRoom: NextPage = () => {
 
                     setChecked(tmpArr)
                 }}
-            >{buttonText[idx][0]}<br />{buttonText[idx][1]}</Button>
+            >{buttonText[idx][0]}<br/>{buttonText[idx][1]}</Button>
 
         )
     })
@@ -101,7 +101,7 @@ const MakeRoom: NextPage = () => {
                 <HStack>
                     <TextField inputProps={{maxLength: 15}} value={roomName} onChange={(e) => { setRoomName(e.target.value) }} placeholder="약속명을 정해주세요" variant='standard'></TextField>
                     <Button
-                        className="md:text-lg text-xs"
+                        className="md:text-lg text-sm"
                         variant='outlined'
                         sx={{ borderColor: "#757ce8" }}
                         onClick={()=>{setRoomName(randomNameGenerator(router.query.locale as string))}}
@@ -109,12 +109,12 @@ const MakeRoom: NextPage = () => {
                 </HStack>
             </ProcedureLayout>
             <Button
-                className="md:text-lg text-md"
+                className="md:text-lg text-lg"
                 variant='contained'
                 sx={{backgroundColor : "#757ce8"}}
                 onClick={() => {
                     sendRoomRequest()
-                    MixpanelTracking.getInstance().buttonClicked("방 생성")
+                    MixpanelTracking.getInstance().buttonClicked("")
                 }}
             >방 생성하기</Button>
         </CenterFlexLayout>
