@@ -5,6 +5,8 @@ import { Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { MixpanelTracking } from "@/utils/mixpanel";
+import LoginIcon from '@mui/icons-material/Login';
+
 
 interface Props{
     eventName: string,
@@ -80,13 +82,14 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         fullWidth
                         variant="contained"
                         color="primary"
+                        startIcon={<LoginIcon />}
                         onClick={() => {
                             sendLoginRequest()
                             MixpanelTracking.getInstance().buttonClicked("비회원 로그인")
                         }}
                         sx ={{ borderRadius : 3 }}
                     >
-                        비회원 로그인
+                        약속 방 입장
                     </Button>
                 </form>
             </Paper>

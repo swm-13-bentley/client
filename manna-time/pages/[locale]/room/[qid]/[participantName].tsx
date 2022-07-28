@@ -204,7 +204,7 @@ const Room: NextPage = function () {
                                 submitMySchedule(mySchedule)
                                 MixpanelTracking.getInstance().buttonClicked("내 일정 등록")
                             }}
-                        >내 일정 등록하기</Button>
+                        >내 시간 등록하기</Button>
                     </Center>
                 </>
             )
