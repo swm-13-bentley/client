@@ -120,7 +120,7 @@ const Scheduler = forwardRef((props, ref) => {
   var filterState = [];
   var groupState = [];
 
-  for (temp = 0; temp < parseInt((startDay + dateDiff - 1) / 7 + 1); temp++) {
+  for (temp = 0; temp < parseInt((startDay + dateDiff) / 7 + 1); temp++) {
     tableState.push([...initCells]);
     filterState.push([...initCells]);
     groupState.push([...initGroupCells]);
@@ -146,6 +146,7 @@ const Scheduler = forwardRef((props, ref) => {
   if (tempList.length > 0) {
     tableList.push(tempList);
   }
+
   var validDaysList = []
   var weeks = tableList.map(
     days => {
@@ -214,7 +215,9 @@ const Scheduler = forwardRef((props, ref) => {
   const handleClick = () => {
     var temp = [...currTot.cellsTot];
     temp[currIdx.index] = [...curr.cells];
+    console.log(temp)
     var apiRequestBody = [];
+
     for (var i = 0; i < weeks.length; i++) {
       for (var j = 0; j < 7; j++) {
         function leftPad(value) {
@@ -249,14 +252,9 @@ const Scheduler = forwardRef((props, ref) => {
   }
 
   function setSelectionState(available) {
-    // var temp = JSON.parse(cells_json);
-
-    // changeCurrTot({ cellsTot: temp });
-    // changeCurr({ cells: [...temp[0]] });
-    // changeCurrIdx({ index: 0 });
 
     temp = [...currTot.cellsTot]
-    // console.log(temp)
+
     available.forEach(
       obj => {
         var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
