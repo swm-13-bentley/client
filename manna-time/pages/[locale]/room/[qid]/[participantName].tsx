@@ -10,8 +10,12 @@ import Scheduler from "../../../../components/Scheduler/Scheduler"
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import InfoIcon from '@mui/icons-material/Info';
+
 import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
 import { MixpanelTracking } from "@/utils/mixpanel"
+import { DateObject } from "react-multi-date-picker"
+import { start } from "repl"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -97,9 +101,9 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center>
-                        <p className="text-sm font-bold">
+                        <p className="md:text-xl text-md font-bold">
                             참여자들의
-                            <span className="text-sm font-bold text-blue-700">{" 약속 가능한 시간"}</span>
+                            <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능한 시간"}</span>
                             입니다
                         </p>
                     </Center >
@@ -109,9 +113,9 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center className="mb-3">
-                        <p className="text-sm font-bold">
-                            {participantName}님의
-                            <span className="text-sm font-bold text-blue-700">{" 약속 가능한 시간을 드래그"}</span>
+                        <p className="md:text-xl text-md font-bold">
+                            {participantName}님,
+                            <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능 시간을 드래그"}</span>
                             해주세요
                         </p>
                     </Center >
@@ -119,9 +123,10 @@ const Room: NextPage = function () {
             )
         } else if (tabIdx == 2) {
             return (
-                <Center>
-                    <p className="text-sm font-bold">
-                        약속 방에 관한 정보입니다.
+                <Center className="mb-3">
+                    <InfoIcon className="text-blue-700 mr-2"/>
+                    <p className="md:text-2xl text-lg font-bold">
+                        <span className="md:text-2xl text-lg font-bold text-blue-700">약속 방 정보</span>
                     </p>
                 </Center >
             )
@@ -176,7 +181,31 @@ const Room: NextPage = function () {
                 </>
             )
         } else if (tabIdx == 2) {
-            return (<></>)
+            let title, startDate, endDate;
+            if (roomInfo != undefined) {
+                if (roomInfo.title != undefined)
+                    title = roomInfo.title
+                if (roomInfo.dates != undefined) {
+                    startDate = (roomInfo.dates[0] as string).substring(5).replace('-', '/')
+                    endDate = (roomInfo.dates[roomInfo.dates.length - 1]).substring(5).replace('-', '/')
+                }
+                
+            }
+
+            return (<>
+                <div className="m-3 space-y-2">
+                    <p className="md:text-xl text-lg font-bold">
+                        <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
+                         {title ? title : "loading..." }
+                    </p>
+                    <p className="md:text-xl text-lg font-bold">
+                        <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
+                        {startDate && endDate ? `${startDate} ~ ${endDate}` : "loading"}
+                    </p>
+                </div>
+                <Center width="100">
+                </Center >
+            </>)
         }
     }
 

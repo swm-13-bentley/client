@@ -111,7 +111,7 @@ const Entry: NextPage = function () {
                                                         MixpanelTracking.getInstance().buttonClicked("내 시간 입력")
                                                     }}
                                                 >
-                                                    내 시간 입력
+                                                    약속 방 입장
                                                 </Button>
                                             </Center>
                                         </AccordionDetails>

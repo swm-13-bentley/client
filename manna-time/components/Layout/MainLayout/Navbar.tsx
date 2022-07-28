@@ -5,20 +5,11 @@ import { Link } from "react-scroll";
 import { Box } from "@chakra-ui/react";
 import Logo from "../public/streamlineLogo.png";
 import { useTranslation } from "next-i18next";
-import styled from "@emotion/styled";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const {t} = useTranslation(['common'])
 
-	const Span = styled.span`
-        color: #757ce8
-    `
-
-	// const CustomedLink = styled.Link`
-	// 	color: #757ce8
-	// `
-	
 	return (
         <Box>
 			<nav className=" shadow fixed w-full z-10 bg-white" >
@@ -31,7 +22,7 @@ function Navbar() {
                                     window.location.href = `/`;
                                   }}
 								>
-									<Span>언제 만나</Span>
+									<span className="text-blue-500">언제 만나</span>
 								</h1>
 							</div>
 							<div className="hidden md:block">
@@ -45,7 +36,7 @@ function Navbar() {
 										smooth={true}
 										offset={50}
 										duration={500}
-										className="cursor-pointer font-semibold px-3 py-2 text-md hover:font-black"
+										className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
 									>
 										고객센터
 									</Link>
