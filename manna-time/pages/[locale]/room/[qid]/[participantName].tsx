@@ -244,15 +244,6 @@ const Room: NextPage = function () {
                 <>
                     <Center className="mt-3 space-x-3">
                         <Button
-                            startIcon={<SendIcon />}
-                            variant="contained"
-                            onClick={() => {
-
-                            }}
-                        >
-                            피드백 보내기
-                        </Button>
-                        <Button
                             variant="contained"
                             startIcon={<ContentCopyIcon />}
                             onClick={() => {
@@ -261,6 +252,15 @@ const Room: NextPage = function () {
                             }}
                         >
                             방 링크 복사
+                        </Button>
+                        <Button
+                            startIcon={<SendIcon />}
+                            variant="contained"
+                            onClick={() => {
+
+                            }}
+                        >
+                            피드백 요청
                         </Button>
                     </Center>
                 </>

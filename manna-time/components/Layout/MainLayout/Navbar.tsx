@@ -41,7 +41,7 @@ function Navbar() {
 										duration={500}
 										className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
 									>
-										피드백 보내기
+										피드백 요청
 									</Link>
 								</div>
 							</div>
@@ -120,7 +120,7 @@ function Navbar() {
 									duration={500}
 									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 								>
-									피드백 보내기
+									피드백 요청
 								</Link>
 							</div>
 						</div>

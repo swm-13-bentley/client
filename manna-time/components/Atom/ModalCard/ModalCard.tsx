@@ -1,24 +1,34 @@
 import CenterFlexLayout from "@/components/Layout/CenterFlexLayout"
-import { Center } from "@chakra-ui/react"
+import { Center, HStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
-import { Button, FormControl, FormHelperText, MenuItem, Paper, Select, SelectChangeEvent, TextField } from "@mui/material"
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormHelperText, Input, MenuItem, Paper, Select, SelectChangeEvent, TextField, Typography } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from "react";
 import axios from "axios";
+import { makeStyles } from '@mui/styles'
 interface Props {
     isShown: boolean,
     onCancle(): void
 }
 
-const ModalCard = ({isShown, onCancle}: Props) => {
+const useStyles = makeStyles(() => ({
+    formControlLabel: { fontSize: "15px" }
+}));
 
+
+const ModalCard = ({ isShown, onCancle }: Props) => {
+
+    const style = useStyles()
     const [type, setType] = useState('')
     const [feedbackText, setFeedbackText] = useState('')
+    const [isEmailChecked, setIsEmailChecked] = useState(false)
+    const [email, setEmail] = useState('')
 
-    const handleChange = (e:SelectChangeEvent) => {
+
+    const handleChange = (e: SelectChangeEvent) => {
         setType(e.target.value)
     }
-    const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFeedbackText(e.target.value)
     }
 
@@ -32,19 +42,21 @@ const ModalCard = ({isShown, onCancle}: Props) => {
         )
     })
 
+
+
     return (<div>
         <Paper
             sx={{
-            position: 'fixed',
-            boxShadow: 2,
-            padding: 3,
-            maxWidth: 500,
-            width: '80%',
-            borderRadius: 3,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%,-50%)',
-            zIndex: 501,
+                position: 'fixed',
+                boxShadow: 2,
+                padding: 3,
+                maxWidth: 500,
+                width: '80%',
+                borderRadius: 3,
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%,-50%)',
+                zIndex: 501,
             }}
             style={{ display: isShown ? 'block' : 'none' }}
         >
@@ -59,7 +71,7 @@ const ModalCard = ({isShown, onCancle}: Props) => {
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
                         value={type}
-                        >
+                    >
                         {menuItem}
                     </Select>
                     {/* <FormHelperText>유형을 선택해주세요.</FormHelperText> */}
@@ -70,9 +82,9 @@ const ModalCard = ({isShown, onCancle}: Props) => {
             >
                 <Center className="mb-3">
                     <TextField
-                        inputProps={{maxLength: 200}}
+                        inputProps={{ maxLength: 200 }}
                         id="filled-multiline-static"
-                        label="해당 란을 작성해주세요."
+                        label="해당 란을 작성해주세요"
                         sx={{ width: '100%' }}
                         multiline
                         rows={8}
@@ -81,6 +93,28 @@ const ModalCard = ({isShown, onCancle}: Props) => {
                         onChange={handleInputChange}
                     />
                 </Center>
+                <div className="mb-3">
+                    <FormGroup>
+                        <FormControlLabel
+                            control={
+                                <Checkbox checked={isEmailChecked} onChange={(event: React.ChangeEvent<HTMLInputElement>)=>{setIsEmailChecked(event.target.checked)}} size="small" />}
+                            label={
+                            <Typography className={style.formControlLabel}>이메일로 답장을 받고 싶습니다</Typography>
+                        } />
+                    </FormGroup>
+                    <Input
+                        autoFocus
+                        fullWidth
+                        type="email"
+                        id="email"
+                        name="email"
+                        // label="이메일 주소"
+                        placeholder="abc@abc.net"
+                        size="small"
+                        disabled = {!isEmailChecked}
+                        // error={emailError !== '' || false}
+                    />
+                </div>
                 <Center className="space-x-3">
                     <Button
                         variant="outlined"
@@ -108,18 +142,23 @@ const ModalCard = ({isShown, onCancle}: Props) => {
             alert("내용을 입력해주세요")
             return
         }
-        
+
+        let emailText=''
+        if (isEmailChecked)
+            emailText = email
+
         const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/feedback'
         axios({
             method: 'post',
             url: srcUrl,
             data: {
                 "type": type,
-                "content": feedbackText
+                "content": feedbackText,
+                "email": emailText
             }
         })
             .then((result) => {
-                alert("전달 완료! 좋은 의견 감사합니다. 더 발전하는 '언제만나'가 되겠습니다🙇‍♂️")
+                alert("전달 완료! 더 발전하는 '언제만나'가 되겠습니다 감사합니다🙇‍♂️")
                 onCancle()
             })
             .catch((e) => {

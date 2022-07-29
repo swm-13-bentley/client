@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import CenterFlexLayout from "@/components/Layout/CenterFlexLayout"
 
 const Policy = () => {
@@ -10,7 +11,7 @@ const Policy = () => {
                 <p className="p3"><span className="s1" /><br /></p>
                 <p className="p2"><span className="s1">제1조(개인정보의 처리 목적)<br />
                     <br />
-                    &lt; 언제만나(mannatime) &gt;('https://mannatime.io'이하 '언제만나')은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</span></p>
+                    &lt; 언제만나(mannatime) &gt; ('https://mannatime.io'이하 '언제만나')은(는) 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며 이용 목적이 변경되는 경우에는 「개인정보 보호법」 제18조에 따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.</span></p>
                 <ul className="ul1">
                     <li className="li2"><span className="s2" /><span className="s1">1. 홈페이지 회원가입 및 관리<br />
                         회원 가입의사 확인, 회원제 서비스 제공에 따른 본인 식별·인증, 회원자격 유지·관리 목적으로 개인정보를 처리합니다.<br />
