@@ -3,7 +3,12 @@ import styled from '@emotion/styled'
 import { css } from "@emotion/react"
 import { useState } from "react"
 
-const BlackBoard = ({ children }: ScriptProps) => {
+interface Props {
+    isShown: boolean,
+    onClick(): void
+}
+
+const BlackBoard = ({ isShown, onClick }: Props) => {
 
     const Board = styled.div`
     position: fixed;
@@ -17,9 +22,9 @@ const BlackBoard = ({ children }: ScriptProps) => {
     return (
         <>
             <Board
-            >
-                {children}
-            </Board>
+                style={{ display: isShown ? 'block' : 'none' }}
+                onClick={onClick}
+            />
         </>
     )
 }

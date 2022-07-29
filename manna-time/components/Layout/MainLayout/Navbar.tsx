@@ -5,13 +5,16 @@ import { Link } from "react-scroll";
 import { Box } from "@chakra-ui/react";
 import Logo from "../public/streamlineLogo.png";
 import { useTranslation } from "next-i18next";
+import Feedback from "@/components/Molecule/Feedback/Feedback";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
+	const [isFeedbackShown, setIsFeedbackShown] = useState(false)
 	const {t} = useTranslation(['common'])
 
 	return (
-        <Box>
+		<Box>
+			{isFeedbackShown && <Feedback />}
 			<nav className=" shadow fixed w-full z-10 bg-white" >
 				<div className="w-full">
 					<div className="flex items-center h-20 w-full">
@@ -29,7 +32,7 @@ function Navbar() {
 								<div className="ml-10 flex items-baseline space-x-4">
                                     <Link
                                         onClick={() => {
-                                            window.location.href = `/make-room`;
+                                            setIsFeedbackShown(true)
                                           }}
 										activeClass="Home"
 										to="/"
@@ -38,7 +41,7 @@ function Navbar() {
 										duration={500}
 										className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
 									>
-										고객센터
+										피드백 보내기
 									</Link>
 								</div>
 							</div>
@@ -107,7 +110,7 @@ function Navbar() {
 							>
                                 <Link
                                     onClick={() => {
-                                        window.location.href = `/make-room`;
+										setIsFeedbackShown(true)
                                       }}
 									href="/make-room"
 									activeClass="make-room"
@@ -117,7 +120,7 @@ function Navbar() {
 									duration={500}
 									className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 								>
-									고객센터
+									피드백 보내기
 								</Link>
 							</div>
 						</div>

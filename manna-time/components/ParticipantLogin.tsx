@@ -114,12 +114,10 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                 }
             })
                 .then((result) => {
-                    // console.log(result)
                     setLoginError(false)
                     router.push(`/${router.query.locale}/room/${qid}/${userName}`);
                 })
                 .catch((e) => {
-                    // console.log(e)
                     setLoginError(true)
                 })
         }

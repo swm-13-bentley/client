@@ -17,6 +17,8 @@ import { MixpanelTracking } from "@/utils/mixpanel"
 import { DateObject } from "react-multi-date-picker"
 import { start } from "repl"
 
+import SendIcon from '@mui/icons-material/Send';
+
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
 
@@ -124,9 +126,9 @@ const Room: NextPage = function () {
         } else if (tabIdx == 2) {
             return (
                 <Center className="mb-3">
-                    <InfoIcon className="text-blue-700 mr-2"/>
-                    <p className="md:text-2xl text-lg font-bold">
-                        <span className="md:text-2xl text-lg font-bold text-blue-700">약속 방 정보</span>
+                    <InfoIcon className="text-blue-700 mr-1"/>
+                    <p className="md:text-xl text-lg font-bold">
+                        <span className="md:text-xl text-lg font-bold text-blue-700">약속 방 정보</span>
                     </p>
                 </Center >
             )
@@ -194,11 +196,11 @@ const Room: NextPage = function () {
 
             return (<>
                 <div className="m-3 space-y-2">
-                    <p className="md:text-xl text-lg font-bold">
+                    <p className="md:text-lg text-md font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
                          {title ? title : "loading..." }
                     </p>
-                    <p className="md:text-xl text-lg font-bold">
+                    <p className="md:text-lg text-md font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
                         {startDate && endDate ? `${startDate} ~ ${endDate}` : "loading"}
                     </p>
@@ -240,7 +242,16 @@ const Room: NextPage = function () {
         } else if (tabIdx == 2) {
             return (
                 <>
-                    <Center className="mt-3">
+                    <Center className="mt-3 space-x-3">
+                        <Button
+                            startIcon={<SendIcon />}
+                            variant="contained"
+                            onClick={() => {
+
+                            }}
+                        >
+                            피드백 보내기
+                        </Button>
                         <Button
                             variant="contained"
                             startIcon={<ContentCopyIcon />}
