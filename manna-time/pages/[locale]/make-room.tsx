@@ -38,19 +38,22 @@ const MakeRoom: NextPage = () => {
     const buttonText = [
         ["아침","(7~12시)"],
         ["점심","(10~15시)"],
-        ["저녁","(17~24시)"]
+        ["저녁", "(17~24시)"],
+        ["전체","(9~24시)"]
+        
     ]
     
     const buttonTimeRange = [
         ["07:00:00", "12:00:00"],
         ["10:00:00", "15:00:00"],
-        ["17:00:00", "24:00:00"]
+        ["17:00:00", "24:00:00"],
+        ["09:00:00", "24:00:00"]
     ]
     
     const buttonMap: ReactNode = buttonText.map((e, idx) => {
         return (
             <Button
-                className="md:text-lg text-sm"
+                className="md:text-lg text-xs"
                 key={idx}
                 sx={{borderColor : "#757ce8", display: "inline"}}
                 variant={checked[idx] ? "contained" : "outlined"}
