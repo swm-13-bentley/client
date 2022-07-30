@@ -81,7 +81,12 @@ const Entry: NextPage = function () {
                                 {(
                                     !loader ?
                                         <AccordionDetails>
-            
+                                            <Center mb="5">
+                                                <p className="text-lg font-bold">{roomInfo.title}</p>
+                                            </Center>
+                                            <Center mb="5">
+                                                <p className="text-sm font-bold">{roomInfo.dates[0]} ~ {roomInfo.dates[roomInfo.dates.length - 1]}</p>
+                                            </Center>
                                             <IndeterminateCheckbox
                                                 participantNames={participantNames}
                                                 onChange={checked => setGroupFilterChecked(checked)}

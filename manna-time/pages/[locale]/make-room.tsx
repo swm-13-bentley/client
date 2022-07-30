@@ -102,7 +102,7 @@ const MakeRoom: NextPage = () => {
 
             <ProcedureLayout index={3} title={t('set-event-name')}>
                 <HStack>
-                    <TextField inputProps={{maxLength: 15}} value={roomName} onChange={(e) => { setRoomName(e.target.value) }} placeholder="약속명을 정해주세요" variant='standard'></TextField>
+                    <TextField inputProps={{maxLength: 15}} value={roomName} onChange={(e) => { setRoomName(e.target.value) }} placeholder="방 제목" variant='standard'></TextField>
                     <Button
                         className="md:text-lg text-sm"
                         variant='outlined'
@@ -128,7 +128,7 @@ const MakeRoom: NextPage = () => {
 
         let sendFlag = (roomName != "") && (timeRange.length != 0)
         if (!sendFlag) {
-            alert("날짜, 시간, 이름을 정확히 입력하세요")
+            alert("날짜, 시간, 방 제목을 정확히 입력하세요")
         }
         else {
             axios({
