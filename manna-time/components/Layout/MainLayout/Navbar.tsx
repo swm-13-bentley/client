@@ -6,10 +6,12 @@ import { Box } from "@chakra-ui/react";
 import Logo from "../public/streamlineLogo.png";
 import { useTranslation } from "next-i18next";
 import Feedback from "@/components/Molecule/Feedback/Feedback";
+import FeedbackState from "@/src/state/FeedbackState";
+import { useRecoilState } from "recoil";
 
 function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
-	const [isFeedbackShown, setIsFeedbackShown] = useState(false)
+	const [isFeedbackShown, setIsFeedbackShown] = useRecoilState(FeedbackState)
 	const {t} = useTranslation(['common'])
 
 	return (

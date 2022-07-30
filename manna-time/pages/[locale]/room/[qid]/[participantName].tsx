@@ -18,6 +18,9 @@ import { DateObject } from "react-multi-date-picker"
 import { start } from "repl"
 
 import SendIcon from '@mui/icons-material/Send';
+import { useRecoilState } from "recoil"
+import FeedbackState from "@/src/state/FeedbackState"
+import Feedback from "@/components/Molecule/Feedback/Feedback"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -47,6 +50,7 @@ const Room: NextPage = function () {
     const router = useRouter()
     const { qid, participantName } = router.query
 
+    const [isFeedbackShown, setIsFeedbackShown] = useRecoilState(FeedbackState)
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
@@ -126,7 +130,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 2) {
             return (
                 <Center className="mb-3">
-                    <InfoIcon className="text-blue-700 mr-1"/>
+                    <InfoIcon className="text-blue-700 mr-1" />
                     <p className="md:text-xl text-lg font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">약속 방 정보</span>
                     </p>
@@ -191,14 +195,14 @@ const Room: NextPage = function () {
                     startDate = (roomInfo.dates[0] as string).substring(5).replace('-', '/')
                     endDate = (roomInfo.dates[roomInfo.dates.length - 1]).substring(5).replace('-', '/')
                 }
-                
+
             }
 
             return (<>
                 <div className="m-3 space-y-2">
                     <p className="md:text-lg text-md font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
-                         {title ? title : "loading..." }
+                        {title ? title : "loading..."}
                     </p>
                     <p className="md:text-lg text-md font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
@@ -216,12 +220,12 @@ const Room: NextPage = function () {
             return (
                 <Center>
                     <Button
-                            variant="contained"
-                            onClick={() => {
-                                setTab(1)
-                                MixpanelTracking.getInstance().buttonClicked("내시간 등록")
-                            }}
-                        >내 시간 등록하러 가기</Button>
+                        variant="contained"
+                        onClick={() => {
+                            setTab(1)
+                            MixpanelTracking.getInstance().buttonClicked("내시간 등록")
+                        }}
+                    >내 시간 등록하러 가기</Button>
                 </Center>
             )
         } else if (tabIdx == 1) {
@@ -257,7 +261,7 @@ const Room: NextPage = function () {
                             startIcon={<SendIcon />}
                             variant="contained"
                             onClick={() => {
-
+                                setIsFeedbackShown(true)
                             }}
                         >
                             피드백 요청
@@ -271,8 +275,9 @@ const Room: NextPage = function () {
 
     return (
         <>
+            {isFeedbackShown && <Feedback/>}
             <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693, borderRadius : 3 }}>
+                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693, borderRadius: 3 }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label={tabLabel[0]} />

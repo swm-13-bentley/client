@@ -11,6 +11,7 @@ import MainLayout from '../components/Layout/MainLayout/MainLayout'
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { MixpanelTracking } from '@/utils/mixpanel'
+import { RecoilRoot } from 'recoil'
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -23,9 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <CacheProvider value={clientSideEmotionCache}>
       <ChakraProvider>
         <ThemeProvider theme={theme}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
+          <RecoilRoot>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </RecoilRoot>
         </ThemeProvider>
       </ChakraProvider>
     </CacheProvider>
