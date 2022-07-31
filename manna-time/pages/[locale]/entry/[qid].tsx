@@ -4,8 +4,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GetServerSideProps, NextPage } from "next"
 import React, { SyntheticEvent, useEffect, useState } from "react"
 import CenterFlexLayout from "../../../components/Layout/CenterFlexLayout"
-import ParticipantLogin from "../../../components/ParticipantLogin"
-import Scheduler from "../../../components/Scheduler/Scheduler"
+import ParticipantLogin from "@/components/Molecule/ParticipantLogin/ParticipantLogin"
+import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 import { useRouter } from "next/router";
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';

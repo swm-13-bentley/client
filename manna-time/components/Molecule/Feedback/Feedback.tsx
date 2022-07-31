@@ -3,7 +3,8 @@ import { NextPage } from "next"
 import { useState } from "react"
 import BlackBoard from "@/components/Atom/BlackBoard/BlackBoard"
 import { useRecoilState } from "recoil"
-import FeedbackState from "@/src/state/FeedbackState"
+import { FeedbackState } from "@/src/state";
+
 
 const Feedback: NextPage = function () {
     const [isShown, setIsShown] = useRecoilState(FeedbackState)

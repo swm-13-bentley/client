@@ -5,8 +5,8 @@ import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import CenterFlexLayout from "../../../../components/Layout/CenterFlexLayout"
-import ParticipantLogin from "../../../../components/ParticipantLogin"
-import Scheduler from "../../../../components/Scheduler/Scheduler"
+import ParticipantLogin from "../../../../components/Molecule/ParticipantLogin/ParticipantLogin"
+import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -19,7 +19,7 @@ import { start } from "repl"
 
 import SendIcon from '@mui/icons-material/Send';
 import { useRecoilState } from "recoil"
-import FeedbackState from "@/src/state/FeedbackState"
+import { FeedbackState } from "@/src/state";
 import Feedback from "@/components/Molecule/Feedback/Feedback"
 
 const getParsedGroup = (data: object[], myName: string) => {
