@@ -13,10 +13,11 @@ import { IconButton } from "@mui/material";
 class CellProperty {
   opacity = 1
 
-  constructor(isDisabled, opacity, color) {
+  constructor(isDisabled, opacity, color, isCalendar) {
     this.isDisabled = isDisabled
     this.opacity = opacity
     this.color = color
+    this.isCalendar = isCalendar
   }
 
   setOpacity(total, availableNum) {
@@ -34,16 +35,18 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
   var startDate, endDate, startTime, endTime, isGroup;
-  let groupSchedule, totalNum, groupFilterChecked, mySchedule
+  let groupSchedule, totalNum, groupFilterChecked // 필터 누를 때마다 그룹스케줄
   let isDisabled = false
+  let calendarEvents = [] //비회원 캘린더 내 스케줄
+  let mySchedule // 이전에 selected해놓은 내 스케줄
   if (props.roomInfo == undefined) {
-    // Dummy args
+    // Dummy Data
     startDate = new Date('2022-06-09');
     endDate = new Date('2022-06-15');
     startTime = 1;
     endTime = 5;
 
-    isGroup = props.isGroup;
+    isGroup = true
     groupSchedule = [
       {
         available: [
@@ -70,10 +73,25 @@ const Scheduler = forwardRef((props, ref) => {
         ]
       }
     ]
+    totalNum = 2
     groupFilterChecked = [true, true]
+    calendarEvents = [
+      {
+        scheduledDate: "2022-06-10",
+        scheduledTimeList: [
+          3,4,5
+        ]
+      },
+      {
+        scheduledDate: "2022-06-11",
+        scheduledTimeList: [
+          1,2,5
+        ]
+      }
+    ]
   } else {
     // props args
-    // console.log(props)
+
     startDate = new Date(props.roomInfo.dates[0])
     endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length - 1])
     startTime = props.roomInfo.startTime
@@ -91,8 +109,9 @@ const Scheduler = forwardRef((props, ref) => {
     }
     if (props.mySchedule != undefined) {
       mySchedule = props.mySchedule.available
-      // console.log(mySchedule)
-      // setSelectionState(mySchedule)
+    }
+    if (props.calendarEvents != undefined) {
+      calendarEvents = props.calendarEvents
     }
     isDisabled = props.isDisabled
   }
@@ -117,19 +136,19 @@ const Scheduler = forwardRef((props, ref) => {
   });
 
   var tableState = [];
-  var filterState = [];
+  var calendarState = [];
   var groupState = [];
 
   for (temp = 0; temp < parseInt((startDay + dateDiff) / 7 + 1); temp++) {
     tableState.push([...initCells]);
-    filterState.push([...initCells]);
+    calendarState.push([...initCells]);
     groupState.push([...initGroupCells]);
   }
   tableState = JSON.parse(JSON.stringify(tableState));
-  filterState = JSON.parse(JSON.stringify(filterState));
+  calendarState = JSON.parse(JSON.stringify(calendarState));
   groupState = JSON.parse(JSON.stringify(groupState));
 
-  
+
 
   var currDate = startDate; // Object.assign({}, startDate);
   var tableList = [];
@@ -169,7 +188,7 @@ const Scheduler = forwardRef((props, ref) => {
     }
   )
   var times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
-  
+
   function groupScheduleElements(element, index, array) {
     let available = element.available
     // console.log(available)
@@ -182,7 +201,6 @@ const Scheduler = forwardRef((props, ref) => {
           var dayIdx = (startDate.getDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
             timeIdx => {
-              filterState[weekIdx][timeIdx - startTime][dayIdx] = true;
               groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
             }
           )
@@ -193,7 +211,25 @@ const Scheduler = forwardRef((props, ref) => {
 
   groupSchedule.forEach(groupScheduleElements)
 
+  function calendarElements(events) {
+    if (events != null && events != 0 && isGroup) {
+      events.forEach(
+        obj => {
+          var diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+          var dayIdx = (startDate.getDay() + diff + 6) % 7;
+          obj.scheduledTimeList.forEach(
+            timeIdx => {
+              calendarState[weekIdx][timeIdx - startTime][dayIdx] = true;
+            }
+          )
+        }
+      )
+    }
+    // console.log(calendarState)
+  }
 
+  calendarElements(calendarEvents)
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
@@ -262,21 +298,21 @@ const Scheduler = forwardRef((props, ref) => {
         var dayIdx = (startDate.getDay() + diff + 6) % 7;
         obj.availableTimeList.forEach(
           timeIdx => {
-            temp[weekIdx][timeIdx - startTime+2][dayIdx+1] = true; //행열 2개와 1개
+            temp[weekIdx][timeIdx - startTime + 2][dayIdx + 1] = true; //행열 2개와 1개
           }
-          )
-        }
         )
+      }
+    )
     // console.log(temp)
     // console.log(available)
-        
+
     changeCurrTot({ cellsTot: temp })
     changeCurr({ cells: [...temp[0]] });
     changeCurrIdx({ index: 0 });
 
-    
+
   }
-      
+
   const handleLeft = () => {
     if (currIdx.index > 0) {
       var temp = [...currTot.cellsTot];
@@ -309,13 +345,13 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }
 
-    
+
   useEffect(() => {
     if (mySchedule != undefined) {
       setSelectionState(mySchedule)
     }
   }, [mySchedule])
-  
+
   const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
   const eachRow = times.map(t => {
 
@@ -324,17 +360,19 @@ const Scheduler = forwardRef((props, ref) => {
       const opacity = groupState[currIdx.index][t - startTime][weekIdx] / totalNum
       // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
       // console.log(opacity)
+      const isCalendar = calendarState[currIdx.index][t - startTime][weekIdx]
       const color = "#FFFFFF"
-  
+
       let cellProperty = new CellProperty(
-        isDisabled, //isDisabled
+        isDisabled,
         opacity,
-        color
+        color,
+        isCalendar
       )
-      
+
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
       return (
-        <td key={key} disabled={!validDaysList[currIdx.index][weekIdx] } cellProperty={cellProperty} className={weekDay} />
+        <td key={key} disabled={!validDaysList[currIdx.index][weekIdx]} cellProperty={cellProperty} className={weekDay} />
       )
     })
 
@@ -369,7 +407,7 @@ const Scheduler = forwardRef((props, ref) => {
         </tr>
         {eachRow}
       </TableDragSelect>
-      <IconButton  onClick={handleLeft}>
+      <IconButton onClick={handleLeft}>
         <ArrowBackIosIcon />
       </IconButton>
       <IconButton onClick={handleRight} sx={"float:right"}>

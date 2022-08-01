@@ -277,15 +277,20 @@ class Cell extends React.Component {
         } 
 
         if (!(selected || beingSelected) || cellProperty.isDisabled) {
-          if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
-            className += " opacity-0-25";
-          } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
-            className += " opacity-0-50";
-          } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
-            className += " opacity-0-75";
-          } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
-            className += " opacity-1-00";
+          if (cellProperty.isCalendar) {
+            className += " calendar"
+          } else {
+            if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
+              className += " opacity-0-25";
+            } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
+              className += " opacity-0-50";
+            } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
+              className += " opacity-0-75";
+            } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
+              className += " opacity-1-00";
+            }
           }
+
         
         }
 

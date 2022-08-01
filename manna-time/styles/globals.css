@@ -149,6 +149,10 @@ button {
   background-color: #24b867;
 }
 
+.table-drag-select td.calendar {
+  background-color: #000000;
+}
+
 .table-drag-select td.opacity-0-25 {
   background-color: #9ca3ff4e;
 }
