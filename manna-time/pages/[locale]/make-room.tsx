@@ -108,7 +108,7 @@ const MakeRoom: NextPage = () => {
                         variant='outlined'
                         sx={{ borderColor: "#757ce8" }}
                         onClick={()=>{setRoomName(randomNameGenerator(router.query.locale as string))}}
-                    >랜덤 생성</Button>
+                    >자동 생성</Button>
                 </HStack>
             </ProcedureLayout>
             <Button

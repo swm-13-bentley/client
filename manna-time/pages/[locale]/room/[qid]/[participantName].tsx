@@ -61,11 +61,11 @@ const Room: NextPage = function () {
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     let [mySchedule, setMySchedule] = useState(null)
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
-    // console.log(groupFilterChecked)
 
     let scheduleRef = useRef()
 
-    let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
+    const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
+    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com&flowName=GeneralOAuthFlow`
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
@@ -88,6 +88,14 @@ const Room: NextPage = function () {
                 setGroupFilterChecked(Array(parsedGroup.namesExceptMe.length).fill(true))
             })
     }, [srcUrl]);
+
+    //구글 캘린더 등록
+    useEffect(() => {
+        //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
+        window.addEventListener("message", (event) => {
+            sendCalendarRequest(event.data, qid)
+        }, false)
+    }, [])
 
     const handleTabChange = (event: React.SyntheticEvent, tabValue: number) => {
         setTab(tabValue);
@@ -165,7 +173,7 @@ const Room: NextPage = function () {
                             color="primary"
                             className="md:text-xs text-xs"
                             onClick={() => {
-                                window.location.href = `/google/login`;
+                                window.open(googleLoginUrl,"self",'popup')
                             }}
                             startIcon={<CalendarMonthIcon />}
                         >
@@ -311,7 +319,6 @@ const Room: NextPage = function () {
     )
 
     function submitMySchedule(props) {
-
         // console.log(props)
         axios({
             method: 'post',
@@ -331,6 +338,24 @@ const Room: NextPage = function () {
                 alert('일정등록이 실패하였습니다!')
             })
 
+    }
+
+    function sendCalendarRequest(authCode: string, roomUuid: string) {
+        console.log(roomUuid)
+        // const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/room/${roomUuid}`
+        const requestUrl = srcUrl + `/participant/google?code=${authCode}`
+        axios({
+            method: 'get',
+            url: requestUrl
+        })
+            .then((result) => {
+                console.log(result)
+
+            })
+            .catch((e) => {
+                console.log(e.response)
+                alert('캘린더 불러오기 실패')
+            })
     }
 }
 

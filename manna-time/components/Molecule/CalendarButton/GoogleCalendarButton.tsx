@@ -10,6 +10,7 @@ const GoogleCalendarButton = () => {
         //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
         window.addEventListener("message", (event) => {
             setGoogleAuth(event.data)
+            console.log(event.data)
         }, false)
     }, [])
     

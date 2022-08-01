@@ -17,9 +17,9 @@ const Redirect = () => {
 
     // console.log('parent window : ', window.opener)
     if (typeof (router.query.code) === 'string' && window.opener != null) {
-        window.opener.postMessage(router.query.code) 
+        window.opener.postMessage(router.query.code)
+        window.close()
     }
-    // window.close()
     
     return (<>
         <Board/>
