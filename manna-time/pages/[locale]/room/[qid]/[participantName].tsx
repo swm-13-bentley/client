@@ -272,7 +272,6 @@ const Room: NextPage = function () {
                             fullWidth
                             variant="outlined"
                             onClick={() => {
-                                // setIsFeedbackShown(true)
                                 window.open("https://open.kakao.com/o/syCWZnte")
                             }}
                         >

@@ -24,8 +24,8 @@ export class MixpanelTracking {
         mixpanel.track(name, data)
     }
 
-    public pageViewed() {
-        this.track("page_viewed")
+    public pageViewed(pathName: string) {
+        this.track("page_viewed", {pathName})
     }
 
     public buttonClicked(usage:string) {

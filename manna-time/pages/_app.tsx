@@ -12,13 +12,15 @@ import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { MixpanelTracking } from '@/utils/mixpanel'
 import { RecoilRoot } from 'recoil'
+import { useRouter } from 'next/router'
 
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps }: AppProps) {
 
+  const router = useRouter()
   useEffect(() => { 
-    MixpanelTracking.getInstance().pageViewed()
+    MixpanelTracking.getInstance().pageViewed(router.pathname)
   },[])
   return (
     <CacheProvider value={clientSideEmotionCache}>

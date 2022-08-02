@@ -162,7 +162,6 @@ const ModalCard = ({ isShown, onCancle }: Props) => {
                 onCancle()
             })
             .catch((e) => {
-                console.log(e)
                 alert("네트워크 에러: 전송 실패")
             })
     }
