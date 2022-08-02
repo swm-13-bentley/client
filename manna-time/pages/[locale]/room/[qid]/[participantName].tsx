@@ -115,7 +115,7 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center>
-                        <p className="md:text-xl text-md font-bold m-1">
+                        <p className="md:text-xl text-md font-bold ml-4 mr-4">
                             참여자들의
                             <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능한 시간"}</span>
                             입니다
@@ -127,8 +127,8 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center className="mb-3">
-                        <p className="md:text-xl text-md font-bold m-1">
-                            {participantName}님,
+                        <p className="md:text-xl text-md font-bold ml-4 mr-4">
+                            {participantName}님,<br/>
                             <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능 시간을 드래그"}</span>
                             해주세요
                         </p>
@@ -137,7 +137,7 @@ const Room: NextPage = function () {
             )
         } else if (tabIdx == 2) {
             return (
-                <Center className="m-1">
+                <Center className="ml-4 mr-4">
                     <InfoIcon className="text-blue-700 mr-1" />
                     <p className="md:text-xl text-lg font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">약속 방 정보</span>
@@ -181,6 +181,7 @@ const Room: NextPage = function () {
                         >
                             캘린더 연동
                         </Button> */}
+                        <h1></h1>
                         {/* <div className="float-right"> */}
                             <FormControlLabel
                                 className="md:text-2xs text-xs"

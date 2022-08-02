@@ -108,7 +108,7 @@ const Entry: NextPage = function () {
                                                         MixpanelTracking.getInstance().buttonClicked("내 시간 입력")
                                                     }}
                                                 >
-                                                    약속 방 입장
+                                                    내 시간 입력
                                                 </Button>
                                             </Center>
 
@@ -120,7 +120,7 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
 
-                                            <div className="mb-3">
+                                            <div className="mb-5">
                                                 <Scheduler
                                                     groupSchedule={groupSchedule}
                                                     isGroup={true}

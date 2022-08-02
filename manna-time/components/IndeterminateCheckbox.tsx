@@ -20,7 +20,10 @@ const IndeterminateCheckbox = ({ participantNames, isChecked, onChange }: Props)
     useEffect(() => {
         // console.log(participantNames)
         if (participantNames != null) {
-            setChecked(Array(participantNames.length).fill(true));
+            if (isChecked == null)
+                setChecked(Array(participantNames.length).fill(true));
+            else
+                setChecked(isChecked)
         }
     },[participantNames])
 

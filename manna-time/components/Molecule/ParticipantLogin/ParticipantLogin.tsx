@@ -89,7 +89,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         }}
                         sx ={{ borderRadius : 3 }}
                     >
-                        약속 방 입장
+                        내 시간 입력
                     </Button>
                 </form>
             </Paper>

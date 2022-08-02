@@ -251,7 +251,7 @@ const Scheduler = forwardRef((props, ref) => {
   const handleClick = () => {
     var temp = [...currTot.cellsTot];
     temp[currIdx.index] = [...curr.cells];
-    console.log(temp)
+    // console.log(temp)
     var apiRequestBody = [];
 
     for (var i = 0; i < weeks.length; i++) {
