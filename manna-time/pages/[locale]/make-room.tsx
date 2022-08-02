@@ -117,7 +117,7 @@ const MakeRoom: NextPage = () => {
                 sx={{backgroundColor : "#757ce8"}}
                 onClick={() => {
                     sendRoomRequest()
-                    MixpanelTracking.getInstance().buttonClicked("")
+                    MixpanelTracking.getInstance().buttonClicked("make-room: 방 만들기")
                 }}
             >방 생성하기</Button>
         </CenterFlexLayout>

@@ -207,7 +207,7 @@ const Room: NextPage = function () {
                             onClick={() => {
                                 const mySchedule = scheduleRef.current.testFn()
                                 submitMySchedule(mySchedule)
-                                MixpanelTracking.getInstance().buttonClicked("내 일정 등록")
+                                MixpanelTracking.getInstance().buttonClicked("room: 제출하기")
                             }}
                         >제출하기</Button>
                         {/* </div> */}
@@ -251,7 +251,7 @@ const Room: NextPage = function () {
                         variant="contained"
                         onClick={() => {
                             setTab(1)
-                            MixpanelTracking.getInstance().buttonClicked("내시간 등록")
+                            MixpanelTracking.getInstance().buttonClicked("room: 내시간 등록")
                         }}
                     >내 시간 등록하러 가기</Button>
                 </Center>
@@ -272,7 +272,8 @@ const Room: NextPage = function () {
                             fullWidth
                             variant="outlined"
                             onClick={() => {
-                                setIsFeedbackShown(true)
+                                // setIsFeedbackShown(true)
+                                window.open("https://open.kakao.com/o/syCWZnte")
                             }}
                         >
                             관리자에게 문의하기
@@ -286,7 +287,7 @@ const Room: NextPage = function () {
                             startIcon={<ContentCopyIcon />}
                             onClick={() => {
                                 copyTextUrl()
-                                MixpanelTracking.getInstance().buttonClicked("링크 복사")
+                                MixpanelTracking.getInstance().buttonClicked("room: 링크 복사")
                             }}
                         >
                             방 링크 복사

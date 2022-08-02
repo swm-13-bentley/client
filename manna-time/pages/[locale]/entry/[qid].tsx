@@ -30,7 +30,7 @@ const Entry: NextPage = function () {
     const [participantNames, setParticipantNames] = useState(null)
 
     const copyTextUrl = () => {
-        MixpanelTracking.getInstance().buttonClicked("링크 복사")
+        MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
         navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
@@ -105,7 +105,7 @@ const Entry: NextPage = function () {
                                                     startIcon={<LoginIcon />}
                                                     onClick={(e: React.SyntheticEvent) => {
                                                         setExpanded(false)
-                                                        MixpanelTracking.getInstance().buttonClicked("내 시간 입력")
+                                                        MixpanelTracking.getInstance().buttonClicked("entry: 내 시간 입력(아코디언 접기)")
                                                     }}
                                                 >
                                                     내 시간 입력

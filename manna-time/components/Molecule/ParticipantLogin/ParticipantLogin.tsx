@@ -85,7 +85,7 @@ const ParticipantLogin = ({eventName, startDate, endDate}:Props) => {
                         startIcon={<LoginIcon />}
                         onClick={() => {
                             sendLoginRequest()
-                            MixpanelTracking.getInstance().buttonClicked("비회원 로그인")
+                            MixpanelTracking.getInstance().buttonClicked("entry: 비회원 로그인")
                         }}
                         sx ={{ borderRadius : 3 }}
                     >
