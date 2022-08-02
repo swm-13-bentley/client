@@ -2,11 +2,11 @@
 /* eslint-disable react/display-name */
 
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
-
+import {Flex} from "@chakra-ui/react"
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
 import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
 
@@ -79,13 +79,13 @@ const Scheduler = forwardRef((props, ref) => {
       {
         scheduledDate: "2022-06-10",
         scheduledTimeList: [
-          3,4,5
+          3, 4, 5
         ]
       },
       {
         scheduledDate: "2022-06-11",
         scheduledTimeList: [
-          1,2,5
+          1, 2, 5
         ]
       }
     ]
@@ -386,6 +386,11 @@ const Scheduler = forwardRef((props, ref) => {
 
   return (
     <div>
+
+      <Flex>
+        <IconButton onClick={handleLeft} size="small">
+          <ArrowBackIosNewIcon fontSize="small"/>
+        </IconButton>
       <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
         <tr>
           <td white disabled />
@@ -406,14 +411,13 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled>일</td>
         </tr>
         {eachRow}
-      </TableDragSelect>
-      <IconButton onClick={handleLeft}>
-        <ArrowBackIosIcon />
-      </IconButton>
-      <IconButton onClick={handleRight} sx={"float:right"}>
-        <ArrowForwardIosIcon />
-      </IconButton>
+      </TableDragSelect >
+        <IconButton onClick={handleRight} sx={"float:right"} size="small">
+          <ArrowForwardIosIcon fontSize="small"/>
+        </IconButton>
+      </Flex>
     </div>
+
   );
 
 })

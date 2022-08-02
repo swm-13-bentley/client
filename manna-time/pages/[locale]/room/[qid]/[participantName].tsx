@@ -65,7 +65,7 @@ const Room: NextPage = function () {
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
-    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com&flowName=GeneralOAuthFlow`
+    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
@@ -115,7 +115,7 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center>
-                        <p className="md:text-xl text-md font-bold">
+                        <p className="md:text-xl text-md font-bold m-1">
                             참여자들의
                             <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능한 시간"}</span>
                             입니다
@@ -127,7 +127,7 @@ const Room: NextPage = function () {
             return (
                 <>
                     <Center className="mb-3">
-                        <p className="md:text-xl text-md font-bold">
+                        <p className="md:text-xl text-md font-bold m-1">
                             {participantName}님,
                             <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능 시간을 드래그"}</span>
                             해주세요
@@ -137,7 +137,7 @@ const Room: NextPage = function () {
             )
         } else if (tabIdx == 2) {
             return (
-                <Center className="mb-3">
+                <Center className="m-1">
                     <InfoIcon className="text-blue-700 mr-1" />
                     <p className="md:text-xl text-lg font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">약속 방 정보</span>
@@ -151,11 +151,13 @@ const Room: NextPage = function () {
         if (tabIdx == 0) {
             return (
                 <>
-                    <IndeterminateCheckbox
-                        participantNames={groupNamesExceptMe}
-                        onChange={checked => setGroupFilterChecked(checked)}
-                        isChecked={groupFilterChecked}
-                    />
+                    <div className="ml-4 mr-4">
+                        <IndeterminateCheckbox
+                            participantNames={groupNamesExceptMe}
+                            onChange={checked => setGroupFilterChecked(checked)}
+                            isChecked={groupFilterChecked}
+                        />
+                    </div>
                     {/* {(
                         groupFilterChecked
                         ?
@@ -167,8 +169,8 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2">
-                        <Button
+                    <div className="mb-2 ml-4">
+                        {/* <Button
                             variant="outlined"
                             color="primary"
                             className="md:text-xs text-xs"
@@ -178,8 +180,8 @@ const Room: NextPage = function () {
                             startIcon={<CalendarMonthIcon />}
                         >
                             캘린더 연동
-                        </Button>
-                        <div className="float-right">
+                        </Button> */}
+                        {/* <div className="float-right"> */}
                             <FormControlLabel
                                 className="md:text-2xs text-xs"
                                 sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
@@ -190,7 +192,7 @@ const Room: NextPage = function () {
                                     defaultChecked={groupButtonChecked}
                                 />}
                             />
-                        </div>
+                        {/* </div> */}
                     </div>
                 </>
             )
@@ -207,7 +209,7 @@ const Room: NextPage = function () {
             }
 
             return (<>
-                <div className="m-3 space-y-2">
+                <div className="m-5 space-y-2">
                     <p className="md:text-lg text-md font-bold">
                         <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
                         {title ? title : "loading..."}
@@ -285,8 +287,8 @@ const Room: NextPage = function () {
         <>
             {isFeedbackShown && <Feedback/>}
             <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, padding: 3, maxWidth: 693, borderRadius: 3 }}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', marginBottom: 2 }}>
+                <Paper sx={{ boxShadow: 4, paddingBottom: 3, maxWidth: 693, borderRadius: 3 }}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: 2 }}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label={tabLabel[0]} />
                             <Tab label={tabLabel[1]} />
@@ -299,16 +301,18 @@ const Room: NextPage = function () {
                         loader ? <h1>방 정보를 불러오는 중입니다</h1> :
                             groupSchedule !== null && tab != 2
                                 ?
-                                <Scheduler
-                                    // roomInfo={props.roomInfo}
-                                    isDisabled={tab == 1 ? false : true}
-                                    ref={scheduleRef}
-                                    groupSchedule={groupSchedule}
-                                    roomInfo={roomInfo}
-                                    isGroup={(tab == 0) || groupButtonChecked ? true : false}
-                                    mySchedule={mySchedule}
-                                    groupFilterChecked={groupFilterChecked}
-                                />
+                                <div className="mb-3">
+                                    <Scheduler
+                                        // roomInfo={props.roomInfo}
+                                        isDisabled={tab == 1 ? false : true}
+                                        ref={scheduleRef}
+                                        groupSchedule={groupSchedule}
+                                        roomInfo={roomInfo}
+                                        isGroup={(tab == 0) || groupButtonChecked ? true : false}
+                                        mySchedule={mySchedule}
+                                        groupFilterChecked={groupFilterChecked}
+                                    />
+                                </div>
                                 :
                                 null
                     )}

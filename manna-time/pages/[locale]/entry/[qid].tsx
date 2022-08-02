@@ -76,30 +76,22 @@ const Entry: NextPage = function () {
                                     id="panel1a-header"
                                     onClick={(e:SyntheticEvent)=>{setExpanded(!expanded)}}
                                 >
-                                    <Typography>현재 그룹 스케줄 확인하기</Typography>
+                                    {/* <Typography>현재 그룹 스케줄 확인하기</Typography> */}
                                 </AccordionSummary>
                                 {(
                                     !loader ?
-                                        <AccordionDetails>
+                                        <AccordionDetails
+                                            sx={{ padding: 0 }}
+
+                                        >
                                             <Center mb="5">
                                                 <p className="text-lg font-bold">{roomInfo.title}</p>
                                             </Center>
-                                            <Center mb="5">
+                                            <Center mb="10">
                                                 <p className="text-sm font-bold">{roomInfo.dates[0]} ~ {roomInfo.dates[roomInfo.dates.length - 1]}</p>
                                             </Center>
-                                            <IndeterminateCheckbox
-                                                participantNames={participantNames}
-                                                onChange={checked => setGroupFilterChecked(checked)}
-                                                isChecked={groupFilterChecked}
-                                            />
-                                            <Scheduler
-                                                groupSchedule={groupSchedule}
-                                                isGroup={true}
-                                                roomInfo={roomInfo}
-                                                isDisabled={true}
-                                                groupFilterChecked={groupFilterChecked}
-                                            />
-                                            <Center>
+
+                                            <Center mb="5">
                                                 <Button
                                                     className="mr-5"
                                                     variant="contained"
@@ -119,6 +111,25 @@ const Entry: NextPage = function () {
                                                     약속 방 입장
                                                 </Button>
                                             </Center>
+
+                                            <div className="ml-4 mr-4">
+                                                <IndeterminateCheckbox
+                                                    participantNames={participantNames}
+                                                    onChange={checked => setGroupFilterChecked(checked)}
+                                                    isChecked={groupFilterChecked}
+                                                />
+                                            </div>
+
+                                            <div className="mb-3">
+                                                <Scheduler
+                                                    groupSchedule={groupSchedule}
+                                                    isGroup={true}
+                                                    roomInfo={roomInfo}
+                                                    isDisabled={true}
+                                                    groupFilterChecked={groupFilterChecked}
+                                                />
+                                            </div>
+                                            
                                         </AccordionDetails>
                                         : null
                                 )}
