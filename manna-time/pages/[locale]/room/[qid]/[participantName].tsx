@@ -22,6 +22,8 @@ import { useRecoilState } from "recoil"
 import { FeedbackState } from "@/src/state";
 import Feedback from "@/components/Molecule/Feedback/Feedback"
 
+import PublishIcon from '@mui/icons-material/Publish';
+
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
 
@@ -126,9 +128,13 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <Center className="mb-3">
-                        <p className="md:text-xl text-md font-bold ml-4 mr-4">
+                    <Center className="ml-4 mr-4">
+                        <p className="md:text-xl text-md font-bold ">
                             {participantName}님,<br/>
+                        </p>
+                    </Center >
+                    <Center className="mb-3 ml-4 mr-4">
+                        <p className="md:text-xl text-md font-bold ">
                             <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능 시간을 드래그"}</span>
                             해주세요
                         </p>
@@ -151,7 +157,7 @@ const Room: NextPage = function () {
         if (tabIdx == 0) {
             return (
                 <>
-                    <div className="ml-4 mr-4">
+                    <div className="ml-5 mr-5">
                         <IndeterminateCheckbox
                             participantNames={groupNamesExceptMe}
                             onChange={checked => setGroupFilterChecked(checked)}
@@ -169,7 +175,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2 ml-4">
+                    <div className="mb-2 ml-5 mr-5">
                         {/* <Button
                             variant="outlined"
                             color="primary"
@@ -181,7 +187,6 @@ const Room: NextPage = function () {
                         >
                             캘린더 연동
                         </Button> */}
-                        <h1></h1>
                         {/* <div className="float-right"> */}
                             <FormControlLabel
                                 className="md:text-2xs text-xs"
@@ -191,8 +196,20 @@ const Room: NextPage = function () {
                                     checked={groupButtonChecked}
                                     onChange={(e) => setGroupButtonChecked(e.target.checked)}
                                     defaultChecked={groupButtonChecked}
-                                />}
-                            />
+                                />
+                                }
+                        />
+                        <Button
+                            size="small"
+                            className="float-right"
+                            startIcon={<PublishIcon/>}
+                            variant="contained"
+                            onClick={() => {
+                                const mySchedule = scheduleRef.current.testFn()
+                                submitMySchedule(mySchedule)
+                                MixpanelTracking.getInstance().buttonClicked("내 일정 등록")
+                            }}
+                        >제출하기</Button>
                         {/* </div> */}
                     </div>
                 </>
@@ -242,23 +259,29 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <Center className="mt-3">
-                        <Button
-                            variant="outlined"
-                            onClick={() => {
-                                const mySchedule = scheduleRef.current.testFn()
-                                submitMySchedule(mySchedule)
-                                MixpanelTracking.getInstance().buttonClicked("내 일정 등록")
-                            }}
-                        >내 시간 등록하기</Button>
-                    </Center>
                 </>
             )
         } else if (tabIdx == 2) {
             return (
                 <>
-                    <Center className="mt-3 space-x-3">
+                    <Center className="ml-4 mr-4">
+                    </Center>
+                    <Center className="mb-3 space-x-3 ml-4 mr-4">
                         <Button
+                            startIcon={<SendIcon />}
+                            fullWidth
+                            variant="outlined"
+                            onClick={() => {
+                                setIsFeedbackShown(true)
+                            }}
+                        >
+                            관리자에게 문의하기
+                        </Button>
+                    </Center>
+                    <Center>
+                        <Button
+                            fullWidth
+                            className="ml-4 mr-4"
                             variant="contained"
                             startIcon={<ContentCopyIcon />}
                             onClick={() => {
@@ -267,15 +290,6 @@ const Room: NextPage = function () {
                             }}
                         >
                             방 링크 복사
-                        </Button>
-                        <Button
-                            startIcon={<SendIcon />}
-                            variant="contained"
-                            onClick={() => {
-                                setIsFeedbackShown(true)
-                            }}
-                        >
-                            피드백 요청
                         </Button>
                     </Center>
                 </>
@@ -288,7 +302,7 @@ const Room: NextPage = function () {
         <>
             {isFeedbackShown && <Feedback/>}
             <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, paddingBottom: 3, maxWidth: 693, borderRadius: 3 }}>
+                <Paper sx={{ boxShadow: 4, paddingBottom: 2, maxWidth: 693, borderRadius: 3 }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: 2 }}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label={tabLabel[0]} />

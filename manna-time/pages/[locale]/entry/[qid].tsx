@@ -112,11 +112,11 @@ const Entry: NextPage = function () {
                                                 </Button>
                                             </Center>
 
-                                            <div className="ml-4 mr-4">
+                                            <div className="ml-5 mr-5">
                                                 <IndeterminateCheckbox
                                                     participantNames={participantNames}
                                                     onChange={checked => setGroupFilterChecked(checked)}
-                                                    isChecked={groupFilterChecked}
+                                                    isChecked={null}
                                                 />
                                             </div>
 
