@@ -186,7 +186,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2 ml-5 mr-5 h-auto">
+                    <div className="mb-2 ml-5 mr-5">
                         {/* <Button
                             variant="outlined"
                             color="primary"
@@ -211,7 +211,7 @@ const Room: NextPage = function () {
                         />
                         <Button
                             size="small"
-                            className="float-right"
+                            className="float-right flex"
                             startIcon={<PublishIcon />}
                             variant="contained"
                             onClick={() => {
