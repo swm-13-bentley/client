@@ -1,4 +1,4 @@
-import { Center, HStack } from "@chakra-ui/react"
+import { Center, Flex, HStack } from "@chakra-ui/react"
 import { Box, Button, Checkbox, CssBaseline, FormControlLabel, FormGroup, Paper, Tab, Tabs, ToggleButton } from "@mui/material"
 import axios from "axios"
 import { NextPage } from "next"
@@ -186,7 +186,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2 ml-5 mr-5">
+                    <div className="mb-2 ml-5 mr-5 h-auto">
                         {/* <Button
                             variant="outlined"
                             color="primary"
