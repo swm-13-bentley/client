@@ -20,6 +20,7 @@ const Entry: NextPage = function () {
     const { qid } = router.query
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
+    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)
 
     const [expanded, setExpanded] = useState(true)
 
@@ -29,9 +30,21 @@ const Entry: NextPage = function () {
     const [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [participantNames, setParticipantNames] = useState(null)
 
-    const copyTextUrl = () => {
-        MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
-        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)).then(() => {
+    const copyTextUrl = (textUrl: string) => {
+        //기타 브라우저
+        navigator.clipboard.writeText(textUrl).then(() => {
+            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
+        })
+        .catch(() =>{
+            //인앱 브라우저 : kakao, naver ...
+            const inputElement = document.createElement("input")
+            inputElement.readOnly = !0
+            inputElement.value = textUrl
+            document.body.appendChild(inputElement)
+            inputElement.select()
+            inputElement.setSelectionRange(0, inputElement.value.length)
+            document.execCommand("Copy")
+            document.body.removeChild(inputElement)
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
     }
@@ -96,7 +109,10 @@ const Entry: NextPage = function () {
                                                     className="mr-5"
                                                     variant="contained"
                                                     startIcon={<ContentCopyIcon />}
-                                                    onClick={copyTextUrl}
+                                                    onClick={() => {
+                                                        MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
+                                                        copyTextUrl(textUrl)
+                                                    } }
                                                 >
                                                     방 링크 복사
                                                 </Button>
