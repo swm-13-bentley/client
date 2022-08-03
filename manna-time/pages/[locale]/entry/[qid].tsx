@@ -31,7 +31,11 @@ const Entry: NextPage = function () {
     const [participantNames, setParticipantNames] = useState(null)
 
     const copyTextUrl = (textUrl: string) => {
-        if (!navigator.clipboard) {
+        //기타 브라우저
+        navigator.clipboard.writeText(textUrl).then(() => {
+            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
+        })
+        .catch(() =>{
             //인앱 브라우저 : kakao, naver ...
             const inputElement = document.createElement("input")
             inputElement.readOnly = !0
@@ -42,15 +46,8 @@ const Entry: NextPage = function () {
             document.execCommand("Copy")
             document.body.removeChild(inputElement)
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-        } else {
-            //기타 브라우저
-            navigator.clipboard.writeText(textUrl).then(() => {
-                alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-            })
-                .catch(() =>{
-                alert("복사가 불가능한 브라우저입니다. 다른 브라우저를 이용해주세요.")
-            })
-        }
+            alert("복사가 불가능한 브라우저입니다. 다른 브라우저를 이용해주세요.")
+        })
     }
 
     useEffect(() => {
