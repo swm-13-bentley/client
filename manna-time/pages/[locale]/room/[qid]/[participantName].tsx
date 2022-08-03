@@ -51,23 +51,24 @@ const Room: NextPage = function () {
 
     const router = useRouter()
     const { qid, participantName } = router.query
-
+    
     const [isFeedbackShown, setIsFeedbackShown] = useRecoilState(FeedbackState)
-
+    
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
     let [groupButtonChecked, setGroupButtonChecked] = useState(true)
-
+    
     //parsed Group Schedule
     let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     let [mySchedule, setMySchedule] = useState(null)
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
-
+    
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
+    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
@@ -92,22 +93,37 @@ const Room: NextPage = function () {
     }, [srcUrl]);
 
     //구글 캘린더 등록
-    useEffect(() => {
-        //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
-        window.addEventListener("message", (event) => {
-            sendCalendarRequest(event.data, qid)
-        }, false)
-    }, [])
+    // useEffect(() => {
+    //     //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
+    //     window.addEventListener("message", (event) => {
+    //         sendCalendarRequest(event.data, qid)
+    //     }, false)
+    // }, [])
 
     const handleTabChange = (event: React.SyntheticEvent, tabValue: number) => {
         setTab(tabValue);
     };
 
-    const copyTextUrl = () => {
-        //나중에 링크 바꿀 것
-        navigator.clipboard.writeText(process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)).then(() => {
+    const copyTextUrl = (textUrl: string) => {
+        if (!navigator.clipboard) {
+            //카톡 인앱 브라우저 호환성 문제 해결
+            const inputElement = document.createElement("input")
+            inputElement.readOnly = !0
+            inputElement.value = textUrl
+            document.body.appendChild(inputElement)
+            inputElement.select()
+            inputElement.setSelectionRange(0, inputElement.value.length)
+            document.execCommand("Copy")
+            document.body.removeChild(inputElement)
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-        })
+        } else {
+            navigator.clipboard.writeText(textUrl).then(() => {
+                alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
+            })
+                .catch(() =>{
+                alert("복사가 불가능한 브라우저입니다. 다른 브라우저를 이용해주세요.")
+            })
+        }
     }
 
     const tabLabel = ["그룹 시간", "내 시간", "약속 공유"]
@@ -273,7 +289,7 @@ const Room: NextPage = function () {
                             fullWidth
                             variant="outlined"
                             onClick={() => {
-                                window.open("https://open.kakao.com/o/syCWZnte")
+                                window.location.href= "https://open.kakao.com/o/syCWZnte"
                             }}
                         >
                             관리자에게 문의하기
@@ -286,7 +302,7 @@ const Room: NextPage = function () {
                             variant="contained"
                             startIcon={<ContentCopyIcon />}
                             onClick={() => {
-                                copyTextUrl()
+                                copyTextUrl(textUrl)
                                 MixpanelTracking.getInstance().buttonClicked("room: 링크 복사")
                             }}
                         >
@@ -361,8 +377,6 @@ const Room: NextPage = function () {
     }
 
     function sendCalendarRequest(authCode: string, roomUuid: string) {
-        console.log(roomUuid)
-        // const requestUrl = `${process.env.NEXT_PUBLIC_API_URL}/room/${roomUuid}`
         const requestUrl = srcUrl + `/participant/google?code=${authCode}`
         axios({
             method: 'get',
