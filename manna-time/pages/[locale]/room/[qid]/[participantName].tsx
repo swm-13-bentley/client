@@ -186,7 +186,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2 ml-5 mr-5">
+                    <div className="mb-2 ml-5 mr-5 h-auto">
                         {/* <Button
                             variant="outlined"
                             color="primary"
