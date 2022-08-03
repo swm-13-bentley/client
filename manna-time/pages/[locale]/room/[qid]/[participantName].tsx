@@ -198,7 +198,6 @@ const Room: NextPage = function () {
                         >
                             캘린더 연동
                         </Button> */}
-                        {/* <div className="float-right"> */}
                         <FormControlLabel
                             className="md:text-2xs text-xs"
                             sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
@@ -221,7 +220,6 @@ const Room: NextPage = function () {
                                 MixpanelTracking.getInstance().buttonClicked("room: 제출하기")
                             }}
                         >제출하기</Button>
-                        {/* </div> */}
                     </div>
                 </>
             )
