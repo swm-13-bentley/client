@@ -186,7 +186,7 @@ const Room: NextPage = function () {
         } else if (tabIdx == 1) {
             return (
                 <>
-                    <div className="mb-2 ml-5 mr-5 h-auto">
+                    <div className="mb-2 ml-5 mr-5 overflow-auto">
                         {/* <Button
                             variant="outlined"
                             color="primary"
@@ -198,7 +198,6 @@ const Room: NextPage = function () {
                         >
                             캘린더 연동
                         </Button> */}
-                        {/* <div className="float-right"> */}
                         <FormControlLabel
                             className="md:text-2xs text-xs"
                             sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
@@ -212,7 +211,7 @@ const Room: NextPage = function () {
                         />
                         <Button
                             size="small"
-                            className="float-right"
+                            className="float-right flex"
                             startIcon={<PublishIcon />}
                             variant="contained"
                             onClick={() => {
@@ -221,7 +220,6 @@ const Room: NextPage = function () {
                                 MixpanelTracking.getInstance().buttonClicked("room: 제출하기")
                             }}
                         >제출하기</Button>
-                        {/* </div> */}
                     </div>
                 </>
             )
