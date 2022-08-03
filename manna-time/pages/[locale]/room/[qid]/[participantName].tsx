@@ -130,7 +130,7 @@ const Room: NextPage = function () {
                 <>
                     <Center className="ml-4 mr-4">
                         <p className="md:text-xl text-md font-bold ">
-                            {participantName}님,<br/>
+                            {participantName}님,<br />
                         </p>
                     </Center >
                     <Center className="mb-3 ml-4 mr-4">
@@ -157,12 +157,23 @@ const Room: NextPage = function () {
         if (tabIdx == 0) {
             return (
                 <>
-                    <div className="ml-5 mr-5">
+                    <div className="mb-2 ml-5 mr-5 overflow-auto">
                         <IndeterminateCheckbox
                             participantNames={groupNamesExceptMe}
                             onChange={checked => setGroupFilterChecked(checked)}
                             isChecked={groupFilterChecked}
                         />
+
+                        <Button
+                            className="float-right"
+                            size="small"
+                            variant="contained"
+                            onClick={() => {
+                                setTab(1)
+                                MixpanelTracking.getInstance().buttonClicked("room: 내시간 등록")
+                            }}
+                        >내 시간 입력</Button>
+
                     </div>
                     {/* {(
                         groupFilterChecked
@@ -188,21 +199,21 @@ const Room: NextPage = function () {
                             캘린더 연동
                         </Button> */}
                         {/* <div className="float-right"> */}
-                            <FormControlLabel
-                                className="md:text-2xs text-xs"
-                                sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                                label={"그룹 시간 보기"}
-                                control={<Checkbox
-                                    checked={groupButtonChecked}
-                                    onChange={(e) => setGroupButtonChecked(e.target.checked)}
-                                    defaultChecked={groupButtonChecked}
-                                />
-                                }
+                        <FormControlLabel
+                            className="md:text-2xs text-xs"
+                            sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
+                            label={"그룹 시간 보기"}
+                            control={<Checkbox
+                                checked={groupButtonChecked}
+                                onChange={(e) => setGroupButtonChecked(e.target.checked)}
+                                defaultChecked={groupButtonChecked}
+                            />
+                            }
                         />
                         <Button
                             size="small"
                             className="float-right"
-                            startIcon={<PublishIcon/>}
+                            startIcon={<PublishIcon />}
                             variant="contained"
                             onClick={() => {
                                 const mySchedule = scheduleRef.current.testFn()
@@ -246,15 +257,7 @@ const Room: NextPage = function () {
     const tabFooterContainer = (tabIdx: number) => {
         if (tabIdx == 0) {
             return (
-                <Center>
-                    <Button
-                        variant="contained"
-                        onClick={() => {
-                            setTab(1)
-                            MixpanelTracking.getInstance().buttonClicked("room: 내시간 등록")
-                        }}
-                    >내 시간 등록하러 가기</Button>
-                </Center>
+                <></>
             )
         } else if (tabIdx == 1) {
             return (
@@ -300,7 +303,7 @@ const Room: NextPage = function () {
 
     return (
         <>
-            {isFeedbackShown && <Feedback/>}
+            {isFeedbackShown && <Feedback />}
             <CenterFlexLayout>
                 <Paper sx={{ boxShadow: 4, paddingBottom: 2, maxWidth: 693, borderRadius: 3 }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: 2 }}>

@@ -78,6 +78,7 @@ button {
 
 /* Table cells */
 .table-drag-select td {
+  font-size: 10px;
   height: 0.5em;
   text-align: center;
   /* Cut off long strings of text with ... */
