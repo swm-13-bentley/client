@@ -46,7 +46,6 @@ const Entry: NextPage = function () {
             document.execCommand("Copy")
             document.body.removeChild(inputElement)
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-            alert("복사가 불가능한 브라우저입니다. 다른 브라우저를 이용해주세요.")
         })
     }
 

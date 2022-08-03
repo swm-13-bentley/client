@@ -105,8 +105,12 @@ const Room: NextPage = function () {
     };
 
     const copyTextUrl = (textUrl: string) => {
-        if (!navigator.clipboard) {
-            //카톡 인앱 브라우저 호환성 문제 해결
+        //기타 브라우저
+        navigator.clipboard.writeText(textUrl).then(() => {
+            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
+        })
+        .catch(() =>{
+            //인앱 브라우저 : kakao, naver ...
             const inputElement = document.createElement("input")
             inputElement.readOnly = !0
             inputElement.value = textUrl
@@ -116,14 +120,7 @@ const Room: NextPage = function () {
             document.execCommand("Copy")
             document.body.removeChild(inputElement)
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-        } else {
-            navigator.clipboard.writeText(textUrl).then(() => {
-                alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-            })
-                .catch(() =>{
-                alert("복사가 불가능한 브라우저입니다. 다른 브라우저를 이용해주세요.")
-            })
-        }
+        })
     }
 
     const tabLabel = ["그룹 시간", "내 시간", "약속 공유"]
