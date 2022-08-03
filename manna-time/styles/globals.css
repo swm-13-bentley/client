@@ -94,8 +94,8 @@ button {
   /* Shows more text when text too big to fit into cell */
   padding-left: 0rem;
   padding-right: 0rem;
-  border-bottom: 0.9px solid grey;
-  border-top: 0.9px solid grey;
+  border-bottom: 0.9px solid lightgrey;
+  border-top: 0.9px solid lightgrey;
 }
 
 /* Cells that can be interacted with */
@@ -171,30 +171,30 @@ button {
 }
 
 .table-drag-select td.mon {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.tue {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.wed {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.thu {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.fri {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.sat {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
 .table-drag-select td.sun {
-  border-left: 0.9px solid grey;
-  border-right: 0.9px solid grey;
+  border-left: 0.9px solid lightgrey;
+  border-right: 0.9px solid lightgrey;
 }
