@@ -123,10 +123,10 @@ const Room: NextPage = function () {
         })
     }
 
-    const tabLabel = ["그룹 시간", "내 시간", "약속 공유"]
+    const tabLabel = ["내 시간", "그룹 시간", "약속 공유"]
 
     const tabDescription = (tabIdx: number) => {
-        if (tabIdx == 0) {
+        if (tabIdx == 1) {
             return (
                 <>
                     <Center>
@@ -138,7 +138,7 @@ const Room: NextPage = function () {
                     </Center >
                 </>
             )
-        } else if (tabIdx == 1) {
+        } else if (tabIdx == 0) {
             return (
                 <>
                     <Center className="ml-4 mr-4">
@@ -167,7 +167,7 @@ const Room: NextPage = function () {
     }
 
     const tabContainer = (tabIdx: number) => {
-        if (tabIdx == 0) {
+        if (tabIdx == 1) {
             return (
                 <>
                     <div className="mb-2 ml-5 mr-5 overflow-auto">
@@ -182,7 +182,7 @@ const Room: NextPage = function () {
                             size="small"
                             variant="contained"
                             onClick={() => {
-                                setTab(1)
+                                setTab(0)
                                 MixpanelTracking.getInstance().buttonClicked("room: 내시간 등록")
                             }}
                         >내 시간 입력</Button>
@@ -196,7 +196,7 @@ const Room: NextPage = function () {
                     )} */}
                 </>
             )
-        } else if (tabIdx == 1) {
+        } else if (tabIdx == 0) {
             return (
                 <>
                     <div className="mb-2 ml-5 mr-5 overflow-auto">
@@ -266,11 +266,11 @@ const Room: NextPage = function () {
     }
 
     const tabFooterContainer = (tabIdx: number) => {
-        if (tabIdx == 0) {
+        if (tabIdx == 1) {
             return (
                 <></>
             )
-        } else if (tabIdx == 1) {
+        } else if (tabIdx == 0) {
             return (
                 <>
                 </>
@@ -333,11 +333,11 @@ const Room: NextPage = function () {
                                 <div className="mb-3">
                                     <Scheduler
                                         // roomInfo={props.roomInfo}
-                                        isDisabled={tab == 1 ? false : true}
+                                        isDisabled={tab == 0 ? false : true}
                                         ref={scheduleRef}
                                         groupSchedule={groupSchedule}
                                         roomInfo={roomInfo}
-                                        isGroup={(tab == 0) || groupButtonChecked ? true : false}
+                                        isGroup={(tab == 1) || groupButtonChecked ? true : false}
                                         mySchedule={mySchedule}
                                         groupFilterChecked={groupFilterChecked}
                                     />
