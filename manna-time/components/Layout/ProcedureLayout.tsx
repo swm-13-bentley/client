@@ -15,9 +15,9 @@ const ProcedureLayout: React.FC<Props> = function ({ index, title, children }) {
             <Box mb="30">
                 <HStack cursor={"pointer"} onClick={() => {setIsOpen(true)}} width="100%" mb="30">
                     <Circle size='40px' bg='#757ce8' color='white' mr="5">
-                        <span className="text-white text-xl">{index}</span>
+                        <h2 className="text-white text-xl">{index}</h2>
                     </Circle>
-                    <span className="text-black-500 text-xl">{title}</span>
+                    <h3 className="text-black-500 text-xl">{title}</h3>
                 </HStack>
                 {/* <Transition
 					show={isOpen}
