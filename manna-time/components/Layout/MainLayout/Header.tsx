@@ -15,7 +15,7 @@ const Header: React.FC<Props> = function ({ title, service }: Props) {
         <>
             <Head>
                 <title>{`언제만나 - 단체 약속을 간편하게, 약속시간 확정 서비스`}</title>
-                <meta name="description" content="불필요한 대화, 투표는 이제 그만! 그룹, 단체 약속 시간을 간편하게 정해보세요." />
+                <meta name="description" content="우리 언제 만나? 링크만 뿌리면 약속 구성원들이 약속 시간을 편하게 정해줘요." />
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
                 
