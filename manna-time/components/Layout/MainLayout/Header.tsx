@@ -9,7 +9,7 @@ interface Props{
 
 const Header: React.FC<Props> = function ({ title, service }: Props) {
     const router = useRouter()
-    const url = 'https://' + process.env.NEXT_PUBLIC_SERVICE_URL + router.asPath
+    const url = process.env.NEXT_PUBLIC_SERVICE_URL + router.asPath
     return (
 
         <>
@@ -17,7 +17,10 @@ const Header: React.FC<Props> = function ({ title, service }: Props) {
                 <title>{`언제만나 - 단체 약속을 간편하게, 약속시간 확정 서비스`}</title>
                 <meta name="description" content="우리 언제 만나? 링크만 뿌리면 약속 구성원들이 약속 시간을 편하게 정해줘요." />
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
+                <meta
+                    name="keywords"
+                    content="단체약속, 그룹약속, 약속시간, 시간 정하기, 약속 투표"
+                />
                 
                 <link rel="canonical" href={url}></link>
                 <link rel="shortcut icon" href="/images/favicon.ico" />
