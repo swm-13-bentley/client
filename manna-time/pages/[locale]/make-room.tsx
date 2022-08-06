@@ -74,7 +74,7 @@ const MakeRoom: NextPage = () => {
     return (
         <CenterFlexLayout>
             <Center mb="30">
-                <p className="text-2xl">{t('common:make-room')}</p>
+                <h1 className="text-2xl font-semibold">{t('common:make-room')}</h1>
             </Center>
 
             <ProcedureLayout index={1} title={t('set-date')}>
