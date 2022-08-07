@@ -13,11 +13,11 @@ type Props = {
     ranks?: Rank[]
 }
 
-const dayOfTheWeek = ['일','월','화','수','목','금','토']
+const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
 
 const changeDateFormat = (yyyymmdd: string) => {
     const date = new Date(yyyymmdd)
-    let changedDate = yyyymmdd.substring(5).replace('-', '.') +`(${dayOfTheWeek[date.getDay()]})`
+    let changedDate = yyyymmdd.substring(5).replace('-', '.') + `(${dayOfTheWeek[date.getDay()]})`
     return changedDate
 }
 
@@ -26,16 +26,17 @@ const changeTimeFormat = (hhmmss: string) => {
 }
 
 const TimeRank = ({ ranks }: Props) => {
+
     const topRank = ranks?.map((rank: Rank, index: number) => {
         return (
             <>
-                <HStack key={index}>
-                    <Circle size='20px' bg='#757ce8' color='white' mr="2">
-                        <h2 className="text-white md:text-lg text-md">{index + 1}</h2>
+                <HStack key={index} className="md:pl-4">
+                    <Circle size='21px' bg='#757ce8' color='white' mr="1">
+                        <h2 className="text-white md:text-lg text-sm">{index + 1}</h2>
                     </Circle>
-                    <p className="md:text-md text-sm font-normal">
+                    <p className="md:text-lg text-sm font-normal">
                         {changeDateFormat(rank.availableDate)} {changeTimeFormat(rank.startTime)}-{changeTimeFormat(rank.endTime)} :
-                        <span className="md:text-md text-sm font-light"> {rank.count}명</span>
+                        <span className="md:text-lg text-sm font-light"> {rank.count}명</span>
                     </p>
                 </HStack>
             </>
@@ -55,14 +56,14 @@ const TimeRank = ({ ranks }: Props) => {
                 }}
             >
                 {
-                    ranks || ranks == []
+                    (ranks && ranks.length != 0)
                         ?
                         <div className="m-5 space-y-3">
                             {topRank}
                         </div>
                         :
                         <Center>
-                            <span>시간을 입력해주세요!</span>
+                            <span>가능 시간을 입력해주세요!</span>
                         </Center>
                 }
             </Paper>
