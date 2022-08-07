@@ -13,6 +13,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
 import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
 import { MixpanelTracking } from "@/utils/mixpanel";
+import TimeRank from "@/components/Molecule/TimeRank/TimeRank";
 
 const Entry: NextPage = function () {
 
@@ -29,6 +30,8 @@ const Entry: NextPage = function () {
     const [groupSchedule, setGroupSchedule] = useState(null)
     const [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [participantNames, setParticipantNames] = useState(null)
+
+    const [timeRanks, setTimeRanks] = useState(null)
 
     const copyTextUrl = (textUrl: string) => {
         //기타 브라우저
@@ -70,6 +73,14 @@ const Entry: NextPage = function () {
                 setParticipantNames(tempParticipantNames)
             })
     }, [srcUrl]);
+
+    // top 5 time ranks 가져오기
+    useEffect(() => {
+        axios.get(srcUrl + '/top/5')
+            .then((result) => {
+                setTimeRanks(result.data)
+            })
+    },[])
 
     return (
         <>
@@ -136,7 +147,7 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
 
-                                            <div className="mb-5">
+                                            <div>
                                                 <Scheduler
                                                     groupSchedule={groupSchedule}
                                                     isGroup={true}
@@ -146,6 +157,11 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
                                             
+                                            <Center>
+                                                <TimeRank
+                                                    ranks = {timeRanks ? timeRanks : undefined}
+                                                />
+                                            </Center>
                                         </AccordionDetails>
                                         : null
                                 )}
@@ -159,6 +175,7 @@ const Entry: NextPage = function () {
                                     endDate={roomInfo.dates[roomInfo.dates.length - 1]}
                                 />
                             </Center>
+
             
                             
                             {/* chakra version */}
