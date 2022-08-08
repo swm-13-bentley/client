@@ -1,6 +1,7 @@
 import React from "react";
 import clone from "clone";
 import PropTypes from "prop-types";
+import colors from "./Colors"
 
 export default class TableDragSelect extends React.Component {
   static propTypes = {
@@ -252,6 +253,9 @@ class Cell extends React.Component {
       ...props
     } = this.props;
     // console.log(cellProperty)
+    let style = {
+      background : ""
+    }
     if (disabled) {
       if (white) {
         className += " cell-white-disabled";
@@ -280,15 +284,20 @@ class Cell extends React.Component {
           if (cellProperty.isCalendar) {
             className += " calendar"
           } else {
-            if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
-              className += " opacity-0-25";
-            } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
-              className += " opacity-0-50";
-            } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
-              className += " opacity-0-75";
-            } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
-              className += " opacity-1-00";
-            }
+            // console.log(colors)
+            style.background = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            console.log (style)
+            // style.background = "#5d5be0" + Math.round(cellProperty.opacity * 100).toString(16)
+            // console.log(cellProperty.opacity * 100, (Math.round(cellProperty.opacity * 100)*3).toString(16))
+            // if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
+            //   className += " opacity-0-25";
+            // } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
+            //   className += " opacity-0-50";
+            // } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
+            //   className += " opacity-0-75";
+            // } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
+            //   className += " opacity-1-00";
+            // }
           }
 
         
@@ -298,6 +307,7 @@ class Cell extends React.Component {
     }
     return (
       <td
+        style={style}
         ref={(td) => (this.td = td)}
         className={className}
         onMouseDown={this.handleTouchStart}
