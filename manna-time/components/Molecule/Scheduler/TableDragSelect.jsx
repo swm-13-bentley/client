@@ -284,20 +284,7 @@ class Cell extends React.Component {
           if (cellProperty.isCalendar) {
             className += " calendar"
           } else {
-            // console.log(colors)
             style.background = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
-            console.log (style)
-            // style.background = "#5d5be0" + Math.round(cellProperty.opacity * 100).toString(16)
-            // console.log(cellProperty.opacity * 100, (Math.round(cellProperty.opacity * 100)*3).toString(16))
-            // if (0 < cellProperty.opacity && cellProperty.opacity <= 0.25) {
-            //   className += " opacity-0-25";
-            // } else if (0.25 < cellProperty.opacity && cellProperty.opacity <= 0.5) {
-            //   className += " opacity-0-50";
-            // } else if (0.5 < cellProperty.opacity && cellProperty.opacity <= 0.75) {
-            //   className += " opacity-0-75";
-            // } else if (0.75 < cellProperty.opacity && cellProperty.opacity <= 1) {
-            //   className += " opacity-1-00";
-            // }
           }
 
         
