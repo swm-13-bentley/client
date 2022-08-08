@@ -13,6 +13,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
 import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
 import { MixpanelTracking } from "@/utils/mixpanel";
+import TimeRank from "@/components/Molecule/TimeRank/TimeRank";
 
 const Entry: NextPage = function () {
 
@@ -30,23 +31,25 @@ const Entry: NextPage = function () {
     const [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [participantNames, setParticipantNames] = useState(null)
 
+    const [timeRanks, setTimeRanks] = useState(undefined)
+
     const copyTextUrl = (textUrl: string) => {
         //기타 브라우저
         navigator.clipboard.writeText(textUrl).then(() => {
             alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
         })
-        .catch(() =>{
-            //인앱 브라우저 : kakao, naver ...
-            const inputElement = document.createElement("input")
-            inputElement.readOnly = !0
-            inputElement.value = textUrl
-            document.body.appendChild(inputElement)
-            inputElement.select()
-            inputElement.setSelectionRange(0, inputElement.value.length)
-            document.execCommand("Copy")
-            document.body.removeChild(inputElement)
-            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-        })
+            .catch(() => {
+                //인앱 브라우저 : kakao, naver ...
+                const inputElement = document.createElement("input")
+                inputElement.readOnly = !0
+                inputElement.value = textUrl
+                document.body.appendChild(inputElement)
+                inputElement.select()
+                inputElement.setSelectionRange(0, inputElement.value.length)
+                document.execCommand("Copy")
+                document.body.removeChild(inputElement)
+                alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
+            })
     }
 
     useEffect(() => {
@@ -71,6 +74,14 @@ const Entry: NextPage = function () {
             })
     }, [srcUrl]);
 
+    // top 5 time ranks 가져오기
+    useEffect(() => {
+        axios.get(srcUrl + '/top/5')
+            .then((result) => {
+                setTimeRanks(result.data)
+            })
+    }, [srcUrl])
+
     return (
         <>
             <CenterFlexLayout>
@@ -87,7 +98,7 @@ const Entry: NextPage = function () {
                                 <AccordionSummary aria-controls="panel1d-content"
                                     expandIcon={<ExpandMoreIcon />}
                                     id="panel1a-header"
-                                    onClick={(e:SyntheticEvent)=>{setExpanded(!expanded)}}
+                                    onClick={(e: SyntheticEvent) => { setExpanded(!expanded) }}
                                 >
                                     {/* <Typography>현재 그룹 스케줄 확인하기</Typography> */}
                                 </AccordionSummary>
@@ -112,7 +123,7 @@ const Entry: NextPage = function () {
                                                     onClick={() => {
                                                         MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
                                                         copyTextUrl(textUrl)
-                                                    } }
+                                                    }}
                                                 >
                                                     방 링크 복사
                                                 </Button>
@@ -136,7 +147,7 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
 
-                                            <div className="mb-5">
+                                            <div>
                                                 <Scheduler
                                                     groupSchedule={groupSchedule}
                                                     isGroup={true}
@@ -145,11 +156,22 @@ const Entry: NextPage = function () {
                                                     groupFilterChecked={groupFilterChecked}
                                                 />
                                             </div>
-                                            
+
+                                            {
+                                                timeRanks != undefined
+                                                    ?
+                                                    <Center>
+                                                        <TimeRank
+                                                            ranks={timeRanks}
+                                                        />
+                                                    </Center>
+                                                    :
+                                                    null
+                                            }
                                         </AccordionDetails>
                                         : null
                                 )}
-                                
+
                             </Accordion>
 
                             <Center className="mb-10">
@@ -159,8 +181,9 @@ const Entry: NextPage = function () {
                                     endDate={roomInfo.dates[roomInfo.dates.length - 1]}
                                 />
                             </Center>
-            
-                            
+
+
+
                             {/* chakra version */}
                             {/* <Box p={10}>
                                 <Accordion defaultIndex={[0]} allowMultiple>

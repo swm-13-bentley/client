@@ -361,18 +361,23 @@ const Scheduler = forwardRef((props, ref) => {
       // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
       // console.log(opacity)
       const isCalendar = calendarState[currIdx.index][t - startTime][weekIdx]
-      const color = "#FFFFFF"
+      // const color = "#FFFFFF"
 
       let cellProperty = new CellProperty(
         isDisabled,
         opacity,
-        color,
+        // color,
         isCalendar
       )
 
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
       return (
-        <td key={key} disabled={!validDaysList[currIdx.index][weekIdx]} cellProperty={cellProperty} className={weekDay} />
+        <td
+          key={key}
+          disabled={!validDaysList[currIdx.index][weekIdx]}
+          cellProperty={cellProperty}
+          className={weekDay}
+        />
       )
     })
 
