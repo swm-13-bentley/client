@@ -14,11 +14,9 @@ interface Props {
 const IndeterminateCheckbox = ({ participantNames, isChecked, onChange }: Props) => {
     
     const [checked, setChecked] = React.useState([]);
-    // console.log(isChecked)
     onChange(checked)
 
     useEffect(() => {
-        // console.log(participantNames)
         if (participantNames != null) {
             if (isChecked == null)
                 setChecked(Array(participantNames.length).fill(true));
