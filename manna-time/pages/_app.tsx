@@ -13,21 +13,43 @@ import { useEffect } from 'react'
 import { MixpanelTracking } from '@/utils/mixpanel'
 import { RecoilRoot } from 'recoil'
 import { useRouter } from 'next/router'
+import Script from 'next/script'
+
+import * as gtag from '@/lib/gtag'
 
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
-  useEffect(() => { 
+  useEffect(() => {
     MixpanelTracking.getInstance().pageViewed(router.pathname)
-  },[])
+  }, [])
   return (
     <CacheProvider value={clientSideEmotionCache}>
       <ChakraProvider>
         <ThemeProvider theme={theme}>
           <RecoilRoot>
             <MainLayout>
+              {/* Global Site Tag (gtag.js) - Google Analytics */}
+              <Script
+                strategy="afterInteractive"
+                src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+              />
+              <Script
+                id="gtag-init"
+                strategy="afterInteractive"
+                dangerouslySetInnerHTML={{
+                  __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+                }}
+              />
               <Component {...pageProps} />
             </MainLayout>
           </RecoilRoot>
