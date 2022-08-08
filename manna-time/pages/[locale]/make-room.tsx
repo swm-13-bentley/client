@@ -145,7 +145,9 @@ const MakeRoom: NextPage = () => {
                     // console.log(result.data.roomUuid)
                     router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
                 })
-                .catch((e) => { console.log(e) })
+                .catch((e) => {
+                    // console.log(e)
+                })
         }
     }
 }
