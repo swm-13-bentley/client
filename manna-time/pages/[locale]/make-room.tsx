@@ -18,6 +18,7 @@ import axios from 'axios'
 import { ConstructionOutlined } from '@mui/icons-material'
 import { useRouter } from 'next/router'
 import { MixpanelTracking } from '@/utils/mixpanel'
+import TimeRangeSelectbox from '@/components/Molecule/TimeRangeSelectbox/TimeRangeSelectbox'
 
 const dateRangeFormat = "YYYY-MM-DD"
 const timeRangeFormat = "HH:mm";
@@ -31,6 +32,8 @@ const MakeRoom: NextPage = () => {
     
     const [dateRange, setDateRange] = useState<Value>([new Date()]);
     const [timeRange, setTimeRange] = useState(defaultTime)
+    const [manualTimeRange, setManualTimeRange] = useState(["", ""])
+    const [manualClicked, setManualClicked] = useState(false)
     const [roomName, setRoomName] = useState("")
 
     const [checked, setChecked] = useState([false,false,false])
@@ -92,12 +95,22 @@ const MakeRoom: NextPage = () => {
             </ProcedureLayout>
 
             <ProcedureLayout index={2} title={t('set-timezone')}>
-                <ButtonGroup variant="outlined" aria-label="outlined button group">
-                    {buttonMap}
-                </ButtonGroup>
-                <Center m={20}>
+                <Box width="100%" opacity={manualClicked ? 0.5 : 1} onClick={()=>setManualClicked(false)}>
+                    <ButtonGroup variant="outlined" aria-label="outlined button group">
+                        {buttonMap}
+                    </ButtonGroup>
+                </Box>
+                <Center m={15}>
                     <h3 className=' text-indigo-600'>또는</h3>
                 </Center>
+                <Box width={"100%"} opacity={manualClicked ? 1 : 0.5} onClick={()=>setManualClicked(true)}>
+                    <TimeRangeSelectbox
+                        onSelectChange={(selected) => {
+                            setManualTimeRange(selected)
+                            setManualClicked(true)
+                        }}
+                    />
+                </Box>
             </ProcedureLayout>
 
             <ProcedureLayout index={3} title={t('set-event-name')}>
@@ -125,10 +138,14 @@ const MakeRoom: NextPage = () => {
 
     function sendRoomRequest() {
         const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
+        let requestTimeRange = manualClicked ? manualTimeRange : timeRange
 
-        let sendFlag = (roomName != "") && (timeRange.length != 0)
+        let sendFlag = (roomName != "") && (requestTimeRange.length != 0 && requestTimeRange.every((time)=>time.length > 0))
         if (!sendFlag) {
             alert("날짜, 시간, 방 제목을 정확히 입력하세요")
+        }
+        else if (requestTimeRange[0] == requestTimeRange[1]) {
+            alert("시작 시간과 끝 시간은 같을 수 없습니다. 시간을 수정해주세요")
         }
         else {
             axios({
@@ -137,8 +154,8 @@ const MakeRoom: NextPage = () => {
                 data: {
                     "title": roomName,
                     "dates": dateRange,
-                    "startTime": timeRange[0],
-                    "endTime": timeRange[1]
+                    "startTime": requestTimeRange[0],
+                    "endTime": requestTimeRange[1]
                 }
             })
                 .then((result) => {
