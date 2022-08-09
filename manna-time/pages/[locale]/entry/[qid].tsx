@@ -139,6 +139,17 @@ const Entry: NextPage = function () {
                                                 </Button>
                                             </Center>
 
+                                                {
+                                                    timeRanks != undefined
+                                                        ?
+                                                        <Center>
+                                                            <TimeRank
+                                                                ranks={timeRanks}
+                                                            />
+                                                        </Center>
+                                                        :
+                                                        null
+                                                }
                                             <div className="ml-5 mr-5">
                                                 <IndeterminateCheckbox
                                                     participantNames={participantNames}
@@ -147,7 +158,7 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
 
-                                            <div>
+                                            <div className="mb-6">
                                                 <Scheduler
                                                     groupSchedule={groupSchedule}
                                                     isGroup={true}
@@ -157,17 +168,6 @@ const Entry: NextPage = function () {
                                                 />
                                             </div>
 
-                                            {
-                                                timeRanks != undefined
-                                                    ?
-                                                    <Center>
-                                                        <TimeRank
-                                                            ranks={timeRanks}
-                                                        />
-                                                    </Center>
-                                                    :
-                                                    null
-                                            }
                                         </AccordionDetails>
                                         : null
                                 )}
