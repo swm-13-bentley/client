@@ -12,7 +12,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InfoIcon from '@mui/icons-material/Info';
 
-import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
+import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox"
 import { MixpanelTracking } from "@/utils/mixpanel"
 import { DateObject } from "react-multi-date-picker"
 import { start } from "repl"

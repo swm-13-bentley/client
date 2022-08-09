@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
-import IndeterminateCheckbox from "../../../components/IndeterminateCheckbox";
+import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox";
 import { MixpanelTracking } from "@/utils/mixpanel";
 import TimeRank from "@/components/Molecule/TimeRank/TimeRank";
 

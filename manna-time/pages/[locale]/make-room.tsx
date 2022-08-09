@@ -95,9 +95,9 @@ const MakeRoom: NextPage = () => {
                 <ButtonGroup variant="outlined" aria-label="outlined button group">
                     {buttonMap}
                 </ButtonGroup>
-                {/* <Center mt="10">
-                    <h5>직접 설정</h5>
-                </Center> */}
+                <Center m={20}>
+                    <h3 className=' text-indigo-600'>또는</h3>
+                </Center>
             </ProcedureLayout>
 
             <ProcedureLayout index={3} title={t('set-event-name')}>
