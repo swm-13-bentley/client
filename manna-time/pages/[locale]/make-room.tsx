@@ -93,7 +93,7 @@ const MakeRoom: NextPage = () => {
                         }
                     }}
                     zIndex={1} />
-                {/* <FormControlLabel
+                <FormControlLabel
                     className="md:text-md text-lg mt-2"
                     sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
                     label={"약속 날짜만 정하면 돼요"}
@@ -103,7 +103,7 @@ const MakeRoom: NextPage = () => {
                             onChange={() => setIsDateOnly(!isDateOnly)}
                         />
                     }
-                /> */}
+                />
             </ProcedureLayout>
             <Box height={isDateOnly ? 0 : "100%"} width="100%" overflow={"hidden"} transition="height 500ms ease">
                 <ProcedureLayout index={2} title={t('set-timezone')}>

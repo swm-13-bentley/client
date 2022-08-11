@@ -13,7 +13,7 @@ import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
 import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox";
 import { MixpanelTracking } from "@/utils/mixpanel";
-import TimeRank from "@/components/Molecule/TimeRank/TimeRank";
+import TimeRank from "@/components/Molecule/Rank/TimeRank";
 
 const Entry: NextPage = function () {
 
@@ -32,25 +32,6 @@ const Entry: NextPage = function () {
     const [participantNames, setParticipantNames] = useState(null)
 
     const [timeRanks, setTimeRanks] = useState(undefined)
-
-    const copyTextUrl = (textUrl: string) => {
-        //기타 브라우저
-        navigator.clipboard.writeText(textUrl).then(() => {
-            alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-        })
-            .catch(() => {
-                //인앱 브라우저 : kakao, naver ...
-                const inputElement = document.createElement("input")
-                inputElement.readOnly = !0
-                inputElement.value = textUrl
-                document.body.appendChild(inputElement)
-                inputElement.select()
-                inputElement.setSelectionRange(0, inputElement.value.length)
-                document.execCommand("Copy")
-                document.body.removeChild(inputElement)
-                alert("링크가 복사되었습니다. 약속 구성원에게 공유하세요.")
-            })
-    }
 
     useEffect(() => {
         axios.get(srcUrl)
