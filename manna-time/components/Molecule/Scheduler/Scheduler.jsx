@@ -3,7 +3,7 @@
 
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
 import {Flex} from "@chakra-ui/react"
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react"
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from "react"
 import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -34,7 +34,7 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }))
 
-  var startDate, endDate, startTime, endTime, isGroup;
+  let startDate, endDate, startTime, endTime, isGroup;
   let groupSchedule, totalNum, groupFilterChecked // 필터 누를 때마다 그룹스케줄
   let isDisabled = false
   let calendarEvents = [] //비회원 캘린더 내 스케줄
@@ -123,21 +123,22 @@ const Scheduler = forwardRef((props, ref) => {
   const endDay = (endDate.getDay() + 6) % 7;
   const dateDiff = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
 
-  var initCells = [];
-  var initGroupCells = [];
-  var temp;
+  let initCells = [];
+  let initGroupCells = [];
+  let temp;
   for (temp = 0; temp < (endTime - startTime + 2); temp++) {
-    initCells.push([false, false, false, false, false, false, false])
-    initGroupCells.push(new Array(7).fill(0))
+    initCells.push([false, false, false, false, false, false, false, false]) // 시간대 : 1, 월~일 : 7 => 총 8개
+    initGroupCells.push(new Array(8).fill(0))
   }
 
   const [curr, changeCurr] = useState({
     cells: initCells
   });
+  console.log(curr.cells)
 
-  var tableState = [];
-  var calendarState = [];
-  var groupState = [];
+  let tableState = [];
+  let calendarState = [];
+  let groupState = [];
 
   for (temp = 0; temp < parseInt((startDay + dateDiff) / 7 + 1); temp++) {
     tableState.push([...initCells]);
@@ -150,9 +151,9 @@ const Scheduler = forwardRef((props, ref) => {
 
 
 
-  var currDate = startDate; // Object.assign({}, startDate);
-  var tableList = [];
-  var tempList = [];
+  let currDate = startDate; // Object.assign({}, startDate);
+  let tableList = [];
+  let tempList = [];
   while (currDate.getTime() <= endDate.getTime()) {
     if (currDate.getDay() === 1 && tempList.length > 0) {
       tableList.push(tempList);
@@ -166,12 +167,12 @@ const Scheduler = forwardRef((props, ref) => {
     tableList.push(tempList);
   }
 
-  var validDaysList = []
-  var weeks = tableList.map(
+  let validDaysList = []
+  let weeks = tableList.map(
     days => {
-      var firstDay = days[0].getDay();
-      var monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
-      var validDays = [false, false, false, false, false, false, false];
+      let firstDay = days[0].getDay();
+      let monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
+      let validDays = [false, false, false, false, false, false, false];
       days.forEach(
         day => validDays[(day.getDay() + 6) % 7] = true
       );
@@ -187,7 +188,7 @@ const Scheduler = forwardRef((props, ref) => {
       ]
     }
   )
-  var times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
+  let times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
 
   function groupScheduleElements(element, index, array) {
     let available = element.available
@@ -196,9 +197,9 @@ const Scheduler = forwardRef((props, ref) => {
     if (available != null && available != 0 && isGroup && groupFilterChecked[index]) {
       available.forEach(
         obj => {
-          var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-          var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-          var dayIdx = (startDate.getDay() + diff + 6) % 7;
+          let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+          let dayIdx = (startDate.getDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
             timeIdx => {
               groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
@@ -215,9 +216,9 @@ const Scheduler = forwardRef((props, ref) => {
     if (events != null && events != 0 && isGroup) {
       events.forEach(
         obj => {
-          var diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-          var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-          var dayIdx = (startDate.getDay() + diff + 6) % 7;
+          let diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+          let dayIdx = (startDate.getDay() + diff + 6) % 7;
           obj.scheduledTimeList.forEach(
             timeIdx => {
               calendarState[weekIdx][timeIdx - startTime][dayIdx] = true;
@@ -244,31 +245,29 @@ const Scheduler = forwardRef((props, ref) => {
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
   function handleChange(cells) {
-    changeCurr({ cells });
-    // console.log(cells);
+    changeCurr({ cells : cells });
   }
 
   const handleClick = () => {
-    var temp = [...currTot.cellsTot];
+    let temp = [...currTot.cellsTot];
     temp[currIdx.index] = [...curr.cells];
-    // console.log(temp)
-    var apiRequestBody = [];
+    let apiRequestBody = [];
 
-    for (var i = 0; i < weeks.length; i++) {
-      for (var j = 0; j < 7; j++) {
+    for (let i = 0; i < weeks.length; i++) {
+      for (let j = 0; j < 7; j++) {
         function leftPad(value) {
           if (value >= 10) {
             return value;
           }
           return `0${value}`
         }
-        var availableDate = [
+        let availableDate = [
           weeks[i][j].getFullYear(),
           leftPad(weeks[i][j].getMonth() + 1),
           leftPad(weeks[i][j].getDate())
         ].join("-");
-        var availableTimeList = []
-        for (var k = 0; k < (endTime - startTime); k++) {
+        let availableTimeList = []
+        for (let k = 0; k < (endTime - startTime); k++) {
           if (temp[i][k + 2][j + 1]) {
             availableTimeList.push(startTime + k)
           }
@@ -293,9 +292,9 @@ const Scheduler = forwardRef((props, ref) => {
 
     available.forEach(
       obj => {
-        var diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-        var weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-        var dayIdx = (startDate.getDay() + diff + 6) % 7;
+        let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+        let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
+        let dayIdx = (startDate.getDay() + diff + 6) % 7;
         obj.availableTimeList.forEach(
           timeIdx => {
             temp[weekIdx][timeIdx - startTime + 2][dayIdx + 1] = true; //행열 2개와 1개
@@ -303,24 +302,20 @@ const Scheduler = forwardRef((props, ref) => {
         )
       }
     )
-    // console.log(temp)
-    // console.log(available)
 
     changeCurrTot({ cellsTot: temp })
-    changeCurr({ cells: [...temp[0]] });
+    changeCurr({ cells: [...temp[0]] }); //동기처리 위해 updater 함수 사용 -> 실패 ㅜㅜ
     changeCurrIdx({ index: 0 });
-
-
   }
 
   const handleLeft = () => {
     if (currIdx.index > 0) {
-      var temp = [...currTot.cellsTot];
+      let temp = [...currTot.cellsTot];
       temp[currIdx.index] = [...curr.cells];
       changeCurrTot({ cellsTot: temp });
       changeCurr({ cells: [...temp[currIdx.index - 1]] });
       changeCurrIdx({ index: currIdx.index - 1 });
-      var currWeek = weeks[currIdx.index - 1];
+      let currWeek = weeks[currIdx.index - 1];
       dayChanges.forEach(
         (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
       )
@@ -330,14 +325,14 @@ const Scheduler = forwardRef((props, ref) => {
 
   const handleRight = () => {
     if (currIdx.index < tableState.length - 1) {
-      var currWeek = weeks[currIdx.index + 1];
+      let currWeek = weeks[currIdx.index + 1];
       dayChanges.forEach(
         (changeText, idx) => {
           // console.log(currWeek[idx].toLocaleDateString())
           changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
         }
       )
-      var temp = [...currTot.cellsTot]
+      let temp = [...currTot.cellsTot]
       temp[currIdx.index] = [...curr.cells];
       changeCurrTot({ cellsTot: temp });
       changeCurr({ cells: [...temp[currIdx.index + 1]] });
@@ -353,6 +348,8 @@ const Scheduler = forwardRef((props, ref) => {
   }, [mySchedule])
 
   const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+  const weekDaysKo = ["월", "화", "수", "목", "금", "토", "일"]
+
   const eachRow = times.map(t => {
 
     const eachCell = weekDays.map((weekDay, weekIdx) => {
@@ -389,6 +386,21 @@ const Scheduler = forwardRef((props, ref) => {
     )
   })
 
+  const onDateClick = (colIdx) => {
+    const timeDiff = endTime - startTime
+    const isAllSelected = true
+
+    let temp = [...curr.cells];
+    for (let i = 0; i < timeDiff; i++) {
+      isAllSelected &= temp[i + 2][colIdx + 1]
+    }
+    for (let i = 0; i < timeDiff; i++) {
+      temp[i + 2][colIdx + 1] = !isAllSelected
+    }
+
+    handleChange(temp);
+  }
+
   return (
     <div>
 
@@ -401,7 +413,7 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled />
           {
             dayTexts.map(
-              text => <td white disabled text={text.text}>{text.text}</td>
+              (text,index) => <td white disabled text={text.text}>{text.text}</td>
             )
           }
         </tr>

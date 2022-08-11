@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { NativeSelect } from '@mui/material';
-import { HStack } from '@chakra-ui/react';
+import { Center, Flex, HStack } from '@chakra-ui/react';
 import times from './Times';
 import { ChangeEvent, ChangeEventHandler, useEffect, useState } from 'react';
 
@@ -41,10 +41,10 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
 
 
     return (
-        <Box sx={{ width: "100%"}} >
+        <Box width="100%">
             <HStack className=' space-x-5'>
-
-                <FormControl variant='filled' fullWidth >
+                <h4 className=' font-semibold'>직접설정 : </h4>
+                <FormControl variant='filled' sx={{width:"30%"}}>
                     <NativeSelect
                         defaultValue={""}
                         inputProps={{
@@ -54,15 +54,16 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
                         value = {startTime}
                         onChange={handleStartChange}
                     >
-                        <option value="" selected disabled hidden >시작 시간</option>
+                        <option value="" selected disabled hidden ></option>
                         {options}
                     </NativeSelect>
                 </FormControl>
                 
-                <span>~</span>
+                <span>-</span>
 
-                <FormControl variant='filled' fullWidth>
+                <FormControl variant='filled' sx={{width:"30%"}}>
                     <NativeSelect
+                        sx={{width:"auto"}}
                         defaultValue={""}
                         inputProps={{
                             name: 'end time',
@@ -71,7 +72,7 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
                         value = {endTime}
                         onChange={handleEndChange}
                     >
-                        <option value="" selected disabled hidden >끝 시간</option>
+                        <option value="" selected disabled hidden ></option>
                         {options}
                     </NativeSelect>
                 </FormControl>                
