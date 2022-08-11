@@ -12,7 +12,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import InfoIcon from '@mui/icons-material/Info';
 
-import IndeterminateCheckbox from "../../../../components/IndeterminateCheckbox"
+import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox"
 import { MixpanelTracking } from "@/utils/mixpanel"
 import { DateObject } from "react-multi-date-picker"
 import { start } from "repl"
@@ -67,7 +67,7 @@ const Room: NextPage = function () {
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
-    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
+    // const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
@@ -92,7 +92,7 @@ const Room: NextPage = function () {
             })
     }, [srcUrl]);
 
-    //구글 캘린더 등록
+    // 구글 캘린더 등록
     // useEffect(() => {
     //     //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
     //     window.addEventListener("message", (event) => {
@@ -205,7 +205,7 @@ const Room: NextPage = function () {
                             color="primary"
                             className="md:text-xs text-xs"
                             onClick={() => {
-                                window.open(googleLoginUrl,"self",'popup')
+                                postCalendarRequest()
                             }}
                             startIcon={<CalendarMonthIcon />}
                         >
@@ -249,18 +249,18 @@ const Room: NextPage = function () {
             }
 
             return (<>
-                <div className="m-5 space-y-2">
-                    <p className="md:text-lg text-md font-bold">
-                        <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
-                        {title ? title : "loading..."}
-                    </p>
-                    <p className="md:text-lg text-md font-bold">
-                        <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
-                        {startDate && endDate ? `${startDate} ~ ${endDate}` : "loading"}
-                    </p>
-                </div>
-                <Center width="100">
-                </Center >
+                <Flex width={"88vw"}>
+                    <div className="m-5 space-y-2">
+                        <p className="md:text-lg text-md font-bold">
+                            <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
+                            {title ? title : "loading..."}
+                        </p>
+                        <p className="md:text-lg text-md font-bold">
+                            <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
+                            {startDate && endDate ? `${startDate} ~ ${endDate}` : "loading"}
+                        </p>
+                    </div>
+                </Flex>
             </>)
         }
     }
@@ -316,7 +316,7 @@ const Room: NextPage = function () {
         <>
             {isFeedbackShown && <Feedback />}
             <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, paddingBottom: 2, maxWidth: 693, borderRadius: 3 }}>
+                <Paper sx={{ boxShadow: 4, paddingBottom: 2, maxWidth: 693, borderRadius: 3}}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: 2 }}>
                         <Tabs value={tab} onChange={handleTabChange} aria-label="basic tabs example">
                             <Tab label={tabLabel[0]} />
@@ -373,11 +373,32 @@ const Room: NextPage = function () {
 
     }
 
-    function sendCalendarRequest(authCode: string, roomUuid: string) {
-        const requestUrl = srcUrl + `/participant/google?code=${authCode}`
+    function postCalendarRequest() {
+        const requestUrl = process.env.NEXT_PUBLIC_API_URL + `/google/calendar`
+        axios({
+            method: 'post',
+            url: requestUrl
+        })
+            .then((result) => {
+                // 구글 로그인 창 열기
+                window.open(result.data.authUrl,"self",'popup')
+
+            })
+            .catch((e) => {
+                console.log(e.response)
+                alert('캘린더 요청 실패')
+            })
+    }
+
+    function sendCalendarRequest(state: string, roomUuid: string) {
+        const requestUrl = srcUrl + `/google/calendar`
         axios({
             method: 'get',
-            url: requestUrl
+            url: requestUrl,
+            data: {
+                "roomUuid": roomUuid,
+                "state" : state
+            }
         })
             .then((result) => {
                 console.log(result)

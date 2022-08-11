@@ -63,7 +63,7 @@ const TimeRank = ({ ranks }: Props) => {
                         </div>
                         :
                         <Center>
-                            <span>가능 시간을 입력해주세요!</span>
+                            <span>약속 가능한 시간을 입력해주세요!</span>
                         </Center>
                 }
             </Paper>
