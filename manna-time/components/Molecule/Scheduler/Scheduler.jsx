@@ -134,7 +134,7 @@ const Scheduler = forwardRef((props, ref) => {
   const [curr, changeCurr] = useState({
     cells: initCells
   });
-  console.log(curr.cells)
+  // console.log(curr.cells)
 
   let tableState = [];
   let calendarState = [];

@@ -14,6 +14,7 @@ import axios from "axios";
 import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox";
 import { MixpanelTracking } from "@/utils/mixpanel";
 import TimeRank from "@/components/Molecule/Rank/TimeRank";
+import copyTextUrl from "@/utils/copyTextUrl";
 
 const Entry: NextPage = function () {
 

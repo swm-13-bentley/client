@@ -30,7 +30,7 @@ const MakeRoom: NextPage = () => {
 
     const defaultTime: string[] = []
 
-    const [dateRange, setDateRange] = useState<Value>([new Date()]);
+    const [dateRange, setDateRange] = useState([new Date()]);
     const [isDateOnly, setIsDateOnly] = useState(false)
     const [timeRange, setTimeRange] = useState(defaultTime)
     const [manualTimeRange, setManualTimeRange] = useState(["", ""])
@@ -148,35 +148,65 @@ const MakeRoom: NextPage = () => {
     )
 
     function sendRoomRequest() {
-        const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
-        let requestTimeRange = manualClicked ? manualTimeRange : timeRange
+        let srcUrl,sendFlag
+        if (isDateOnly) {
+            //날짜만 정하는 방
+            srcUrl = process.env.NEXT_PUBLIC_API_URL + '/day/room'
+            sendFlag = (roomName != "" && dateRange.length > 0)
+            if (!sendFlag)
+                alert("날짜, 방 제목을 정확히 입력하세요")
+            else {
+                axios({
+                    method: 'post',
+                    url: srcUrl,
+                    data: {
+                        "title": roomName,
+                        "dates": dateRange
+                    }
+                })
+                    .then((result) => {
+                        console.log(result.data.roomUuid)
+                        router.push(`/${router.query.locale}/date/${result.data.roomUuid}`);
+                    })
+                    .catch((e) => {
+                        // console.log(e)
+                        alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
+                    })
+            }
+        } else {
+            //시간대까지 정하는 방
+            let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
+            let requestTimeRange = manualClicked ? manualTimeRange : timeRange
+            sendFlag = (roomName != "") && (requestTimeRange.length != 0 && requestTimeRange.every((time) => time.length > 0))
+    
+            if (!sendFlag) {
+                alert("날짜, 시간, 방 제목을 정확히 입력하세요")
+            }
+            else if (requestTimeRange[0] == requestTimeRange[1]) {
+                alert("시작 시간과 끝 시간은 같을 수 없습니다. 시간을 수정해주세요")
+            }
+            else {
+                axios({
+                    method: 'post',
+                    url: srcUrl,
+                    data: {
+                        "title": roomName,
+                        "dates": dateRange,
+                        "startTime": requestTimeRange[0],
+                        "endTime": requestTimeRange[1]
+                    }
+                })
+                    .then((result) => {
+                        // console.log(result.data.roomUuid)
+                        router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
+                    })
+                    .catch((e) => {
+                        // console.log(e)
+                        alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
+                    })
+            }
+        }
 
-        let sendFlag = (roomName != "") && (requestTimeRange.length != 0 && requestTimeRange.every((time) => time.length > 0))
-        if (!sendFlag) {
-            alert("날짜, 시간, 방 제목을 정확히 입력하세요")
-        }
-        else if (requestTimeRange[0] == requestTimeRange[1]) {
-            alert("시작 시간과 끝 시간은 같을 수 없습니다. 시간을 수정해주세요")
-        }
-        else {
-            axios({
-                method: 'post',
-                url: srcUrl,
-                data: {
-                    "title": roomName,
-                    "dates": dateRange,
-                    "startTime": requestTimeRange[0],
-                    "endTime": requestTimeRange[1]
-                }
-            })
-                .then((result) => {
-                    // console.log(result.data.roomUuid)
-                    router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
-                })
-                .catch((e) => {
-                    // console.log(e)
-                })
-        }
     }
 }
 
