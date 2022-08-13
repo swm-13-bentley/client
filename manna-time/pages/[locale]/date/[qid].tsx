@@ -12,6 +12,10 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { useEffect, useState } from "react"
 import axios from "axios"
 import DateRank from "@/components/Molecule/Rank/DateRank"
+import { useRecoilState } from "recoil"
+import { DateOnlyLoginState } from "@/src/state"
+import DateOnlyCard from "@/components/Atom/ModalCard/DateOnlyCard"
+import { resolveHref } from "next/dist/shared/lib/router/router"
 
 const dateRangeFormat = "YYYY-MM-DD"
 
@@ -26,11 +30,6 @@ interface Rank {
     participants: string[]
 }
 
-// type Props = {
-//     ranks?: Rank[],
-//     totalNum: number
-// }
-
 const Date: NextPage = function () {
     const router = useRouter()
     const { qid } = router.query
@@ -42,6 +41,14 @@ const Date: NextPage = function () {
     const [selectedDates, setSelectedDates] = useState<string[]>([])
     const [dateRanks, setDateRanks] = useState<Rank[]>([])
 
+    const [isLoginShown, setIsLoginShown] = useRecoilState(DateOnlyLoginState)
+    const [loginType, setLoginType] = useState("")
+
+    const [name, setName] = useState("")
+    const [password, setPassword] = useState("")
+    const [submitCount, setSubmitCount] = useState(0)
+
+
     useEffect(() => {
         if (qid != undefined) {
             axios.get(apiUrl)
@@ -49,7 +56,7 @@ const Date: NextPage = function () {
                     setRoomInfo(result.data)
                 })
         }
-    }, [qid]);
+    }, [isLoginShown, qid, submitCount]);
 
     useEffect(() => {
         if (qid != undefined) {
@@ -58,26 +65,63 @@ const Date: NextPage = function () {
                     setDateRanks(result.data)
                 })
         }
-    }, [qid]);
+    }, [isLoginShown, qid, submitCount]);
 
     return (<>
+        {isLoginShown &&
+            <DateOnlyCard
+            onConfirm={(name, password?) => {
+                let promise
+                if (loginType == "제출하기") {
+                    promise = submitDates(apiUrl + '/participant/available', selectedDates, name, password)
+                    promise.then((result) => {
+                        if (result != undefined) {
+                            setName(name)
+                            setPassword(password!=undefined ? password : "")
+                        }
+                    })
+                    return ({
+                        promise: promise,
+                        errorText: "이전에 입력하신 비밀번호를 입력해주세요!"
+                    })
+                } else {
+                    // "이전입력" 불러오기의 경우
+                    promise = loadDates(apiUrl + '/participant/load', name, password)
+                    promise.then((result) => {
+                        if (result != undefined) {
+                            setSelectedDates(result.data.availableDates)
+                            setName(name)
+                            setPassword(password!=undefined ? password : "")
+                        }
+                    })
+                    return ({
+                        promise: promise,
+                        errorText: "존재하지 않는 사용자입니다"
+                    })
+                }
+                }}
+
+            />}
         <CenterFlexLayout>
             {
                 !roomInfo ? <h1>방 정보를 불러오는 중입니다...</h1> :
                     <>
-                            <Center mb="5">
-                                <h1 className="text-lg font-bold">{roomInfo.title}</h1>
-                            </Center>
-                            <Center >
-                                <p className="text-sm font-bold">{roomInfo.dates[0]} ~ {roomInfo.dates[roomInfo.dates.length - 1]}</p>
-                            </Center>
+                        <Center mb="5">
+                            <h1 className="text-lg font-bold">{roomInfo.title}</h1>
+                        </Center>
+                        <Center mb="2">
+                            <p className="text-sm font-bold">{roomInfo.dates[0]} ~ {roomInfo.dates[roomInfo.dates.length - 1]}</p>
+                        </Center>
+                        <Center >
+                            <p className="text-sm font-bold">현재 참여자 : {roomInfo.participants.join(', ')}</p>
+                        </Center>
 
-                            <Center width={"100%"}>
-                                <DateRank
-                                    ranks={dateRanks}
-                                    totalNum={roomInfo.participants.length}
-                                />
-                            </Center>
+                        <Center width={"100%"}>
+                            <DateRank
+                                ranks={dateRanks}
+                                totalNum={roomInfo.participants.length}
+                            />
+                        </Center>
                         <Paper sx={{ boxShadow: 3, padding: 3, maxWidth: 693, minWidth: "100%", borderRadius: 3 }}>
                             <Center className="mb-3 ml-4 mr-4">
                                 <p className="md:text-lg text-base font-bold ">
@@ -116,10 +160,11 @@ const Date: NextPage = function () {
                                     className="mr-2"
                                     variant="contained"
                                     startIcon={<DownloadIcon />}
-                                // onClick={() => {
-                                //     MixpanelTracking.getInstance().buttonClicked("date: 링크 복사")
-                                //     copyTextUrl(textUrl)
-                                // }}
+                                    onClick={() => {
+                                        setLoginType("이전입력")
+                                        setIsLoginShown(true)
+                                        MixpanelTracking.getInstance().buttonClicked("date: 이전 입력 불러오기")
+                                    }}
                                 >
                                     이전 입력
                                 </Button>
@@ -129,7 +174,15 @@ const Date: NextPage = function () {
                                     startIcon={<PublishIcon />}
 
                                     onClick={(e: React.SyntheticEvent) => {
-                                        submitDates(apiUrl + '/participant/available', selectedDates)
+                                        if (name == "") {
+                                            setLoginType("제출하기")
+                                            setIsLoginShown(true)
+                                        } else {
+                                            const promise = submitDates(apiUrl + '/participant/available', selectedDates, name, password)
+                                            promise.then(() => {
+                                                setSubmitCount(prev => prev + 1)
+                                            })
+                                        }
                                         MixpanelTracking.getInstance().buttonClicked("date: 날짜 제출하기")
                                     }}
                                 >
@@ -150,6 +203,8 @@ const Date: NextPage = function () {
                                 </Button>
                             </Center>
                         </Paper>
+
+
                     </>
             }
 
@@ -159,47 +214,39 @@ const Date: NextPage = function () {
 
 }
 
-// function sendLoginRequest (apiUrl: string):Boolean {
-//     const participantName = "Tom"
-//     const password = "12345"
+async function submitDates(apiUrl: string, dates: string[], name: string, password?: string) {
+    let sendPassword = password != undefined ? password : ""
+    if (name == "") {
+        alert("이름을 입력해주세요")
+        return
+    } else {
+        return await axios({
+            method: 'post',
+            url: apiUrl,
+            data: {
+                'participantName': name,
+                'password': sendPassword,
+                'availableDates': dates
+            }
+        }).then((result) => { return result })
+    }
+}
 
-//     axios({
-//         method: 'post',
-//         url: apiUrl,
-//         data: {
-//             'participantName': participantName,
-//             'password': password,
-//         }
-//     })
-//         .then((result) => {
-//             console.log(result)
-//             return true
-//         })
-//         .catch((e) => {
-//             console.log(e)
-//             return false
-//         })
-// }
-
-function submitDates(apiUrl: string, dates: string[]) {
-    const participantName = "Tom"
-    const password = "12345"
-
-    axios({
-        method: 'post',
-        url: apiUrl,
-        data: {
-            'participantName': participantName,
-            'password': password,
-            'availableDates': dates
-        }
-    })
-        .then((result) => {
-            console.log(result)
-        })
-        .catch((e) => {
-            console.log(e)
-        })
+async function loadDates(apiUrl: string, name: string, password?: string) {
+    let sendPassword = password != undefined ? password : ""
+    if (name == "") {
+        alert("이름을 입력해주세요")
+        return
+    } else {
+        return await axios({
+            method: 'post',
+            url: apiUrl,
+            data: {
+                'participantName': name,
+                'password': sendPassword,
+            }
+        }).then((result) => { return result })
+    }
 }
 
 export default Date
