@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import CenterFlexLayout from "@/components/Layout/CenterFlexLayout"
-import { Center } from "@chakra-ui/react"
+import { Center, useToast } from "@chakra-ui/react"
 import { Button, Paper } from "@mui/material"
 import { NextPage } from "next"
 import { Calendar, DateObject } from "react-multi-date-picker"
@@ -48,6 +48,14 @@ const Date: NextPage = function () {
     const [password, setPassword] = useState("")
     const [submitCount, setSubmitCount] = useState(0)
 
+    const toast = useToast({
+        position: 'top',
+        title: '제출이 완료되었습니다!',
+        description: "투표 결과를 확인하세요",
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      })
 
     useEffect(() => {
         if (qid != undefined) {
@@ -77,7 +85,8 @@ const Date: NextPage = function () {
                     promise.then((result) => {
                         if (result != undefined) {
                             setName(name)
-                            setPassword(password!=undefined ? password : "")
+                            setPassword(password != undefined ? password : "")
+                            toast()
                         }
                     })
                     return ({
@@ -182,6 +191,7 @@ const Date: NextPage = function () {
                                             promise.then(() => {
                                                 setSubmitCount(prev => prev + 1)
                                             })
+                                            toast()
                                         }
                                         MixpanelTracking.getInstance().buttonClicked("date: 날짜 제출하기")
                                     }}
