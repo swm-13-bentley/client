@@ -1,3 +1,4 @@
+import { changeDateFormat, changeTimeFormat } from "@/utils/changeFormat"
 import { Center, Circle, HStack } from "@chakra-ui/react"
 import { Paper } from "@mui/material"
 import { ScriptProps } from "next/script"
@@ -11,18 +12,6 @@ type Rank = {
 
 type Props = {
     ranks?: Rank[]
-}
-
-const dayOfTheWeek = ['일', '월', '화', '수', '목', '금', '토']
-
-const changeDateFormat = (yyyymmdd: string) => {
-    const date = new Date(yyyymmdd)
-    let changedDate = yyyymmdd.substring(5).replace('-', '.') + `(${dayOfTheWeek[date.getDay()]})`
-    return changedDate
-}
-
-const changeTimeFormat = (hhmmss: string) => {
-    return hhmmss.substring(0, 5)
 }
 
 const TimeRank = ({ ranks }: Props) => {
