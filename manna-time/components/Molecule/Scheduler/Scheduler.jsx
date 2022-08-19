@@ -252,9 +252,14 @@ const Scheduler = forwardRef((props, ref) => {
     let temp = [...currTot.cellsTot];
     temp[currIdx.index] = [...curr.cells];
     let apiRequestBody = [];
+    // console.log(temp)
 
     for (let i = 0; i < weeks.length; i++) {
       for (let j = 0; j < 7; j++) {
+        if (i == 0 && j < startDay)
+          continue
+        if (i == weeks.length - 1 && j > endDay)
+          continue
         function leftPad(value) {
           if (value >= 10) {
             return value;
