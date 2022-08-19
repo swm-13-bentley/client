@@ -170,7 +170,7 @@ const Scheduler = forwardRef((props, ref) => {
   let validDaysList = []
   let weeks = tableList.map(
     days => {
-      let firstDay = days[0].getUTCDay();
+      let firstDay = (days[0].getUTCDay() + 6) % 7;
       let monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
       let validDays = [false, false, false, false, false, false, false];
       days.forEach(
