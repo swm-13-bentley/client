@@ -234,13 +234,13 @@ const Scheduler = forwardRef((props, ref) => {
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().substring(5) });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().substring(5) });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().substring(5) });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().substring(5) });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().substring(5) });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().substring(5) });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().substring(5) });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString('ko-KR').substring(5) });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString('ko-KR').substring(5) });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString('ko-KR').substring(5) });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString('ko-KR').substring(5) });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString('ko-KR').substring(5) });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString('ko-KR').substring(5) });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString('ko-KR').substring(5) });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
