@@ -119,8 +119,8 @@ const Scheduler = forwardRef((props, ref) => {
 
   // mon: 0, tue: 1, ...
   const startDateTime = startDate.getTime();
-  const startDay = (startDate.getDay() + 6) % 7;
-  const endDay = (endDate.getDay() + 6) % 7;
+  const startDay = (startDate.getUTCDay() + 6) % 7;
+  const endDay = (endDate.getUTCDay() + 6) % 7;
   const dateDiff = (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
 
   let initCells = [];
@@ -155,7 +155,7 @@ const Scheduler = forwardRef((props, ref) => {
   let tableList = [];
   let tempList = [];
   while (currDate.getTime() <= endDate.getTime()) {
-    if (currDate.getDay() === 1 && tempList.length > 0) {
+    if (currDate.getUTCDay() === 1 && tempList.length > 0) {
       tableList.push(tempList);
       tempList = [currDate];
     } else {
@@ -170,11 +170,11 @@ const Scheduler = forwardRef((props, ref) => {
   let validDaysList = []
   let weeks = tableList.map(
     days => {
-      let firstDay = days[0].getDay();
+      let firstDay = (days[0].getUTCDay() + 6) % 7;
       let monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
       let validDays = [false, false, false, false, false, false, false];
       days.forEach(
-        day => validDays[(day.getDay() + 6) % 7] = true
+        day => validDays[(day.getUTCDay() + 6) % 7] = true
       );
       validDaysList.push(validDays);
       return [
@@ -198,8 +198,8 @@ const Scheduler = forwardRef((props, ref) => {
       available.forEach(
         obj => {
           let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-          let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-          let dayIdx = (startDate.getDay() + diff + 6) % 7;
+          let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
+          let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
             timeIdx => {
               groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
@@ -217,8 +217,8 @@ const Scheduler = forwardRef((props, ref) => {
       events.forEach(
         obj => {
           let diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-          let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-          let dayIdx = (startDate.getDay() + diff + 6) % 7;
+          let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
+          let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
           obj.scheduledTimeList.forEach(
             timeIdx => {
               calendarState[weekIdx][timeIdx - startTime][dayIdx] = true;
@@ -234,13 +234,13 @@ const Scheduler = forwardRef((props, ref) => {
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().substring(5) });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().substring(5) });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().substring(5) });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().substring(5) });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().substring(5) });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().substring(5) });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().substring(5) });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString('ko-KR').substring(5) });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString('ko-KR').substring(5) });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString('ko-KR').substring(5) });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString('ko-KR').substring(5) });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString('ko-KR').substring(5) });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString('ko-KR').substring(5) });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString('ko-KR').substring(5) });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
@@ -252,9 +252,14 @@ const Scheduler = forwardRef((props, ref) => {
     let temp = [...currTot.cellsTot];
     temp[currIdx.index] = [...curr.cells];
     let apiRequestBody = [];
+    // console.log(temp)
 
     for (let i = 0; i < weeks.length; i++) {
       for (let j = 0; j < 7; j++) {
+        if (i == 0 && j < startDay)
+          continue
+        if (i == weeks.length - 1 && j > endDay)
+          continue
         function leftPad(value) {
           if (value >= 10) {
             return value;
@@ -262,9 +267,9 @@ const Scheduler = forwardRef((props, ref) => {
           return `0${value}`
         }
         let availableDate = [
-          weeks[i][j].getFullYear(),
-          leftPad(weeks[i][j].getMonth() + 1),
-          leftPad(weeks[i][j].getDate())
+          weeks[i][j].getUTCFullYear(),
+          leftPad(weeks[i][j].getUTCMonth() + 1),
+          leftPad(weeks[i][j].getUTCDate())
         ].join("-");
         let availableTimeList = []
         for (let k = 0; k < (endTime - startTime); k++) {
@@ -293,8 +298,8 @@ const Scheduler = forwardRef((props, ref) => {
     available.forEach(
       obj => {
         let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
-        let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
-        let dayIdx = (startDate.getDay() + diff + 6) % 7;
+        let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
+        let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
         obj.availableTimeList.forEach(
           timeIdx => {
             temp[weekIdx][timeIdx - startTime + 2][dayIdx + 1] = true; //행열 2개와 1개
