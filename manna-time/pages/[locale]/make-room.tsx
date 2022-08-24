@@ -92,7 +92,16 @@ const MakeRoom: NextPage = () => {
                             setDateRange(newDate)
                         }
                     }}
-                    zIndex={1} />
+                    mapDays={({ date }) => {
+                        let props = {className:""}
+                        let isWeekend = [0, 6].includes(date.weekDay.index)
+                        
+                        if (isWeekend) props.className = "highlight highlight-red"
+                        
+                        return props
+                      }}
+                    zIndex={1}
+                />
                 <FormControlLabel
                     className="md:text-md text-lg mt-2"
                     sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}

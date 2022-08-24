@@ -424,8 +424,8 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled>수</td>
           <td white disabled>목</td>
           <td white disabled>금</td>
-          <td white disabled>토</td>
-          <td white disabled>일</td>
+          <td white disabled className=" text-red-600">토</td>
+          <td white disabled className=" text-red-600">일</td>
         </tr>
         {eachRow}
       </TableDragSelect >

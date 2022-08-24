@@ -142,6 +142,7 @@ const Date: NextPage = function () {
                             <Center>
                                 <Calendar className="rmdp-mobile"
                                     multiple
+                                    showOtherDays
                                     value={
                                         // ["2022-08-20", "2022-08-22"]
                                         selectedDates
@@ -152,16 +153,22 @@ const Date: NextPage = function () {
                                     }}
                                     mapDays={({ date }) => {
                                         let isDateRange = roomInfo.dates.includes(date.format(dateRangeFormat))
+                                        
+                                        if (isDateRange) {
+                                            let props = {className:"", disabled: false}
+                                            let isWeekend = [0, 6].includes(date.weekDay.index)
 
-                                        if (isDateRange) return {
-                                            disabled: false,
+                                            if (isWeekend) props.className = "highlight highlight-red"
+
+                                            return props
                                         }
                                         else return {
                                             disabled: true,
                                             style: { color: "#ccc" },
                                         }
                                     }}
-                                    zIndex={1} />
+                                    zIndex={1}
+                                />
                             </Center>
                             <Center className=" mt-5">
                                 <Button
