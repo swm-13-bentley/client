@@ -96,6 +96,7 @@ const hours = [
   { id: 93, toggled: false, time: "" },
   { id: 94, toggled: false, time: "23" },
   { id: 95, toggled: false, time: "" },
+  { id: 96, toggled: false, time: "24" },
 
 ];
 
