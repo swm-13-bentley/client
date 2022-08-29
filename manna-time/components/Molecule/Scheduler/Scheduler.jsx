@@ -199,7 +199,7 @@ const Scheduler = forwardRef((props, ref) => {
     if (available != null && available != 0 && isGroup && groupFilterChecked[index]) {
       available.forEach(
         obj => {
-          let diff = ((getUTCDate(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
           let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
           let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
@@ -218,7 +218,7 @@ const Scheduler = forwardRef((props, ref) => {
     if (events != null && events != 0 && isGroup) {
       events.forEach(
         obj => {
-          let diff = ((getUTCDate(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+          let diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
           let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
           let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
           obj.scheduledTimeList.forEach(
@@ -299,7 +299,7 @@ const Scheduler = forwardRef((props, ref) => {
 
     available.forEach(
       obj => {
-        let diff = ((getUTCDate(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
+        let diff = ((new Date(obj.availableDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
         let weekIdx = Math.floor(((startDate.getUTCDay() + 6) % 7 + diff) / 7);
         let dayIdx = (startDate.getUTCDay() + diff + 6) % 7;
         obj.availableTimeList.forEach(
