@@ -6,6 +6,7 @@ import SendIcon from '@mui/icons-material/Send';
 import React, { useState } from "react";
 import axios from "axios";
 import { makeStyles } from '@mui/styles'
+import { isEmail } from "@/utils/checkFormat";
 interface Props {
     isShown: boolean,
     onCancle(): void
@@ -97,7 +98,9 @@ const ModalCard = ({ isShown, onCancle }: Props) => {
                     <FormGroup>
                         <FormControlLabel
                             control={
-                                <Checkbox checked={isEmailChecked} onChange={(event: React.ChangeEvent<HTMLInputElement>)=>{setIsEmailChecked(event.target.checked)}} size="small" />}
+                                <Checkbox checked={isEmailChecked} onChange={() => {
+                                    setIsEmailChecked((prev:boolean)=>{return !prev})
+                                }} size="small" />}
                             label={
                             <Typography className={style.formControlLabel}>이메일로 답장을 받고 싶습니다</Typography>
                         } />
@@ -108,11 +111,10 @@ const ModalCard = ({ isShown, onCancle }: Props) => {
                         type="email"
                         id="email"
                         name="email"
-                        // label="이메일 주소"
                         placeholder="abc@abc.net"
                         size="small"
                         disabled = {!isEmailChecked}
-                        // error={emailError !== '' || false}
+                        onChange={(e) => { setEmail(e.target.value) }}
                     />
                 </div>
                 <Center className="space-x-3">
@@ -144,8 +146,15 @@ const ModalCard = ({ isShown, onCancle }: Props) => {
         }
 
         let emailText=''
-        if (isEmailChecked)
-            emailText = email
+        if (isEmailChecked) {
+            if (!isEmail(email)) {
+                alert("이메일 형식을 지켜주세요")
+                return
+            } else {
+                emailText = email
+            }
+                
+        }
 
         const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/feedback'
         axios({

@@ -37,14 +37,27 @@ function Navbar() {
 											onClick={() => {
 												setIsFeedbackShown(true)
 											}}
-											activeClass="Home"
-											to="/"
+											activeClass="feedback"
+											to="feedback"
 											smooth={true}
 											offset={50}
 											duration={500}
 											className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
 										>
 											피드백 보내기
+										</Link>
+										<Link
+											onClick={() => {
+												window.location.href = `/ko/privacy-policy`;
+											}}
+											activeClass="privacy-policy"
+											to="/ko/privacy-policy"
+											smooth={true}
+											offset={50}
+											duration={500}
+											className="cursor-pointer text-blue-600 font-semibold px-3 py-2 text-md hover:font-black"
+										>
+											개인정보처리방침
 										</Link>
 									</div>
 								</div>
@@ -115,15 +128,27 @@ function Navbar() {
 										onClick={() => {
 											setIsFeedbackShown(true)
 										}}
-										href="/make-room"
-										activeClass="make-room"
-										to="make-room"
+										activeClass="feedback"
+										to="feedback"
 										smooth={true}
 										offset={50}
 										duration={500}
 										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 									>
 										피드백 보내기
+									</Link>
+									<Link
+										onClick={() => {
+											window.location.href = `/ko/privacy-policy`;
+										}}
+										activeClass="privacy-policy"
+										to="/ko/privacy-policy"
+										smooth={true}
+										offset={50}
+										duration={500}
+										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+									>
+										개인정보처리방침
 									</Link>
 								</div>
 							</div>
