@@ -9,7 +9,6 @@ import hours from "./Hours"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
-import { getUTCDate } from "@/utils/timezone"
 
 class CellProperty {
   opacity = 1
@@ -93,8 +92,8 @@ const Scheduler = forwardRef((props, ref) => {
   } else {
     // props args
 
-    startDate =getUTCDate(props.roomInfo.dates[0])
-    endDate = getUTCDate(props.roomInfo.dates[props.roomInfo.dates.length - 1])
+    startDate = new Date(props.roomInfo.dates[0])
+    endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length - 1])
     startTime = props.roomInfo.startTime
     endTime = props.roomInfo.endTime
     isGroup = props.isGroup
@@ -171,7 +170,7 @@ const Scheduler = forwardRef((props, ref) => {
   let validDaysList = []
   let weeks = tableList.map(
     days => {
-      let firstDay = days[0].getUTCDay();
+      let firstDay = (days[0].getUTCDay() + 6) % 7;
       let monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
       let validDays = [false, false, false, false, false, false, false];
       days.forEach(
@@ -189,7 +188,6 @@ const Scheduler = forwardRef((props, ref) => {
       ]
     }
   )
-
   let times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
 
   function groupScheduleElements(element, index, array) {
