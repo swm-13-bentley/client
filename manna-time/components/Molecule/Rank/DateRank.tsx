@@ -24,10 +24,9 @@ const DateRank = ({ ranks, totalNum }: Props) => {
                     <p className="md:text-lg text-base font-normal">
                         {changeDateFormat(rank.availableDate)}
                     </p>
-                    <span className="md:text-sm text-xs font-normal">({rank.participants.length} / {totalNum}명)</span>
                 </HStack>
                 <p className="md:text-base md:pl-3 pl-2 text-sm font-normal">
-                    {rank.participants.join(', ')}
+                    ({rank.participants.length} / {totalNum}명) {rank.participants.join(', ')}
                 </p>
             </>
         )
