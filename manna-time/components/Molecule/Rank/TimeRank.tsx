@@ -7,16 +7,15 @@ type Rank = {
     count: number,
     availableDate: string,
     startTime: string,
-    endTime: string,
-    participantNames: string[]
+    endTime: string
 }
 
 type Props = {
-    ranks?: Rank[],
-    totalNum: number
+    ranks?: Rank[]
 }
 
-const TimeRank = ({ ranks, totalNum }: Props) => {
+const TimeRank = ({ ranks }: Props) => {
+
     const topRank = ranks?.map((rank: Rank, index: number) => {
         return (
             <>
@@ -24,13 +23,11 @@ const TimeRank = ({ ranks, totalNum }: Props) => {
                     <Circle size='21px' bg='#757ce8' color='white' mr="1">
                         <h2 className="text-white md:text-lg text-sm">{index + 1}</h2>
                     </Circle>
-                    <p className="md:text-lg text-base font-normal break-all">
-                        {changeDateFormat(rank.availableDate)} {changeTimeFormat(rank.startTime)}-{changeTimeFormat(rank.endTime)}
+                    <p className="md:text-lg text-sm font-normal">
+                        {changeDateFormat(rank.availableDate)} {changeTimeFormat(rank.startTime)}-{changeTimeFormat(rank.endTime)} :
+                        <span className="md:text-lg text-sm font-light"> {rank.count}명</span>
                     </p>
                 </HStack>
-                <p className="md:text-base md:pl-3 pl-2 text-sm font-normal">
-                    ({rank.count} / {totalNum}명) {rank.participantNames.join(', ')}
-                </p>
             </>
         )
     })

@@ -122,12 +122,11 @@ const Entry: NextPage = function () {
                                             </Center>
 
                                                 {
-                                                    timeRanks != undefined && participantNames != null
+                                                    timeRanks != undefined
                                                         ?
                                                         <Center>
                                                             <TimeRank
                                                                 ranks={timeRanks}
-                                                                totalNum = {participantNames.length}
                                                             />
                                                         </Center>
                                                         :

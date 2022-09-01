@@ -8,7 +8,7 @@ const Entry: NextPage = function () {
         <>
             <CenterFlexLayout>
                 <Center>
-                    <h3>주소창에 방 id를 함께 입력해주세요</h3>
+                    <h3>방 id를 함께 입력해주세요</h3>
                 </Center>
             </CenterFlexLayout>
         </>
