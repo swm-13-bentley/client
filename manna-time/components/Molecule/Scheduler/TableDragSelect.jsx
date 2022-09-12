@@ -308,8 +308,14 @@ class Cell extends React.Component {
 
   handleTouchStart = (e) => {
     if (!this.props.disabled) {
-      if ((this.props.cellProperty != undefined) && (!this.props.cellProperty.isDisabled)) {
-        this.props.onTouchStart(e);
+      if (this.props.cellProperty != undefined){
+        if (!this.props.cellProperty.isDisabled) 
+          this.props.onTouchStart(e);
+        else {
+          console.log(this.props.cellProperty.participantNames)
+          console.log(this.props.cellProperty.time)
+        }
+        
       }
     }
   };

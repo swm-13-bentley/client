@@ -148,6 +148,7 @@ const Entry: NextPage = function () {
                                                     roomInfo={roomInfo}
                                                     isDisabled={true}
                                                     groupFilterChecked={groupFilterChecked}
+                                                    participantNames={participantNames}
                                                 />
                                             </div>
 
