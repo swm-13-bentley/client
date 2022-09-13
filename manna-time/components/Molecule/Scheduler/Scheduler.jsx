@@ -385,7 +385,7 @@ const Scheduler = forwardRef((props, ref) => {
     })
 
     return (
-      <tr>
+      <tr className = { t % 2 == 0 ? "sharp" : "half"}>
         <td white disabled time>{hours[t].time}</td>
         {eachCell}
       </tr>
@@ -417,14 +417,6 @@ const Scheduler = forwardRef((props, ref) => {
       <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
         <tr>
           <td white disabled />
-          {
-            dayTexts.map(
-              (text,index) => <td white disabled text={text.text}>{text.text}</td>
-            )
-          }
-        </tr>
-        <tr>
-          <td white disabled />
           <td white disabled>월</td>
           <td white disabled>화</td>
           <td white disabled>수</td>
@@ -432,6 +424,14 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled>금</td>
           <td white disabled className=" text-red-600">토</td>
           <td white disabled className=" text-red-600">일</td>
+        </tr>
+        <tr>
+          <td white disabled />
+          {
+            dayTexts.map(
+              (text,index) => <td white disabled text={text.text}>{text.text}</td>
+            )
+          }
         </tr>
         {eachRow}
       </TableDragSelect >
