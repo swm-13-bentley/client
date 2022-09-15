@@ -254,7 +254,11 @@ class Cell extends React.Component {
     } = this.props;
     // console.log(cellProperty)
     let style = {
-      background : ""
+      backgroundColor: "",
+      borderBottom: "",
+      borderTop: "",
+      border: "",
+      backgroundClip:""
     }
     if (disabled) {
       if (white) {
@@ -284,7 +288,13 @@ class Cell extends React.Component {
           if (cellProperty.isCalendar) {
             className += " calendar"
           } else {
-            style.background = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+          }
+          if (cellProperty.opacity > 0) {
+            style.borderBottom = "1px solid " + style.backgroundColor
+            style.borderTop = "1px solid " + style.backgroundColor
+            style.backgroundClip = "border-box"
+            // style.border = "1px solid " + style.background
           }
 
         
