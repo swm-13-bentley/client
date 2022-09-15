@@ -2,7 +2,7 @@ import { Button, styled } from "@mui/material"
 import { ScriptProps } from "next/script"
 
 interface ButtonProps {
-    style?: 'primary' | 'secondary' | 'white-black' | 'lightgrey' | 'disabled',
+    style?: 'primary' | 'secondary' | 'white-black' | 'lightgrey' | 'disabled' | 'kakao',
     children?: React.ReactNode,
     onClick?: ()=>void
 }
@@ -30,9 +30,13 @@ const theme = {
         background: '#DDDDDD',
         text: '#999999'
     },
+    'kakao': {
+        background: '#FAE100',
+        text: '#333333'
+    }
 }
 
-const BigButton = ({ style, children, onClick }: ButtonProps) => {
+const FullButton = ({ style, children, onClick }: ButtonProps) => {
     const StyledButton = styled('button', {
         name: "button"
     })`
@@ -46,9 +50,10 @@ const BigButton = ({ style, children, onClick }: ButtonProps) => {
     gap: 10px;
     
     position: absolute;
-    width: 335px;
+    width: 100%;
     height: 58px;
-    left: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
     top: 674px;
     
     background: ${style != undefined ? theme[style].background : theme['primary'].background};
@@ -77,4 +82,4 @@ const BigButton = ({ style, children, onClick }: ButtonProps) => {
     )
 }
 
-export default BigButton
+export default FullButton
