@@ -13,11 +13,12 @@ import { IconButton } from "@mui/material";
 class CellProperty {
   opacity = 1
 
-  constructor(isDisabled, opacity, color, isCalendar) {
+  constructor(isDisabled, opacity, isCalendar, participantNames, time) {
     this.isDisabled = isDisabled
     this.opacity = opacity
-    this.color = color
     this.isCalendar = isCalendar
+    this.participantNames = participantNames
+    this.time = time
   }
 
   setOpacity(total, availableNum) {
@@ -35,7 +36,7 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
   let startDate, endDate, startTime, endTime, isGroup;
-  let groupSchedule, totalNum, groupFilterChecked // 필터 누를 때마다 그룹스케줄
+  let groupSchedule, totalNum, groupFilterChecked, participantNames // 필터 누를 때마다 그룹스케줄
   let isDisabled = false
   let calendarEvents = [] //비회원 캘린더 내 스케줄
   let mySchedule // 이전에 selected해놓은 내 스케줄
@@ -113,6 +114,9 @@ const Scheduler = forwardRef((props, ref) => {
     if (props.calendarEvents != undefined) {
       calendarEvents = props.calendarEvents
     }
+    if (props.participantNames != undefined) {
+      participantNames = props.participantNames
+    }
     isDisabled = props.isDisabled
   }
   endTime += 1;
@@ -128,7 +132,7 @@ const Scheduler = forwardRef((props, ref) => {
   let temp;
   for (temp = 0; temp < (endTime - startTime + 2); temp++) {
     initCells.push([false, false, false, false, false, false, false, false]) // 시간대 : 1, 월~일 : 7 => 총 8개
-    initGroupCells.push(new Array(8).fill(0))
+    initGroupCells.push(new Array(8).fill([]))
   }
 
   const [curr, changeCurr] = useState({
@@ -202,7 +206,7 @@ const Scheduler = forwardRef((props, ref) => {
           let dayIdx = (startDate.getDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
             timeIdx => {
-              groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
+              groupState[weekIdx][timeIdx - startTime][dayIdx].push(participantNames[index]);
             }
           )
         }
@@ -354,7 +358,7 @@ const Scheduler = forwardRef((props, ref) => {
 
     const eachCell = weekDays.map((weekDay, weekIdx) => {
       // const isDisabled = (groupState[currIdx.index][t - startTime][weekIdx] ==0 ? false : true)
-      const opacity = groupState[currIdx.index][t - startTime][weekIdx] / totalNum
+      const opacity = groupState[currIdx.index][t - startTime][weekIdx].length / totalNum
       // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
       // console.log(opacity)
       const isCalendar = calendarState[currIdx.index][t - startTime][weekIdx]
@@ -364,7 +368,9 @@ const Scheduler = forwardRef((props, ref) => {
         isDisabled,
         opacity,
         // color,
-        isCalendar
+        isCalendar,
+        groupState[currIdx.index][t - startTime][weekIdx],
+        `${hours[t%48].realTime} ~ ${hours[(t+1)%48].realTime}`
       )
 
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
@@ -379,7 +385,7 @@ const Scheduler = forwardRef((props, ref) => {
     })
 
     return (
-      <tr>
+      <tr className = { t % 2 == 0 ? "sharp" : "half"}>
         <td white disabled time>{hours[t].time}</td>
         {eachCell}
       </tr>
@@ -411,14 +417,6 @@ const Scheduler = forwardRef((props, ref) => {
       <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
         <tr>
           <td white disabled />
-          {
-            dayTexts.map(
-              (text,index) => <td white disabled text={text.text}>{text.text}</td>
-            )
-          }
-        </tr>
-        <tr>
-          <td white disabled />
           <td white disabled>월</td>
           <td white disabled>화</td>
           <td white disabled>수</td>
@@ -426,6 +424,14 @@ const Scheduler = forwardRef((props, ref) => {
           <td white disabled>금</td>
           <td white disabled className=" text-red-600">토</td>
           <td white disabled className=" text-red-600">일</td>
+        </tr>
+        <tr>
+          <td white disabled />
+          {
+            dayTexts.map(
+              (text,index) => <td white disabled text={text.text}>{text.text}</td>
+            )
+          }
         </tr>
         {eachRow}
       </TableDragSelect >

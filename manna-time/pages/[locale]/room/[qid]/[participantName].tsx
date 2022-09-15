@@ -322,6 +322,7 @@ const Room: NextPage = function () {
                                         isGroup={(tab == 1) || groupButtonChecked ? true : false}
                                         mySchedule={mySchedule}
                                         groupFilterChecked={groupFilterChecked}
+                                        participantNames={groupNamesExceptMe}
                                     />
                                 </div>
                                 :
