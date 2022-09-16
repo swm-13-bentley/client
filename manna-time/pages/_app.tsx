@@ -6,7 +6,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { CacheProvider } from '@emotion/react'
 import createEmotionCache from '../src/createEmotionCache'
 import theme from '../src/theme'
-import MainLayout from '../components/Layout/MainLayout/MainLayout'
+import MainLayout from '@/components/Layout/MainLayout'
 
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
@@ -27,7 +27,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
+    const handleRouteChange = (url: string) => {
       gtag.pageview(url)
     }
     router.events.on('routeChangeComplete', handleRouteChange)

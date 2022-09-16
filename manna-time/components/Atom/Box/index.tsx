@@ -10,6 +10,7 @@ const CustomBox = ({style, children} : BoxProps) => {
         name: 'box'
     })`
     width: 100%;
+    max-width: 350px;
     padding: 20px 20px;
 
     background: ${style === 'primary' ? '#5194FF' : '#F7F7F7'};

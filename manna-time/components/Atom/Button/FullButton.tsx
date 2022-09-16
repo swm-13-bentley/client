@@ -51,6 +51,7 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
     
     position: absolute;
     width: 100%;
+    max-width: 350px;
     height: 58px;
     margin-left: 20px;
     margin-right: 20px;

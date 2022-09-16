@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import { ScriptProps } from "next/script"
 import Header from "./Header"
 import Navbar from "./Navbar"
+import { Background } from "./Wrapper"
 
 function Layout({children}:ScriptProps) {
     const router = useRouter()
@@ -18,7 +19,11 @@ function Layout({children}:ScriptProps) {
         <>
             <Header title={t(pageName) as string} service={t('service') as string} />
             <Navbar/>
-            <Flex paddingTop={"59px"} paddingBottom={"1rem"} >{children}</Flex>
+            <Flex paddingTop={"59px"} width="100%" >
+                <Background>
+                {children}
+                </Background>
+            </Flex>
         </>
     )
 }
