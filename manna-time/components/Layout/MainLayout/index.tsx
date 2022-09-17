@@ -30,7 +30,7 @@ function Layout({children}:ScriptProps , {userAgent}: AppProps & {userAgent: str
         <>
             <Header title={t(pageName) as string} service={t('service') as string} />
             <Navbar/>
-            <Flex paddingTop={"59px"} width="100%" >
+            <Flex paddingTop="59px" width="100%" justifyContent="center" >
                 <Background>
                     {children}
                 </Background>

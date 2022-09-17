@@ -1,8 +1,14 @@
 import { Box, styled } from "@mui/system"
 
 interface BoxProps {
-    style?: 'primary' | 'secondary'
+    style?: 'primary' | 'secondary' | 'skyblue'
     children?: React.ReactNode
+}
+
+const theme = {
+    primary: '#5194FF',
+    secondary: '#F7F7F7',
+    skyblue: '#F4F8FF'
 }
 
 const CustomBox = ({style, children} : BoxProps) => {
@@ -13,7 +19,7 @@ const CustomBox = ({style, children} : BoxProps) => {
     max-width: 350px;
     padding: 20px 20px;
 
-    background: ${style === 'primary' ? '#5194FF' : '#F7F7F7'};
+    background: ${style!= undefined && theme[style]};
     border-radius: 6px;
     `
 
@@ -29,9 +35,8 @@ const BorderBox = ({ children }: BoxProps) => {
     /* Auto layout */
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     padding: 12px 16px;
     gap: 10px;
 
