@@ -11,11 +11,13 @@ import MainLayout from '@/components/Layout/MainLayout'
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
 import { MixpanelTracking } from '@/utils/mixpanel'
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
 
 import * as gtag from '@/lib/gtag'
+import { AppContextType } from 'next/dist/shared/lib/utils'
+import { userAgentState } from '@/src/state/UserAgent'
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -54,13 +56,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                 strategy="afterInteractive"
                 dangerouslySetInnerHTML={{
                   __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${gtag.GA_TRACKING_ID}', {
+                      page_path: window.location.pathname,
+                    });
+                  `,
                 }}
               />
               <Component {...pageProps} />
@@ -71,5 +73,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     </CacheProvider>
   )
 }
+
 
 export default appWithTranslation(MyApp)

@@ -1,6 +1,12 @@
+import useViewport from "@/hooks/useViewport";
 import styled from "@emotion/styled";
+import React from "react";
 
-const Background = styled.div`
+interface BackgroundProps {
+  children? : React.ReactNode
+}
+
+const MobileBackground = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
@@ -9,6 +15,24 @@ const Background = styled.div`
   padding-right: 20px;
   padding-left: 20px;
 `;
+
+const DesktopBackground = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 768px;
+  background-color: #FFFFFF;
+  position: relative;
+`;
+
+const Background = ({ children } : BackgroundProps) => {
+  const viewport = useViewport()
+
+  if (viewport === 'mobile')
+    return <MobileBackground>{children}</MobileBackground>
+  if (viewport === 'desktop')
+    return <DesktopBackground>{children}</DesktopBackground>
+  return null
+}
 
 //unused
 const Wrapper = styled.div<{ isApp: boolean }>`
@@ -37,5 +61,7 @@ const MainWrapper = styled.main<{
   background-color: ${({ backgroundColor }) => backgroundColor || '#FFFFFF'};
   position: relative;
 `;
+
+
 
 export {Background, Wrapper, MainWrapper}
