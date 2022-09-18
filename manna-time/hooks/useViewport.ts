@@ -9,7 +9,7 @@ export type Viewport = 'mobile' | 'desktop';
 function useViewport(): Viewport {
   const md = new MobileDetect(useRecoilValue(userAgentState));
   const isDesktop = useMediaQuery({
-    query: `(min-width: 1224px)`,
+    query: `(min-width: 1000px)`,
   });
   const initialViewPort = md.mobile() ? `mobile` : `desktop`;
 

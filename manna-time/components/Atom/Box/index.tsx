@@ -15,6 +15,7 @@ const CustomBox = ({style, children} : BoxProps) => {
     const StyledBox = styled(Box, {
         name: 'box'
     })`
+    position: relative;
     width: 100%;
     max-width: 350px;
     padding: 20px 20px;

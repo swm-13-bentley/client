@@ -35,7 +35,7 @@ color: #333333;
 `
 
 const BasicButton = ({ children, onClick }:ButtonProps) => {
-    return (<StyledButton
+    return (<StyledButton className="absolute right-0 top-0"
         onClick={onClick}
     >{children}</StyledButton>)
 }
