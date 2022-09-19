@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <CacheProvider value={clientSideEmotionCache}>
-      <ChakraProvider>
+      <ChakraProvider cssVarsRoot='body'>
         <ThemeProvider theme={theme}>
           <RecoilRoot>
             <MainLayout>
