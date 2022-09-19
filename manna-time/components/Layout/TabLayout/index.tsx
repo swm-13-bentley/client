@@ -16,6 +16,7 @@ const StyledTab = styled(Tab, {})`
         font-size: 14px;
         line-height: 150%;
         padding: 10px 16px;
+        justify-content: flex-end;
         /* identical to box height, or 21px */
 
         text-align: center;
@@ -46,7 +47,7 @@ const TabLayout = ({ children, value, tabLabel, onChange }: TabLayoutProps) => {
                 borderBottom: 2,
                 borderBottomColor: "#DDDDDD",
                 height: '48px'
-            }} position="fixed" className="mt-16 z-10">
+            }} position="fixed" className="mt-14 z-10">
                 <Tabs
                     value={value}
                     onChange={(event: React.SyntheticEvent, tabValue: number) => { onChange(tabValue) }}
