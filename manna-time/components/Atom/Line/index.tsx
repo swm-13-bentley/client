@@ -6,25 +6,26 @@ type Theme = {
 }
 
 const theme: Theme = {
-    'primary': '#EEEEEE',
+    'lightgrey': '#EEEEEE',
     'white': '#FFFFFF',
     'grey': '#333333'
     
 }
 
 interface LineProps {
-    color: 'primary' | 'white' | 'grey'
+    color: 'lightgrey' | 'white' | 'grey'
 }
 
 const Line = ({ color }: LineProps) => {
     let StyledLine
-    if (color === 'primary')
-        StyledLine =  styled(Box)`width: 100%;
+    if (color === 'lightgrey')
+        StyledLine = styled(Box, {})`
+            width: 100%;
             height: 1px;
             background: #EEEEEE;
             `
     else 
-        StyledLine = styled(Box)`
+        StyledLine = styled(Box,{})`
             width: 100%;
             height: 0px;
             

@@ -10,7 +10,6 @@ import { useEffect } from "react"
 import { useRecoilState } from "recoil"
 import Header from "./Header"
 import Navbar from "./Navbar"
-import { Background } from "./Wrapper"
 
 function Layout({children}:ScriptProps , {userAgent}: AppProps & {userAgent: string}) {
     const router = useRouter()
@@ -31,9 +30,7 @@ function Layout({children}:ScriptProps , {userAgent}: AppProps & {userAgent: str
             <Header title={t(pageName) as string} service={t('service') as string} />
             <Navbar/>
             <Flex paddingTop="59px" width="100%" justifyContent="center" >
-                <Background>
-                    {children}
-                </Background>
+                {children}
             </Flex>
         </>
     )

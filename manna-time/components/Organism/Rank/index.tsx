@@ -67,7 +67,7 @@ const Rank = ({ rank, time, participants }: RankProps) => {
                 </StyledSpan>
                 <BasicButton>확정</BasicButton>
             </div>
-            <Line color="primary" />
+            <Line color="lightgrey" />
             <StyledButton className="mt-3 w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
                     총 {participants.length}명
                     <KeyboardArrowDownIcon className="absolute right-8" />

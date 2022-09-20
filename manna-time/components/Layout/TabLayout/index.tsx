@@ -59,7 +59,7 @@ const TabLayout = ({ children, value, tabLabel, onChange }: TabLayoutProps) => {
                     {styledTabs}
                 </Tabs>
             </AppBar>
-            <div className="mt-16 w-full">
+            <div className="mt-12 w-full">
                 {children}
             </div>
         </>
