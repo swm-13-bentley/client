@@ -13,7 +13,9 @@ import Pager from "../Pager"
 import getWeekNumber from "@/utils/getWeekNumberOfMonth"
 import { Background } from "@/components/Layout/MainLayout/Wrapper"
 import Accordion from "@/components/Molecule/Accordion";
-import {FilterButton} from "@/components/Atom/Button"
+import { FilterButton } from "@/components/Atom/Button"
+import styled from "@emotion/styled"
+
 class CellProperty {
   opacity = 1
 
@@ -199,7 +201,6 @@ const Scheduler = forwardRef((props, ref) => {
   let times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
 
   function groupScheduleElements(element, index, array) {
-    console.log(index)
     let available = element.available
     // console.log(available)
 
@@ -243,13 +244,13 @@ const Scheduler = forwardRef((props, ref) => {
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().substring(5) });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().substring(5) });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().substring(5) });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().substring(5) });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().substring(5) });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().substring(5) });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().substring(5) });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().slice(5,-1) });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().slice(5,-1) });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().slice(5,-1) });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().slice(5,-1) });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().slice(5,-1) });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().slice(5,-1) });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().slice(5,-1) });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
@@ -423,24 +424,22 @@ const Scheduler = forwardRef((props, ref) => {
       />
       <Background>
         {props.children}
-        <Accordion title="참석자" emphasizedTitle="유마리 외 3명">
-        </Accordion>
         <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
           <tr>
             <td white disabled />
-            <td white disabled>월</td>
-            <td white disabled>화</td>
-            <td white disabled>수</td>
-            <td white disabled>목</td>
-            <td white disabled>금</td>
-            <td white disabled className=" text-red-600">토</td>
-            <td white disabled className=" text-red-600">일</td>
+            <td white disabled day>월</td>
+            <td white disabled day>화</td>
+            <td white disabled day>수</td>
+            <td white disabled day>목</td>
+            <td white disabled day>금</td>
+            <td white disabled day className=" text-red-600">토</td>
+            <td white disabled day className=" text-red-600">일</td>
           </tr>
           <tr>
             <td white disabled />
             {
               dayTexts.map(
-                (text, index) => <td white disabled text={text.text}>{text.text}</td>
+                (text, index) => <td white disabled date text={text.text}>{text.text}</td>
               )
             }
           </tr>
@@ -453,6 +452,5 @@ const Scheduler = forwardRef((props, ref) => {
   );
 
 })
-
 
 export default Scheduler

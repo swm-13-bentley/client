@@ -3,6 +3,7 @@ import { Box, styled } from "@mui/system"
 interface BoxProps {
     style?: 'primary' | 'secondary' | 'skyblue'
     children?: React.ReactNode
+    gap?: string
 }
 
 const theme = {
@@ -11,16 +12,19 @@ const theme = {
     skyblue: '#F4F8FF'
 }
 
-const CustomBox = ({style, children} : BoxProps) => {
+const CustomBox = ({style, children, gap} : BoxProps) => {
     const StyledBox = styled(Box, {
         name: 'box'
     })`
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 350px;
     padding: 20px 20px;
 
-    background: ${style!= undefined && theme[style]};
+    background: ${style && theme[style]};
+    gap: ${gap};
     border-radius: 6px;
     `
 

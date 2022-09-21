@@ -244,6 +244,8 @@ class Cell extends React.Component {
       white,
       disabled,
       time,
+      day,
+      date,
       beingSelected,
       selected,
       onTouchStart,
@@ -265,6 +267,10 @@ class Cell extends React.Component {
         className += " cell-white-disabled";
         if (time) {
           className += "-time"
+        } else if (day) {
+          className += "-day-of-the-week"
+        } else if (date) {
+          className += "-date"
         }
       } else{
         className += " cell-disabled";

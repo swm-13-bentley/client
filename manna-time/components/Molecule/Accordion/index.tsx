@@ -42,10 +42,10 @@ const Accordion = ({ children, title, emphasizedTitle }: AccordionProps) => {
     return (
         <BorderBox>
             <StyledButton className="w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
-                {title}
+                {title && (title + ' ')}
                 {emphasizedTitle != undefined && (
                     <StyledSpan>
-                        {' ' + emphasizedTitle}
+                        {emphasizedTitle}
                     </StyledSpan>
                 )}
                 <KeyboardArrowDownIcon className="absolute right-8" />
