@@ -1,13 +1,15 @@
 import useViewport from "@/hooks/useViewport";
+import { VStack } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import React from "react";
 
 interface BackgroundProps {
-  children? : React.ReactNode
+  children?: React.ReactNode
 }
 
 const MobileBackground = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   background-color: #FFFFFF;
@@ -18,19 +20,28 @@ const MobileBackground = styled.div`
 
 const DesktopBackground = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   width: 768px;
   background-color: #FFFFFF;
   position: relative;
 `;
 
-const Background = ({ children } : BackgroundProps) => {
+const Background = ({ children }: BackgroundProps) => {
   const viewport = useViewport()
 
   if (viewport === 'mobile')
-    return <MobileBackground>{children}</MobileBackground>
+    return (
+      <VStack>
+        <MobileBackground>{children}</MobileBackground>
+      </VStack>
+    )
   if (viewport === 'desktop')
-    return <DesktopBackground>{children}</DesktopBackground>
+    return (
+      <VStack>
+        <DesktopBackground>{children}</DesktopBackground>
+      </VStack>
+    )
   return null
 }
 
@@ -64,4 +75,4 @@ const MainWrapper = styled.main<{
 
 
 
-export {Background, Wrapper, MainWrapper}
+export { Background, Wrapper, MainWrapper }

@@ -46,6 +46,9 @@ const BorderBox = ({ children }: BoxProps) => {
     background: #FFFFFF;
     border: 1px solid #DDDDDD;
     border-radius: 6px;
+    white-space: normal;
+    margin-top:20px;
+    margin-bottom : 20px;
     `
     return <StyledBox>
         {children}

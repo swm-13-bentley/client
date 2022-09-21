@@ -2,14 +2,18 @@
 /* eslint-disable react/display-name */
 
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
-import {Flex} from "@chakra-ui/react"
+import { Flex, HStack, VStack } from "@chakra-ui/react"
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from "react"
 import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
-
+import Pager from "../Pager"
+import getWeekNumber from "@/utils/getWeekNumberOfMonth"
+import { Background } from "@/components/Layout/MainLayout/Wrapper"
+import Accordion from "@/components/Molecule/Accordion";
+import {FilterButton} from "@/components/Atom/Button"
 class CellProperty {
   opacity = 1
 
@@ -195,6 +199,7 @@ const Scheduler = forwardRef((props, ref) => {
   let times = [...Array((endTime - startTime)).keys()].map(i => i + startTime)
 
   function groupScheduleElements(element, index, array) {
+    console.log(index)
     let available = element.available
     // console.log(available)
 
@@ -249,7 +254,7 @@ const Scheduler = forwardRef((props, ref) => {
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
   function handleChange(cells) {
-    changeCurr({ cells : cells });
+    changeCurr({ cells: cells });
   }
 
   const handleClick = () => {
@@ -370,7 +375,7 @@ const Scheduler = forwardRef((props, ref) => {
         // color,
         isCalendar,
         groupState[currIdx.index][t - startTime][weekIdx],
-        `${hours[t%48].realTime} ~ ${hours[(t+1)%48].realTime}`
+        `${hours[t % 48].realTime} ~ ${hours[(t + 1) % 48].realTime}`
       )
 
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
@@ -385,7 +390,7 @@ const Scheduler = forwardRef((props, ref) => {
     })
 
     return (
-      <tr className = { t % 2 == 0 ? "sharp" : "half"}>
+      <tr className={t % 2 == 0 ? "sharp" : "half"}>
         <td white disabled time>{hours[t].time}</td>
         {eachCell}
       </tr>
@@ -409,36 +414,40 @@ const Scheduler = forwardRef((props, ref) => {
 
   return (
     <div>
+      <Pager
+        title={getWeekNumber(weeks[currIdx.index][3])}
+        firstPage={currIdx.index == 0}
+        lastPage={currIdx.index == tableState.length - 1}
+        onLeftClick={handleLeft}
+        onRightClick={handleRight}
+      />
+      <Background>
+        {props.children}
+        <Accordion title="참석자" emphasizedTitle="유마리 외 3명">
+        </Accordion>
+        <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
+          <tr>
+            <td white disabled />
+            <td white disabled>월</td>
+            <td white disabled>화</td>
+            <td white disabled>수</td>
+            <td white disabled>목</td>
+            <td white disabled>금</td>
+            <td white disabled className=" text-red-600">토</td>
+            <td white disabled className=" text-red-600">일</td>
+          </tr>
+          <tr>
+            <td white disabled />
+            {
+              dayTexts.map(
+                (text, index) => <td white disabled text={text.text}>{text.text}</td>
+              )
+            }
+          </tr>
+          {eachRow}
+        </TableDragSelect >
+      </Background>
 
-      <Flex>
-        <IconButton onClick={handleLeft} size="small">
-          <ArrowBackIosNewIcon fontSize="small"/>
-        </IconButton>
-      <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
-        <tr>
-          <td white disabled />
-          <td white disabled>월</td>
-          <td white disabled>화</td>
-          <td white disabled>수</td>
-          <td white disabled>목</td>
-          <td white disabled>금</td>
-          <td white disabled className=" text-red-600">토</td>
-          <td white disabled className=" text-red-600">일</td>
-        </tr>
-        <tr>
-          <td white disabled />
-          {
-            dayTexts.map(
-              (text,index) => <td white disabled text={text.text}>{text.text}</td>
-            )
-          }
-        </tr>
-        {eachRow}
-      </TableDragSelect >
-        <IconButton onClick={handleRight} sx={"float:right"} size="small">
-          <ArrowForwardIosIcon fontSize="small"/>
-        </IconButton>
-      </Flex>
     </div>
 
   );

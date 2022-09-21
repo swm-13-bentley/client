@@ -133,13 +133,6 @@ const Entry: NextPage = function () {
                                                         :
                                                         null
                                                 }
-                                            <div className="ml-5 mr-5">
-                                                <IndeterminateCheckbox
-                                                    participantNames={participantNames}
-                                                    onChange={checked => setGroupFilterChecked(checked)}
-                                                    isChecked={null}
-                                                />
-                                            </div>
 
                                             <div className="mb-6">
                                                 <Scheduler
@@ -149,7 +142,14 @@ const Entry: NextPage = function () {
                                                     isDisabled={true}
                                                     groupFilterChecked={groupFilterChecked}
                                                     participantNames={participantNames}
-                                                />
+                                                >
+                                                    <IndeterminateCheckbox
+                                                        participantNames={participantNames}
+                                                        onChange={checked => setGroupFilterChecked(checked)}
+                                                        isChecked={null}
+                                                    />
+                                                    
+                                                </Scheduler>
                                             </div>
 
                                         </AccordionDetails>

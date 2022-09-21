@@ -41,23 +41,21 @@ const Accordion = ({ children, title, emphasizedTitle }: AccordionProps) => {
     `
     return (
         <BorderBox>
-            <>
-                <StyledButton className="w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
-                    {title}
-                    {emphasizedTitle != undefined && (
-                        <StyledSpan>
-                            {' ' + emphasizedTitle}
-                        </StyledSpan>
-                    )}
-                    <KeyboardArrowDownIcon className="absolute right-8" />
-                </StyledButton>
-                    {
-                    isOpen &&
-                        <div className="flex flex-row space-x-1">
-                            {children}
-                        </div>
-                    }
-            </>
+            <StyledButton className="w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
+                {title}
+                {emphasizedTitle != undefined && (
+                    <StyledSpan>
+                        {' ' + emphasizedTitle}
+                    </StyledSpan>
+                )}
+                <KeyboardArrowDownIcon className="absolute right-8" />
+            </StyledButton>
+                {
+                isOpen &&
+                    <div className="flex flex-wrap gap-1">
+                        {children}
+                    </div>
+                }
         </BorderBox>
     )
 }
