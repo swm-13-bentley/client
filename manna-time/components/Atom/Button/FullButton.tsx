@@ -41,21 +41,13 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
         name: "button"
     })`
     /* Auto layout */
-
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 16px 137px;
+    position: relative;
+    padding: 16px;
     gap: 10px;
     
-    position: absolute;
     width: 100%;
     max-width: 350px;
     height: 58px;
-    margin-left: 20px;
-    margin-right: 20px;
-    top: 674px;
     
     background: ${style != undefined ? theme[style].background : theme['primary'].background};
     border-radius: 6px;

@@ -15,7 +15,6 @@ interface PagerProps {
 
 const StyledDiv = styled.div`
     margin:auto;
-
     max-width : 350px;
     width: 100%;
     display: flex;
@@ -24,6 +23,7 @@ const StyledDiv = styled.div`
     vertical-align: middle;
     margin-bottom: 23px;
     margin-top: 28px;
+    
     `
     
 const StyledH1 = styled.h1`
