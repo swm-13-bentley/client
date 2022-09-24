@@ -60,8 +60,8 @@ const Rectangle = styled.div`
     background: #333333;
 `
 
-const RoomInfoBox = ({title, date, timeArea, participants}: RoomInfoBoxProps) => {
-    
+const RoomInfoBox = ({ title, date, timeArea, participants }: RoomInfoBoxProps) => {
+
     const nameItem = participants.map((name, index) => {
         return (
             <StyledSpan
@@ -77,13 +77,19 @@ const RoomInfoBox = ({title, date, timeArea, participants}: RoomInfoBoxProps) =>
             >
                 <Title>{title}</Title>
                 <div className="mb-1 flex flex-left">
-                    <Rectangle/><StyledSpan> {date}</StyledSpan>
+                    <Rectangle /><StyledSpan> {date}</StyledSpan>
                 </div>
-                <div className="mb-4 flex flex-left">
-                    <Rectangle/><StyledSpan>{timeArea}</StyledSpan>
-                </div>
+                {
+                    timeArea && (
 
-                <Line color={"lightgrey"}/>
+                        <div className="mb-4 flex flex-left">
+                            <Rectangle /><StyledSpan>{timeArea}</StyledSpan>
+                        </div>
+                    )
+
+                }
+
+                <Line color={"lightgrey"} />
                 <Participant className="gap-2">참여자 {nameItem}</Participant>
             </CustomBox>
         </VStack>

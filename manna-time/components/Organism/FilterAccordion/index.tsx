@@ -60,7 +60,7 @@ const Filter = ({ participantNames, isChecked, onChange }: FilterProps) => {
 
     const emphasizedTitle = () => {
         if (participantNames.length == 0)
-            return '일정을 입력해 주세요'
+            return '일정을 등록해 주세요'
         
         else if (checked.every(value => value == false))
             return '0명'

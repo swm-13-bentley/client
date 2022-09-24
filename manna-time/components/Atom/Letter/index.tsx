@@ -27,3 +27,31 @@ letter-spacing: -0.003em;
 
 color: #333333;
 `
+
+export const NoticeTitle = styled.p`
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 150%;
+    /* identical to box height, or 48px */
+
+    text-align: center;
+    letter-spacing: -0.003em;
+
+    color: #333333;
+`
+
+export const NoticeDescription = styled.p`
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 160%;
+    /* identical to box height, or 26px */
+
+    text-align: center;
+    letter-spacing: -0.003em;
+
+    color: #333333;
+`
