@@ -294,7 +294,8 @@ class Cell extends React.Component {
           if (cellProperty.isCalendar) {
             className += " calendar"
           } else {
-            style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            // style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            style.backgroundColor = `rgba(0, 86, 224, ${cellProperty.opacity})`
           }
           if (cellProperty.opacity > 0) {
             style.borderBottom = "1px solid " + style.backgroundColor

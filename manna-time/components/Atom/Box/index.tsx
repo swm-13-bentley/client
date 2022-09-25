@@ -12,7 +12,7 @@ const theme = {
     skyblue: '#F4F8FF'
 }
 
-const CustomBox = ({style, children, gap} : BoxProps) => {
+const CustomBox = ({ style, children, gap }: BoxProps) => {
     const StyledBox = styled(Box, {
         name: 'box'
     })`
@@ -33,7 +33,7 @@ const CustomBox = ({style, children, gap} : BoxProps) => {
 
 const BorderBox = ({ children }: BoxProps) => {
     const StyledBox = styled(Box, {
-        name:'border-box'
+        name: 'border-box'
     })`
     box-sizing: border-box;
 
@@ -51,12 +51,76 @@ const BorderBox = ({ children }: BoxProps) => {
     border: 1px solid #DDDDDD;
     border-radius: 6px;
     white-space: normal;
-    margin-top:20px;
-    margin-bottom : 20px;
     `
     return <StyledBox>
         {children}
     </StyledBox>
 }
 
-export { CustomBox, BorderBox }
+const StyledInput = styled('input', {})`
+
+    padding: 12px 16px;
+    border: 1px solid #DDDDDD;
+    border-radius: 6px;
+    white-space: normal;
+
+
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 160%;
+    /* or 22px */
+
+    letter-spacing: -0.003em;
+    color: #333333;
+
+    width: 100%;
+    max-width: 350px;
+
+    ::placeholder {
+        color: #999999;
+    }
+
+    &:focus {
+        outline: none;
+    }
+`
+
+interface InputBoxProps {
+    placeholder: string
+    id: 'password' | 'name'
+    setValue(value: string): void
+    value: string
+}
+
+const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
+    if (id === 'name') {
+        return <StyledInput
+            value={value}
+            onChange={(e) => { setValue(e.target.value) }}
+            size={350}
+            maxLength={15}
+            placeholder={placeholder}
+            type="text"
+            id={id}
+            name={id}
+            required />
+    }
+    else if (id === 'password') {
+        return <StyledInput
+            value={value}
+            onChange={(e) => { setValue(e.target.value) }}
+            size={350}
+            maxLength={20}
+            placeholder={placeholder}
+            type="password"
+            id={id}
+            name={id}
+        />
+
+    }
+    return null
+}
+
+export { CustomBox, BorderBox, InputBox }

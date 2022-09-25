@@ -22,7 +22,8 @@ const DesktopBackground = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 768px;
+  max-width: 768px;
+  width: 100%;
   background-color: #FFFFFF;
   position: relative;
 `;
