@@ -1,30 +1,42 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, VStack } from "@chakra-ui/react"
-import { Accordion, AccordionDetails, AccordionSummary, Button, Typography } from "@mui/material"
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { GetServerSideProps, NextPage } from "next"
 import React, { SyntheticEvent, useEffect, useState } from "react"
-import CenterFlexLayout from "../../../components/Layout/CenterFlexLayout"
-import ParticipantLogin from "@/components/Molecule/ParticipantLogin/ParticipantLogin"
 import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 import { useRouter } from "next/router";
 
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import LoginIcon from '@mui/icons-material/Login';
 import axios from "axios";
-import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox";
+import TabLayout from "@/components/Layout/TabLayout";
+import FilterAccordion from "@/components/Organism/FilterAccordion";
+import ClickTimeBox from "@/components/Organism/ClickTimeBox";
+import { useRecoilValue } from "recoil";
+import { clickParticipantState, clickTimeState } from "@/src/state/ClickScheduler";
+import RankContainer from "@/components/Organism/RankContainer";
+import { Background } from "@/components/Layout/MainLayout/Wrapper";
+import RoomInfoBox from "@/components/Organism/RoomInfoBox";
+import Hours from "@/components/Molecule/Scheduler/Hours";
+import { changeDateToKorean } from "@/utils/changeFormat";
+import { FullButton } from "@/components/Atom/Button";
+import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer";
 import { MixpanelTracking } from "@/utils/mixpanel";
-import TimeRank from "@/components/Molecule/Rank/TimeRank";
 import copyTextUrl from "@/utils/copyTextUrl";
+import InvitationLayout from "@/components/Layout/InvitationLayout";
+import EmptyRank from "@/components/Organism/EmptyRank";
 
 const Entry: NextPage = function () {
 
     const router = useRouter()
-    const { qid } = router.query
+    // const qid = "5334e361-7755-4cc9-b3d1-fbf319902e7b" // 일정 있음
+    // const qid = "8e151343-a955-434c-9246-880a742b9c5f" // 일정 없음.
+    const { qid, invitation } = router.query
+    let [showInvitation, setShowInvitation] = useState(true)
+
+    useEffect(()=>{
+        if (invitation != undefined && invitation == 'false')
+            setShowInvitation(false)
+    },[])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)
-
-    const [expanded, setExpanded] = useState(true)
 
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
@@ -33,6 +45,9 @@ const Entry: NextPage = function () {
     const [participantNames, setParticipantNames] = useState(null)
 
     const [timeRanks, setTimeRanks] = useState(undefined)
+
+    const clickedTime = useRecoilValue(clickTimeState)
+    const clickedParticipants = useRecoilValue(clickParticipantState)
 
     useEffect(() => {
         axios.get(srcUrl)
@@ -64,139 +79,155 @@ const Entry: NextPage = function () {
             })
     }, [srcUrl])
 
-    return (
+    const [tab, setTab] = useState(0)
+    const [enter, setEnter] = useState(false)
+    
+
+    if (showInvitation && !enter) {
+        return (
+            roomInfo && participantNames && (
+                <InvitationLayout
+                    title={roomInfo.title}
+                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                    timeArea={`${Hours[roomInfo.startTime % 48].realTime} ~ ${Hours[roomInfo.endTime % 48].realTime}`}
+                    participants={participantNames}
+                    isProceeding={true}
+                    onClick={() => { setEnter(true) }}
+                />
+
+            )
+        )
+    } else return (
         <>
-            <CenterFlexLayout>
-                {(
-                    roomInfo && roomInfo.title != undefined && roomInfo.dates != undefined
-                        ?
-                        <>
-                            <Accordion
-                                // defaultExpanded={true}
-                                disableGutters
-                                className=" mb-10"
-                                expanded={expanded}
+            
+            <TabLayout
+                value={tab}
+                tabLabel={["종합 일정", "순위", "약속 정보"]}
+                onChange={setTab}
+                >
+                {
+                    roomInfo && participantNames && (
+                        <div className={tab == 0 ? "mb-20" : "hidden"}>
+                            <Scheduler
+                                groupSchedule={groupSchedule}
+                                isGroup={true}
+                                roomInfo={roomInfo}
+                                isDisabled={true}
+                                groupFilterChecked={groupFilterChecked}
+                                participantNames={participantNames}
                             >
-                                <AccordionSummary aria-controls="panel1d-content"
-                                    expandIcon={<ExpandMoreIcon />}
-                                    id="panel1a-header"
-                                    onClick={(e: SyntheticEvent) => { setExpanded(!expanded) }}
-                                >
-                                    {/* <Typography>현재 그룹 스케줄 확인하기</Typography> */}
-                                </AccordionSummary>
-                                {(
-                                    !loader ?
-                                        <AccordionDetails
-                                            sx={{ padding: 0 }}
+                                <div className="mb-5 mt-5">
+                                    <FilterAccordion
+                                        participantNames={participantNames}
+                                        onChange={checked => setGroupFilterChecked(checked)}
+                                        isChecked={null}
+                                    />
+                                </div>
+                            </Scheduler>
 
-                                        >
-                                            <Center mb="5">
-                                                <p className="text-lg font-bold">{roomInfo.title}</p>
-                                            </Center>
-                                            <Center mb="10">
-                                                <p className="text-sm font-bold">{roomInfo.dates[0]} ~ {roomInfo.dates[roomInfo.dates.length - 1]}</p>
-                                            </Center>
-
-                                            <Center mb="5">
-                                                <Button
-                                                    className="mr-5"
-                                                    variant="contained"
-                                                    startIcon={<ContentCopyIcon />}
-                                                    onClick={() => {
-                                                        MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
-                                                        copyTextUrl(textUrl)
-                                                    }}
-                                                >
-                                                    방 링크 복사
-                                                </Button>
-                                                <Button
-                                                    variant="contained"
-                                                    startIcon={<LoginIcon />}
-                                                    onClick={(e: React.SyntheticEvent) => {
-                                                        setExpanded(false)
-                                                        MixpanelTracking.getInstance().buttonClicked("entry: 내 시간 입력(아코디언 접기)")
-                                                    }}
-                                                >
-                                                    내 시간 입력
-                                                </Button>
-                                            </Center>
-
-                                                {
-                                                    timeRanks != undefined && participantNames != null
-                                                        ?
-                                                        <Center>
-                                                            <TimeRank
-                                                                ranks={timeRanks}
-                                                                totalNum = {participantNames.length}
-                                                            />
-                                                        </Center>
-                                                        :
-                                                        null
-                                                }
-                                            <div className="ml-5 mr-5">
-                                                <IndeterminateCheckbox
-                                                    participantNames={participantNames}
-                                                    onChange={checked => setGroupFilterChecked(checked)}
-                                                    isChecked={null}
-                                                />
-                                            </div>
-
-                                            <div className="mb-6">
-                                                <Scheduler
-                                                    groupSchedule={groupSchedule}
-                                                    isGroup={true}
-                                                    roomInfo={roomInfo}
-                                                    isDisabled={true}
-                                                    groupFilterChecked={groupFilterChecked}
-                                                    participantNames={participantNames}
-                                                />
-                                            </div>
-
-                                        </AccordionDetails>
-                                        : null
-                                )}
-
-                            </Accordion>
-
-                            <Center className="mb-10">
-                                <ParticipantLogin
-                                    eventName={roomInfo.title}
-                                    startDate={roomInfo.dates[0]}
-                                    endDate={roomInfo.dates[roomInfo.dates.length - 1]}
-                                />
-                            </Center>
+                            <Background>
+                                <div className={participantNames.length > 0 ? "" : "hidden"}>
+                                    <ClickTimeBox
+                                        time={clickedTime}
+                                        participants={clickedParticipants}
+                                    />
+                                </div>
 
 
+                                <BasicButtonContainer marginTop={"12"}>
+                                    <FullButton style="primary"
+                                        onClick={() => {
+                                            router.push(`/${router.query.locale}/participant-login/${qid}`);
+                                        }}
+                                    >내 일정 등록하기</FullButton>
+                                    <FullButton
+                                        style="secondary"
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 참여자 일정")
+                                            copyTextUrl(textUrl)
+                                        }}
+                                    >초대하기</FullButton>
+                                </BasicButtonContainer>
+                            </Background>
 
-                            {/* chakra version */}
-                            {/* <Box p={10}>
-                                <Accordion defaultIndex={[0]} allowMultiple>
-                                    <AccordionItem>
-                                        <h2>
-                                            <AccordionButton>
-                                                <Box flex='1' textAlign='left'>
-                                                    현재 그룹 스케줄 확인하기
-                                                </Box>
-                                                <AccordionIcon />
-                                            </AccordionButton>
-                                        </h2>
-                                        <AccordionPanel pb={4}>
-                                            <Scheduler/>
-                                        </AccordionPanel>
-                                    </AccordionItem>
-                                </Accordion>
-                            </Box> */}
-                        </>
-                        :
-                        null
-                )}
-            </CenterFlexLayout>
+                        </div>
+                    )
+                }
+                {
+                    !loader && timeRanks != undefined && participantNames != null && (
+                        <div className={tab == 1 ? "mb-20" : "hidden"}>
+                            {
+                                participantNames.length == 0
+                                    ?
+                                    <EmptyRank url={`/${router.query.locale}/participant-login/${qid}`} />
+                                    :
+                                    <Background>
+                                        <RankContainer
+                                            ranks={timeRanks}
+                                            totalNum={participantNames.length}
+                                        />
+                                        <BasicButtonContainer marginTop={"12"}>
+                                            <FullButton style="kakao">카카오로 공유하기</FullButton>
+                                            <FullButton style="primary">알림 받기</FullButton>
+                                            <FullButton style="secondary">이미지로 저장하기</FullButton>
+                                        </BasicButtonContainer>
+                                    </Background>
+                            }
+                        </div>
+                    )
+                }
+                {
+                    roomInfo && participantNames != undefined && (
+                        <div className={tab == 2 ? "mb-20" : "hidden"}>
+                            <Background>
+                                <RoomInfoBox
+                                    title={roomInfo.title}
+                                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                    timeArea={`${Hours[roomInfo.startTime % 48].realTime} ~ ${Hours[roomInfo.endTime % 48].realTime}`}
+                                    participants={participantNames} />
+                                <StickyButtonContainer>
+                                    <FullButton
+                                        style="secondary"
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 약속 정보")
+                                            copyTextUrl(textUrl)
+                                        }}
+                                    >초대하기</FullButton>
+                                </StickyButtonContainer>
+                            </Background>
+                        </div>
+                    )
+
+                }
+
+
+                {/* <Center mb="5">
+                                                    <Button
+                                                        className="mr-5"
+                                                        variant="contained"
+                                                        startIcon={<ContentCopyIcon />}
+                                                        onClick={() => {
+                                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기")
+                                                            copyTextUrl(textUrl)
+                                                        }}
+                                                    >
+                                                        방 초대하기
+                                                    </Button>
+                                                    <Button
+                                                        variant="contained"
+                                                        startIcon={<LoginIcon />}
+                                                        onClick={(e: React.SyntheticEvent) => {
+                                                            setExpanded(false)
+                                                            MixpanelTracking.getInstance().buttonClicked("entry: 내 시간 입력(아코디언 접기)")
+                                                        }}
+                                                    >
+                                                        내 시간 입력
+                                                    </Button>
+                                                </Center> */}
+
+            </TabLayout>
         </>
     )
 }
-
-// export const getServerSideProps: GetServerSideProps<Props> = async ({ query }) => {
-//     const qid = getStringValueFromQuery({query, field: 'qid'})
-// }
 
 export default Entry

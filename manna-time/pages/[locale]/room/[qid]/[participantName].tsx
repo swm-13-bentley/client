@@ -1,29 +1,23 @@
-import { Center, Flex, HStack } from "@chakra-ui/react"
-import { Box, Button, Checkbox, CssBaseline, FormControlLabel, FormGroup, Paper, Tab, Tabs, ToggleButton } from "@mui/material"
 import axios from "axios"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
-import CenterFlexLayout from "../../../../components/Layout/CenterFlexLayout"
-import ParticipantLogin from "../../../../components/Molecule/ParticipantLogin/ParticipantLogin"
 import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import InfoIcon from '@mui/icons-material/Info';
-
-import IndeterminateCheckbox from "@/components/Molecule/IndeterminateCheckbox/IndeterminateCheckbox"
 import { MixpanelTracking } from "@/utils/mixpanel"
-import { DateObject } from "react-multi-date-picker"
-import { start } from "repl"
 
-import SendIcon from '@mui/icons-material/Send';
 import { useRecoilState } from "recoil"
 import { FeedbackState } from "@/src/state";
-import Feedback from "@/components/Molecule/Feedback/Feedback"
 
-import PublishIcon from '@mui/icons-material/Publish';
 import copyTextUrl from "@/utils/copyTextUrl"
+import TabLayout from "@/components/Layout/TabLayout"
+import { Background } from "@/components/Layout/MainLayout/Wrapper"
+import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer"
+import { FullButton } from "@/components/Atom/Button"
+import RoomInfoBox from "@/components/Organism/RoomInfoBox"
+import FilterAccordion from "@/components/Organism/FilterAccordion"
+import { changeDateToKorean } from "@/utils/changeFormat"
+import Hours from "@/components/Molecule/Scheduler/Hours"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -52,8 +46,8 @@ const Room: NextPage = function () {
 
     const router = useRouter()
     const { qid, participantName } = router.query
-    
-    const [isFeedbackShown, setIsFeedbackShown] = useRecoilState(FeedbackState)
+    // const qid = '1be4cccd-75a9-4ebb-8cbe-41d434498843'
+    // const participantName = '이영석'
     
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
@@ -101,236 +95,81 @@ const Room: NextPage = function () {
     //     }, false)
     // }, [])
 
-    const handleTabChange = (event: React.SyntheticEvent, tabValue: number) => {
-        setTab(tabValue);
-    };
-
-    const tabLabel = ["내 시간", "그룹 시간", "약속 공유"]
-
-    const tabDescription = (tabIdx: number) => {
-        if (tabIdx == 1) {
-            return (
-                <>
-                    <Center>
-                        <p className="md:text-xl text-md font-bold ml-4 mr-4">
-                            참여자들의
-                            <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능한 시간"}</span>
-                            입니다
-                        </p>
-                    </Center >
-                </>
-            )
-        } else if (tabIdx == 0) {
-            return (
-                <>
-                    <Center className="ml-4 mr-4">
-                        <p className="md:text-xl text-md font-bold ">
-                            {participantName}님,<br />
-                        </p>
-                    </Center >
-                    <Center className="mb-3 ml-4 mr-4">
-                        <p className="md:text-xl text-md font-bold ">
-                            <span className="md:text-xl text-md font-bold text-blue-700">{" 약속 가능 시간을 드래그"}</span>
-                            해주세요
-                        </p>
-                    </Center >
-                </>
-            )
-        } else if (tabIdx == 2) {
-            return (
-                <Center className="ml-4 mr-4">
-                    <InfoIcon className="text-blue-700 mr-1" />
-                    <p className="md:text-xl text-lg font-bold">
-                        <span className="md:text-xl text-lg font-bold text-blue-700">약속 방 정보</span>
-                    </p>
-                </Center >
-            )
-        }
-    }
-
-    const tabContainer = (tabIdx: number) => {
-        if (tabIdx == 1) {
-            return (
-                <>
-                    <div className="mb-2 ml-5 mr-5 overflow-auto">
-                        <IndeterminateCheckbox
-                            participantNames={groupNamesExceptMe}
-                            onChange={checked => setGroupFilterChecked(checked)}
-                            isChecked={groupFilterChecked}
-                        />
-
-                        <Button
-                            className="float-right"
-                            size="small"
-                            variant="contained"
-                            onClick={() => {
-                                setTab(0)
-                                MixpanelTracking.getInstance().buttonClicked("room: 내시간 등록")
-                            }}
-                        >내 시간 입력</Button>
-
-                    </div>
-                    {/* {(
-                        groupFilterChecked
-                        ?
-                        :
-                        <h1>그룹원 정보를 불러오는 중입니다..</h1>
-                    )} */}
-                </>
-            )
-        } else if (tabIdx == 0) {
-            return (
-                <>
-                    <div className="mb-2 ml-5 mr-5 overflow-auto">
-                        {/* <Button
-                            variant="outlined"
-                            color="primary"
-                            className="md:text-xs text-xs"
-                            onClick={() => {
-                                postCalendarRequest()
-                            }}
-                            startIcon={<CalendarMonthIcon />}
-                        >
-                            캘린더 연동
-                        </Button> */}
-                        <FormControlLabel
-                            className="md:text-2xs text-xs"
-                            sx={{ '& .MuiSvgIcon-root': { fontSize: 18 } }}
-                            label={"그룹 시간 보기"}
-                            control={<Checkbox
-                                checked={groupButtonChecked}
-                                onChange={(e) => setGroupButtonChecked(e.target.checked)}
-                                defaultChecked={groupButtonChecked}
-                            />
-                            }
-                        />
-                        <Button
-                            size="small"
-                            className="float-right flex"
-                            startIcon={<PublishIcon />}
-                            variant="contained"
-                            onClick={() => {
-                                const mySchedule = scheduleRef.current.testFn()
-                                submitMySchedule(mySchedule)
-                                MixpanelTracking.getInstance().buttonClicked("room: 제출하기")
-                            }}
-                        >제출하기</Button>
-                    </div>
-                </>
-            )
-        } else if (tabIdx == 2) {
-            let title, startDate, endDate;
-            if (roomInfo != undefined) {
-                if (roomInfo.title != undefined)
-                    title = roomInfo.title
-                if (roomInfo.dates != undefined) {
-                    startDate = (roomInfo.dates[0] as string).substring(5).replace('-', '/')
-                    endDate = (roomInfo.dates[roomInfo.dates.length - 1]).substring(5).replace('-', '/')
-                }
-
-            }
-
-            return (<>
-                <Flex width={"88vw"}>
-                    <div className="m-5 space-y-2">
-                        <p className="md:text-lg text-md font-bold">
-                            <span className="md:text-xl text-lg font-bold text-blue-700">방 이름 : </span>
-                            {title ? title : "loading..."}
-                        </p>
-                        <p className="md:text-lg text-md font-bold">
-                            <span className="md:text-xl text-lg font-bold text-blue-700">기간 : </span>
-                            {startDate && endDate ? `${startDate} ~ ${endDate}` : "loading"}
-                        </p>
-                    </div>
-                </Flex>
-            </>)
-        }
-    }
-
-    const tabFooterContainer = (tabIdx: number) => {
-        if (tabIdx == 1) {
-            return (
-                <></>
-            )
-        } else if (tabIdx == 0) {
-            return (
-                <>
-                </>
-            )
-        } else if (tabIdx == 2) {
-            return (
-                <>
-                    <Center className="ml-4 mr-4">
-                    </Center>
-                    <Center className="mb-3 space-x-3 ml-4 mr-4">
-                        <Button
-                            startIcon={<SendIcon />}
-                            fullWidth
-                            variant="outlined"
-                            onClick={() => {
-                                window.location.href= "https://open.kakao.com/o/syCWZnte"
-                            }}
-                        >
-                            관리자에게 문의하기
-                        </Button>
-                    </Center>
-                    <Center>
-                        <Button
-                            fullWidth
-                            className="ml-4 mr-4"
-                            variant="contained"
-                            startIcon={<ContentCopyIcon />}
-                            onClick={() => {
-                                copyTextUrl(textUrl)
-                                MixpanelTracking.getInstance().buttonClicked("room: 링크 복사")
-                            }}
-                        >
-                            방 링크 복사
-                        </Button>
-                    </Center>
-                </>
-            )
-        }
-    }
-
-
     return (
         <>
-            {isFeedbackShown && <Feedback />}
-            <CenterFlexLayout>
-                <Paper sx={{ boxShadow: 4, paddingBottom: 2, maxWidth: 693, borderRadius: 3}}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', margin: 2 }}>
-                        <Tabs value={tab} onChange={handleTabChange}>
-                            <Tab label={tabLabel[0]} />
-                            <Tab label={tabLabel[1]} />
-                            <Tab label={tabLabel[2]} />
-                        </Tabs>
-                    </Box>
-                    {tabDescription(tab)}
-                    {tabContainer(tab)}
-                    {(
-                        loader ? <h1>방 정보를 불러오는 중입니다</h1> :
-                            groupSchedule !== null && tab != 2
-                                ?
-                                <div className="mb-3">
-                                    <Scheduler
-                                        // roomInfo={props.roomInfo}
-                                        isDisabled={tab == 0 ? false : true}
-                                        ref={scheduleRef}
-                                        groupSchedule={groupSchedule}
-                                        roomInfo={roomInfo}
-                                        isGroup={(tab == 1) || groupButtonChecked ? true : false}
-                                        mySchedule={mySchedule}
-                                        groupFilterChecked={groupFilterChecked}
+            <TabLayout
+                value={tab}
+                tabLabel={["내 일정", "약속 정보"]}
+                onChange={setTab}
+                >
+                {
+                    roomInfo && groupNamesExceptMe && (
+                        <div className={tab == 0 ? "mb-20" : "hidden"}>
+                            <Scheduler
+                                ref={scheduleRef}
+                                mySchedule={mySchedule}
+                                groupSchedule={groupSchedule}
+                                isGroup={true}
+                                roomInfo={roomInfo}
+                                isDisabled={false}
+                                groupFilterChecked={groupFilterChecked}
+                                participantNames={groupNamesExceptMe}
+                            >
+                                <div className="mb-5 mt-5">
+                                    <FilterAccordion
                                         participantNames={groupNamesExceptMe}
+                                        onChange={checked => setGroupFilterChecked(checked)}
+                                        isChecked={null}
                                     />
                                 </div>
-                                :
-                                null
-                    )}
-                    {tabFooterContainer(tab)}
-                </Paper>
-            </CenterFlexLayout>
+                            </Scheduler>
+
+                            <Background>
+
+                                <BasicButtonContainer marginTop={"12"}>
+                                    <FullButton style="primary"
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("room: 내 일정 등록하기")
+                                            const mySchedule = scheduleRef.current.testFn()
+                                            submitMySchedule(mySchedule)
+                                        }}
+                                    >내 일정 등록하기</FullButton>
+                                    <FullButton
+                                        style="secondary"
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("room: 캘린더 연동하기")
+                                        }}
+                                    >구글 캘린더 연동하기</FullButton>
+                                </BasicButtonContainer>
+                            </Background>
+
+                        </div>
+                    )
+                }
+                {
+                    roomInfo && groupNamesExceptMe != undefined && (
+                        <div className={tab == 1 ? "mb-20" : "hidden"}>
+                            <Background>
+                                <RoomInfoBox
+                                    title={roomInfo.title}
+                                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                    timeArea={`${Hours[roomInfo.startTime % 48].realTime} ~ ${Hours[roomInfo.endTime % 48].realTime}`}
+                                    participants={groupNamesExceptMe} />
+                                <StickyButtonContainer>
+                                    <FullButton
+                                        style="secondary"
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("room: 초대하기 / 탭: 약속 정보")
+                                            copyTextUrl(textUrl)
+                                        }}
+                                    >초대하기</FullButton>
+                                </StickyButtonContainer>
+                            </Background>
+                        </div>
+                    )
+
+                }
+                </TabLayout>
         </>
     )
 
@@ -346,7 +185,7 @@ const Room: NextPage = function () {
         })
             .then((result) => {
                 alert('일정이 등록되었습니다.')
-                router.push(`/${router.query.locale}/entry/${qid}/`);
+                router.push(`/${router.query.locale}/entry/${qid}/?invitation=false`);
 
             })
             .catch((e) => {

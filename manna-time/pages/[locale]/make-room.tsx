@@ -206,7 +206,7 @@ const MakeRoom: NextPage = () => {
                 })
                     .then((result) => {
                         // console.log(result.data.roomUuid)
-                        router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
+                        router.push(`/${router.query.locale}/entry/${result.data.roomUuid}?invitation=false`);
                     })
                     .catch((e) => {
                         // console.log(e)
