@@ -1,5 +1,7 @@
 import { FullButton } from "@/components/Atom/Button";
 import { Caption } from "@/components/Atom/Letter";
+import { Background } from "@/components/Layout/MainLayout/Wrapper";
+import { BasicButtonContainer } from "@/components/Molecule/ButtonContainer";
 import ParticipantInput from "@/components/Organism/ParticipantInput";
 import { VStack } from "@chakra-ui/react";
 import axios from "axios";
@@ -16,7 +18,7 @@ const ParticipantLogin: NextPage = () => {
     const [errorMessage, setErrorMessage] = useState("")
 
     return (
-        <VStack className=" gap-10">
+        <Background>
             <ParticipantInput
                 name={name}
                 setName={setName}
@@ -24,14 +26,13 @@ const ParticipantLogin: NextPage = () => {
                 setPassword={setPassword}
                 errorMessage={errorMessage}
             />
-            
-            <VStack className="w-full">
+            <BasicButtonContainer marginTop={"10"}>
                 <FullButton onClick={sendLoginRequest}>내 일정 등록/수정하기</FullButton>
                 <Caption className=" mt-4 mb-4">또는</Caption>
                 <FullButton style="secondary">로그인/회원가입</FullButton>
-            </VStack>
+            </BasicButtonContainer>
 
-        </VStack>
+        </Background>
     )
 
     function sendLoginRequest() {
@@ -54,7 +55,15 @@ const ParticipantLogin: NextPage = () => {
                     router.push(`/${router.query.locale}/room/${qid}/${name}`);
                 })
                 .catch((e) => {
-                    setErrorMessage("에러가 발생했습니다") // todo: 에러별로 쪼개기
+                    const status = e.response.status
+
+                    if (status == 400)
+                        setErrorMessage("약속 제한 인원을 초과하였습니다")
+                    else if (status == 401)
+                        setErrorMessage("이전에 등록한 비밀번호를 입력하세요")
+                    else if (status == 404)
+                        setErrorMessage("해당 약속이 존재하지 않습니다")
+                        
                 })
         }
     }

@@ -130,11 +130,15 @@ const Entry: NextPage = function () {
 
 
                                 <BasicButtonContainer marginTop={"12"}>
-                                    <FullButton style="primary">내 일정 등록하기</FullButton>
+                                    <FullButton style="primary"
+                                        onClick={() => {
+                                            router.push(`/${router.query.locale}/participant-login/${qid}`);
+                                        }}
+                                    >내 일정 등록하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사 / 탭: 참여자 일정")
+                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 참여자 일정")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>
@@ -150,7 +154,7 @@ const Entry: NextPage = function () {
                             {
                                 participantNames.length == 0
                                     ?
-                                    <EmptyRank url="hey"/>
+                                    <EmptyRank url={`/${router.query.locale}/participant-login/${qid}`} />
                                     :
                                     <Background>
                                         <RankContainer
@@ -180,7 +184,7 @@ const Entry: NextPage = function () {
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사 / 탭: 약속 정보")
+                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 약속 정보")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>
@@ -198,11 +202,11 @@ const Entry: NextPage = function () {
                                                         variant="contained"
                                                         startIcon={<ContentCopyIcon />}
                                                         onClick={() => {
-                                                            MixpanelTracking.getInstance().buttonClicked("entry: 링크 복사")
+                                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기")
                                                             copyTextUrl(textUrl)
                                                         }}
                                                     >
-                                                        방 링크 복사
+                                                        방 초대하기
                                                     </Button>
                                                     <Button
                                                         variant="contained"

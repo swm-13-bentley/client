@@ -4,6 +4,7 @@ import { Background } from "@/components/Layout/MainLayout/Wrapper"
 import { VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import Image from "next/image"
+import { useRouter } from "next/router"
 
 interface EmptyRankProps {
     url: string
@@ -23,7 +24,8 @@ const StyledP = styled.p`
     color: #333333;
 `
 
-const EmptyRank = ({url}: EmptyRankProps) => {
+const EmptyRank = ({ url }: EmptyRankProps) => {
+    const router= useRouter()
     return (
         <Background>
             <VStack mt="100px" mb="40px">
@@ -32,7 +34,11 @@ const EmptyRank = ({url}: EmptyRankProps) => {
                 <NoticeDescription>참석자를 초대하고 일정을 등록해주세요</NoticeDescription>
             </VStack>
             <VStack>
-                <FullButton style="primary">내 일정 등록하기</FullButton>
+                <FullButton style="primary"
+                    onClick={() => {   
+                        router.push(url)
+                    }}
+                >내 일정 등록하기</FullButton>
             </VStack>
         </Background>
     )
