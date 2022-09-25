@@ -27,8 +27,13 @@ const Entry: NextPage = function () {
     const router = useRouter()
     // const qid = "5334e361-7755-4cc9-b3d1-fbf319902e7b" // 일정 있음
     // const qid = "8e151343-a955-434c-9246-880a742b9c5f" // 일정 없음.
-    const { qid } = router.query
+    const { qid, invitation } = router.query
+    let [showInvitation, setShowInvitation] = useState(true)
 
+    useEffect(()=>{
+        if (invitation != undefined && invitation == 'false')
+            setShowInvitation(false)
+    },[])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)
@@ -76,7 +81,7 @@ const Entry: NextPage = function () {
 
     const [tab, setTab] = useState(0)
     const [enter, setEnter] = useState(false)
-    const showInvitation = true // props로 변경해서 선택적으로 초대장 보일 것
+    
 
     if (showInvitation && !enter) {
         return (
