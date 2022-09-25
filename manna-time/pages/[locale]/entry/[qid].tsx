@@ -36,7 +36,7 @@ const Entry: NextPage = function () {
     },[])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
-    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + (router.asPath as string)
+    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + qid
 
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
