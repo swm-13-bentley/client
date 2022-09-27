@@ -63,7 +63,7 @@ const Room: NextPage = function () {
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     // const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
-    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string)
+    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string) + '?invitation=true'
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
@@ -185,7 +185,7 @@ const Room: NextPage = function () {
         })
             .then((result) => {
                 alert('일정이 등록되었습니다.')
-                router.push(`/${router.query.locale}/entry/${qid}/?invitation=false`);
+                router.push(`/${router.query.locale}/entry/${qid}`);
 
             })
             .catch((e) => {

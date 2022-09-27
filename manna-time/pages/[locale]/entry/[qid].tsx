@@ -31,12 +31,12 @@ const Entry: NextPage = function () {
     let [showInvitation, setShowInvitation] = useState(true)
 
     useEffect(()=>{
-        if (invitation != undefined && invitation == 'false')
-            setShowInvitation(false)
+        if (invitation != undefined && invitation == 'true')
+            setShowInvitation(true)
     },[])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
-    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + qid
+    const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + qid + '?invitation=true'
 
     const [roomInfo, setRoomInfo] = useState(null)
     const [loader, setLoader] = useState(true)
