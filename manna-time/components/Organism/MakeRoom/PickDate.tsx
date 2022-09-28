@@ -36,7 +36,7 @@ const PickDate = ({value, setValue} : PickDateProps) => {
                         
                         return props
                       }}
-                    zIndex={1}
+                    zIndex={0}
                 />
     </>)
 }
