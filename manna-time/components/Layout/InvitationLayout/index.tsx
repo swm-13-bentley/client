@@ -6,8 +6,8 @@ import { MixpanelTracking } from "@/utils/mixpanel"
 import { VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import Image from "next/image"
-import { useState } from "react"
 import { Background } from "../MainLayout/Wrapper"
+import calendarPic from "@/public/images/calendar.png"
 
 interface InvitationProps {
     title: string
@@ -32,7 +32,7 @@ const InvitationLayout = ({ title, date, timeArea, participants, isProceeding, o
         <WhiteBoard>
             <Background>
                 <VStack className="mt-10">
-                    <Image src="/images/calendar.png" alt="calendar" width="100px" height="100px"/>
+                    <Image src={calendarPic} alt="calendar" width="100px" height="100px"/>
                     <NoticeTitle className="mb-3">초대합니다</NoticeTitle>
                     <NoticeDescription>약속 가능한 시간을 등록해주세요</NoticeDescription>
                 </VStack>
