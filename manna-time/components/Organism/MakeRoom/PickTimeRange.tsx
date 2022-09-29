@@ -86,21 +86,21 @@ const PickTimeRange = ({setValue}:PickTimeRangeProps) => {
                     checked={checked[0]}
                     onClick={() => { onClick(0) }}
                 >
-                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/ic_morning.svg" alt="ic_morning" layout="intrinsic" width="20px" height="20px" />
+                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/morning.svg" alt="ic_morning" layout="intrinsic" width="20px" height="20px" />
                     <StyledSpan> 아침 (7:00 ~ 12:00)</StyledSpan>
                 </CheckButton>
                 <CheckButton
                     checked={checked[1]}
                     onClick={() => { onClick(1) }}
                 >
-                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/ic_afternoon.svg" alt="ic_afternoon" width="20px" height="20px" />
+                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/afternoon.svg" alt="ic_afternoon" width="20px" height="20px" />
                     <StyledSpan> 오후 (12:00 ~ 18:00)</StyledSpan>
                 </CheckButton>
                 <CheckButton
                     checked={checked[2]}
                     onClick={() => { onClick(2) }}
                 >
-                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/ic_evening.svg" alt="ic_afternoon" width="20px" height="20px" />
+                    <Image style={{ marginTop: "4px", marginRight: "8px" }} src="/images/icon/evening.svg" alt="ic_afternoon" width="20px" height="20px" />
                     <StyledSpan> 저녁 (18:00 ~ 24:00)</StyledSpan>
                 </CheckButton>
                 <CheckButton
