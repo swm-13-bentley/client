@@ -27,11 +27,11 @@ module.exports = {
   trailingSlash: true, // i18n
   async redirects() {
     return [
-      {
-        source: "/",
-        destination: "/make-room",
-        permanent: false
-      }, 
+      // {
+      //   source: "/",
+      //   destination: "/make-room",
+      //   permanent: false
+      // }, 
     ]
   },
 

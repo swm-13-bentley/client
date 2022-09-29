@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil"
 import Header from "./Header"
 import Navbar from "./Navbar"
 
-const hideNavbar = ['test-page']
+const hideNavbar = ['test-page', 'make-room']
 
 const getPageName = (match: string[] | undefined | null) => {
     if (match)

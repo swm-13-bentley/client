@@ -129,7 +129,7 @@ const Room: NextPage = function () {
                                 <BasicButtonContainer marginTop={"12"}>
                                     <FullButton style="primary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("room: 내 일정 등록하기")
+                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 내 일정 등록하기")
                                             const mySchedule = scheduleRef.current.testFn()
                                             submitMySchedule(mySchedule)
                                         }}
@@ -137,7 +137,7 @@ const Room: NextPage = function () {
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("room: 캘린더 연동하기")
+                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 캘린더 연동하기")
                                         }}
                                     >구글 캘린더 연동하기</FullButton>
                                 </BasicButtonContainer>
@@ -159,7 +159,7 @@ const Room: NextPage = function () {
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("room: 초대하기 / 탭: 약속 정보")
+                                            MixpanelTracking.getInstance().buttonClicked("room/약속정보: 초대하기")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>

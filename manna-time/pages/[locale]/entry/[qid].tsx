@@ -136,13 +136,14 @@ const Entry: NextPage = function () {
                                 <BasicButtonContainer marginTop={"12"}>
                                     <FullButton style="primary"
                                         onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("entry/참석자일정: 내 일정 등록하기")
                                             router.push(`/${router.query.locale}/participant-login/${qid}`);
                                         }}
                                     >내 일정 등록하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 참여자 일정")
+                                            MixpanelTracking.getInstance().buttonClicked("entry/참석자일정: 초대하기")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>
@@ -188,7 +189,7 @@ const Entry: NextPage = function () {
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry: 초대하기 / 탭: 약속 정보")
+                                            MixpanelTracking.getInstance().buttonClicked("entry/약속정보: 초대하기")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>
