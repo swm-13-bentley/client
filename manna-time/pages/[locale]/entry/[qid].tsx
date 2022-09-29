@@ -30,10 +30,10 @@ const Entry: NextPage = function () {
     const { qid, invitation } = router.query
     let [showInvitation, setShowInvitation] = useState(false)
 
-    useEffect(()=>{
+    useEffect(() => {
         if (invitation != undefined && invitation == 'true')
             setShowInvitation(true)
-    },[])
+    },[invitation])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + qid + '?invitation=true'
@@ -82,7 +82,6 @@ const Entry: NextPage = function () {
     const [tab, setTab] = useState(0)
     const [enter, setEnter] = useState(false)
     
-
     if (showInvitation && !enter) {
         return (
             roomInfo && participantNames && (
