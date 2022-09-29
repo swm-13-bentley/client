@@ -4,7 +4,7 @@ import { ScriptProps } from "next/script"
 interface ButtonProps {
     style?: 'primary' | 'secondary' | 'white-black' | 'lightgrey' | 'disabled' | 'kakao',
     children?: React.ReactNode,
-    onClick?: ()=>void
+    onClick?: () => void
 }
 
 const theme = {
@@ -66,7 +66,16 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
     ${style === 'secondary' || style === 'white-black' ? theme[style].border : null}
     `
 
-    return (
+    if (style == "disabled")
+        return (
+            <StyledButton
+                disabled
+                onClick={onClick}
+            >
+                {children}
+            </StyledButton>
+        )
+    else return (
         <StyledButton
             onClick={onClick}
         >

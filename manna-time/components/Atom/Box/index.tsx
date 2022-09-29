@@ -89,13 +89,24 @@ const StyledInput = styled('input', {})`
 
 interface InputBoxProps {
     placeholder: string
-    id: 'password' | 'name'
+    id: string
     setValue(value: string): void
     value: string
 }
 
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
-    if (id === 'name') {
+    if (id === 'password') {
+        return <StyledInput
+        value={value}
+        onChange={(e) => { setValue(e.target.value) }}
+        size={350}
+        maxLength={20}
+        placeholder={placeholder}
+        type="password"
+        id={id}
+        name={id}
+        />
+    } else {
         return <StyledInput
             value={value}
             onChange={(e) => { setValue(e.target.value) }}
@@ -107,20 +118,6 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
             name={id}
             required />
     }
-    else if (id === 'password') {
-        return <StyledInput
-            value={value}
-            onChange={(e) => { setValue(e.target.value) }}
-            size={350}
-            maxLength={20}
-            placeholder={placeholder}
-            type="password"
-            id={id}
-            name={id}
-        />
-
-    }
-    return null
 }
 
 export { CustomBox, BorderBox, InputBox }
