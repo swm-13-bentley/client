@@ -23,16 +23,6 @@ module.exports = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
-
-  module: {
-    rules: [
-      {
-        test: /\.svg$/i,
-        issuer: /\.[jt]sx?$/,
-        use: [{ loader: '@svgr/webpack', options: { icon: true } }],
-      },
-    ],
-  },
   
   trailingSlash: true, // i18n
   // async redirects() {
