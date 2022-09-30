@@ -5,6 +5,7 @@ import { VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import emptyBox from "@/public/images/empty-box.png"
 
 interface EmptyRankProps {
     url: string
@@ -29,7 +30,7 @@ const EmptyRank = ({ url }: EmptyRankProps) => {
     return (
         <Background>
             <VStack mt="100px" mb="40px">
-                <Image src="/images/empty-box.png" alt="empty-box" width="100px" height="100px"/>
+                <Image src={emptyBox} alt="empty-box" width="100px" height="100px"/>
                 <StyledP>아직 등록된 일정이 없어요</StyledP>
                 <NoticeDescription>참석자를 초대하고 일정을 등록해주세요</NoticeDescription>
             </VStack>
