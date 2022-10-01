@@ -8,9 +8,9 @@ import styled from "@emotion/styled"
 import _ from "lodash"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import morningIcon from "@/public/images/icon/morning.svg"
-import afternoonIcon from "@/public/images/icon/afternoon.svg"
-import eveningIcon from "@/public/images/icon/evening.svg"
+import morningIcon from "@/public/icon/morning.png"
+import afternoonIcon from "@/public/icon/afternoon.png"
+import eveningIcon from "@/public/icon/evening.png"
 
 interface PickTimeRangeProps {
     setValue(value: string[] | 'date-only'): void

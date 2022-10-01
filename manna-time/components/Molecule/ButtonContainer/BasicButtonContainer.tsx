@@ -7,7 +7,7 @@ interface ContainerProps {
 
 const BasicButtonContainer = ({ marginTop, children }: ContainerProps) => {
     return (
-        <VStack className={`mt-${marginTop} space-y-2`}>
+        <VStack className={`mt-${marginTop} space-y-2 mb-5`}>
             {children}
         </VStack>
     )

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled"
 import Image from "next/image"
-import checkIcon from '@/public/images/icon/check.svg'
+import checkIcon from '@/public/icon/check.svg'
 
 interface CheckButtonProps {
     children?: React.ReactNode
@@ -67,7 +67,7 @@ const CheckButton = ({ children, checked, onClick }: CheckButtonProps) => {
                         className="absolute right-9"
                         onClick={onClick}
                     >
-                        <Image style={{display:"block", padding:"auto"}} src={checkIcon} alt="checked" width="15px" height="15px"/>
+                        <Image style={{display:"block", padding:"auto"}} src={'/icon/check.svg'} alt="checked" width="15px" height="15px"/>
                     </FilledCheckBox>
                     :
                     <CheckBox

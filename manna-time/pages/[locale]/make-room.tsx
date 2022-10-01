@@ -13,6 +13,7 @@ import { IconButton } from "@mui/material";
 import _ from "lodash";
 import axios from "axios";
 import { useRouter } from "next/router";
+import useViewport from "@/hooks/useViewport";
 
 const WhiteBoard = styled.div`
 background: #ffffff;
@@ -49,6 +50,7 @@ color: #333333;
 
 const MakeRoom: NextPage = () => {
     const router = useRouter()
+    const viewport = useViewport()
 
     const [stepIndex, setStepIndex] = useState(0)
 
@@ -95,7 +97,7 @@ const MakeRoom: NextPage = () => {
             </Navbar>
             <ProgressBar filled={(stepIndex + 1) / steps.length} />
             <Background>
-                <VStack mt={"56px"} mb={"200px"}>
+                <VStack mt={"56px"} mb={ viewport === 'mobile' ? "200px" : "0px"}>
                     {steps[stepIndex]}
                 </VStack>
                 <StickyButtonContainer>
