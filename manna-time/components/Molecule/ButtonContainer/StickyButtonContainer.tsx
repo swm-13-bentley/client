@@ -9,6 +9,7 @@ interface ButtonContainerProps {
 
 const MobileDiv = styled.div`
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     position: fixed;
@@ -16,6 +17,7 @@ const MobileDiv = styled.div`
     margin: auto;
     left: 20px;
     right: 20px;
+    gap: 10px;
 `
 
 const StickyButtonContainer = ({ children }: ButtonContainerProps) => {

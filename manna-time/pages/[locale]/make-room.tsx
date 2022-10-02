@@ -85,7 +85,7 @@ const MakeRoom: NextPage = () => {
                     sx={{ position: 'fixed', left: '15px' }}
                     onClick={() => {
                         if (stepIndex == 0)
-                            router.back()
+                            router.push(`/${router.query.locale}/`)
                         else
                             setStepIndex(step => step - 1)
                     }}
@@ -157,7 +157,7 @@ const MakeRoom: NextPage = () => {
                 })
                     .then((result) => {
                         // console.log(result.data.roomUuid)
-                        router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
+                        router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}`);
                     })
                     .catch((e) => {
                         // console.log(e)
