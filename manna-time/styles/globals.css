@@ -55,7 +55,7 @@ p {
   margin-right: auto;
   /* Remove space between border */
   border-collapse: collapse;
-  border-bottom: 1px solid #DDDDDD
+  border-bottom: 1px solid #D6E6FF
 }
 
 /* Table cells */
@@ -69,18 +69,18 @@ p {
   background-clip: padding-box;
   padding-left: 0rem;
   padding-right: 0rem;
-  border-bottom: 0.05rem dashed #DDDDDD;
-  border-top: 0.05rem dashed #DDDDDD;
+  border-bottom: 0.05rem dashed #D6E6FF;
+  border-top: 0.05rem dashed #D6E6FF;
 }
 
 .table-drag-select tr.sharp {
-  border-bottom: 0.05rem dashed #DDDDDD;
-  border-top: 0.05rem solid #DDDDDD;
+  border-bottom: 0.05rem dashed #D6E6FF;
+  border-top: 0.05rem solid #D6E6FF;
 }
 
 .table-drag-select tr.half {
-  border-bottom: 0.05rem solid #DDDDDD;
-  border-top: 0.05rem dashed #DDDDDD;
+  border-bottom: 0.05rem solid #D6E6FF;
+  border-top: 0.05rem dashed #D6E6FF;
 }
 
 /* Cells that can be interacted with */
@@ -93,10 +93,10 @@ p {
 /* Cells that cannot be interacted with */
 .table-drag-select td.cell-disabled {
   /* Put yer css here */
-  background-color: #DDDDDD;
-  border-bottom: 1px solid #DDDDDD;
-  border-top: 1px solid #DDDDDD;
-  border-color: #DDDDDD
+  background-color: #EEEEEE;
+  border-bottom: 1px solid #EEEEEE;
+  border-top: 1px solid #EEEEEE;
+  border-color: #EEEEEE
 }
 
 /* Cells that cannot be interacted with */
@@ -135,8 +135,6 @@ p {
   text-align: center;
   letter-spacing: -0.003em;
 
-  color: #333333;
-
   padding-bottom: 10px;
 }
 
@@ -149,17 +147,16 @@ p {
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 100%;
+  color: #333333;
   /* identical to box height, or 14px */
 
   text-align: center;
   letter-spacing: -0.003em;
 
-  color: #333333;
-
-
   padding-bottom: 20px;
+
 }
 
 /* Cells that cannot be interacted with */
@@ -178,7 +175,7 @@ p {
   background-color: rgb(255, 255, 255);
   border-bottom: 1px solid #FFFFFF;
   border-top: 1px solid #FFFFFF;
-  border-right: 0.01rem solid #DDDDDD;
+  border-right: 0.01rem solid #D6E6FF;
 
   vertical-align: top;
   padding-right: 5px;
@@ -186,14 +183,14 @@ p {
 
 /* Cells that have been selected */
 .table-drag-select td.cell-selected {
-  background-color: #45d084;
+  background-color: #00D8F8;
   /* border-bottom: 0.1px solid; */
 }
 
 /* Cells that are in the process of being selected */
 .table-drag-select td.cell-being-selected {
   /* This is the blue color y//ou see when you select text with the cursor */
-  background-color: #24b867;
+  background-color: #00C2DE;
 }
 
 .table-drag-select td.calendar {
@@ -217,30 +214,30 @@ p {
 }
 
 .table-drag-select td.mon {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.tue {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.wed {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.thu {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.fri {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.sat {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }
 .table-drag-select td.sun {
-  border-left: 0.05rem solid #DDDDDD;
-  border-right: 0.05rem solid #DDDDDD;
+  border-left: 0.05rem solid #D6E6FF;
+  border-right: 0.05rem solid #D6E6FF;
 }

@@ -76,7 +76,7 @@ const Invitation: NextPage = () => {
                         copyTextUrl(process.env.NEXT_PUBLIC_SERVICE_URL + entryUri + '?invitation=true')
                     }}
                 >초대하기</FullButton>
-                <FullButton style="secondary">알림받기</FullButton>
+                {/* <FullButton style="secondary">알림받기</FullButton> */}
             </StickyButtonContainer>
         </Background>
     </>)

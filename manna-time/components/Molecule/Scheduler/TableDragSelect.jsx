@@ -257,10 +257,6 @@ class Cell extends React.Component {
     // console.log(cellProperty)
     let style = {
       backgroundColor: "",
-      borderBottom: "",
-      borderTop: "",
-      border: "",
-      backgroundClip:""
     }
     if (disabled) {
       if (white) {
@@ -297,13 +293,6 @@ class Cell extends React.Component {
             // style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
             style.backgroundColor = `rgba(0, 86, 224, ${cellProperty.opacity})`
           }
-          if (cellProperty.opacity > 0) {
-            style.borderBottom = "1px solid " + style.backgroundColor
-            style.borderTop = "1px solid " + style.backgroundColor
-            style.backgroundClip = "border-box"
-            // style.border = "1px solid " + style.background
-          }
-
         
         }
 
