@@ -4,7 +4,6 @@
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
 import { Flex, HStack, VStack } from "@chakra-ui/react"
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from "react"
-import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -15,6 +14,7 @@ import { Background } from "@/components/Layout/MainLayout/Wrapper"
 import Accordion from "@/components/Molecule/Accordion";
 import { FilterButton } from "@/components/Atom/Button"
 import styled from "@emotion/styled"
+import TableDragSelectWrapper from "./TableDragSelect"
 
 class CellProperty {
   opacity = 1
@@ -376,7 +376,7 @@ const Scheduler = forwardRef((props, ref) => {
         // color,
         isCalendar,
         groupState[currIdx.index][t - startTime][weekIdx],
-        `${hours[t % 48].realTime} ~ ${hours[(t + 1) % 48].realTime}`
+        `${dayTexts[weekIdx].text}(${weekDaysKo[weekIdx]}) ${hours[t % 48].realTime} ~ ${hours[(t + 1) % 48].realTime}`
       )
 
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
@@ -424,7 +424,7 @@ const Scheduler = forwardRef((props, ref) => {
       />
       <Background>
         {props.children}
-        <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
+        <TableDragSelectWrapper value={curr.cells} onChange={handleChange} days={""}>
           <tr>
             <td white disabled />
             <td white disabled day className="text-custom-black">월</td>
@@ -444,7 +444,7 @@ const Scheduler = forwardRef((props, ref) => {
             }
           </tr>
           {eachRow}
-        </TableDragSelect >
+        </TableDragSelectWrapper>
       </Background>
 
     </div>
