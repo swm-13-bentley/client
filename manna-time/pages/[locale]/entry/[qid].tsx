@@ -21,6 +21,9 @@ import { MixpanelTracking } from "@/utils/mixpanel";
 import copyTextUrl from "@/utils/copyTextUrl";
 import InvitationLayout from "@/components/Layout/InvitationLayout";
 import EmptyRank from "@/components/Organism/EmptyRank";
+import Image from "next/image";
+
+import kakaoIcon from "@/public/icons/kakao.svg"
 
 const Entry: NextPage = function () {
 
@@ -167,7 +170,10 @@ const Entry: NextPage = function () {
                                             totalNum={participantNames.length}
                                         />
                                         <BasicButtonContainer marginTop={"12"}>
-                                            <FullButton style="kakao">카카오로 공유하기</FullButton>
+                                            <FullButton style="kakao">
+                                                <Image src={kakaoIcon} alt="kakao"/>
+                                                카카오로 공유하기
+                                            </FullButton>
                                             <FullButton style="primary">알림 받기</FullButton>
                                             <FullButton style="secondary">이미지로 저장하기</FullButton>
                                         </BasicButtonContainer>
