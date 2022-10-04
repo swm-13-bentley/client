@@ -19,6 +19,12 @@ import * as gtag from '@/lib/gtag'
 import { AppContextType } from 'next/dist/shared/lib/utils'
 import { userAgentState } from '@/src/state/UserAgent'
 
+declare global {
+  interface Window {
+    Kakao: any
+  }
+}
+
 const clientSideEmotionCache = createEmotionCache();
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -65,10 +71,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                   `,
                 }}
               />
-              {/* Kakao JavaScript SDK
-              <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.min.js"
-                    integrity="sha384-PFHeU/4gvSH8kpvhrigAPfZGBDPs372JceJq3jAXce11bVA6rMvGWzvP4fMQuBGL"
-                crossOrigin="anonymous" /> */}
               <Component {...pageProps} />
             </MainLayout>
           </RecoilRoot>

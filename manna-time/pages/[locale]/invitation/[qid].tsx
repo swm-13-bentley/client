@@ -72,7 +72,7 @@ const Invitation: NextPage = () => {
                 <Image src={tooltipIcon} alt="tooltip"/>
                 <FullButton
                     onClick={() => {
-                        MixpanelTracking.getInstance().buttonClicked("entry/참석자일정: 초대하기")
+                        MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 초대하기")
                         copyTextUrl(process.env.NEXT_PUBLIC_SERVICE_URL + entryUri + '?invitation=true')
                     }}
                 >초대하기</FullButton>
