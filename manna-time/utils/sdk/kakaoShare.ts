@@ -64,7 +64,8 @@ export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUid: st
         title: `참여자 총 ${roomInfo.participants.length}명`,
         description: `${roomInfo.participants.join(' ')}`,
         imageUrl:
-            'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
+            //이미지 규격 : 200 * 200 이상, 정사각형 준수할 이미지 추가할 것
+            'https://www.mannatime.io/images/og_background.png',
         link: {
             mobileWebUrl: url,
             webUrl: url,
