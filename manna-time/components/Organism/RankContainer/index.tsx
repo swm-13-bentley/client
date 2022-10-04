@@ -4,7 +4,7 @@ import { changeDateFormat, changeTimeFormat } from "@/utils/changeFormat"
 import { VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 
-type Rank = {
+export type Rank = {
     count: number,
     availableDate: string,
     startTime: string,
@@ -12,7 +12,7 @@ type Rank = {
     participantNames: string[]
 }
 
-interface RankContainerProps {
+export interface RankContainerProps {
     ranks?: Rank[]
     totalNum: number
 }

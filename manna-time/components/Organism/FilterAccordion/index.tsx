@@ -53,9 +53,9 @@ const Filter = ({ participantNames, isChecked, onChange }: FilterProps) => {
             return ''
         
         else if (checked.every(value => value == true))
-            return '전체 참석자'
+            return '전체 참여자'
         else 
-            return '참석자'
+            return '참여자'
     }
 
     const emphasizedTitle = () => {
@@ -86,7 +86,7 @@ const Filter = ({ participantNames, isChecked, onChange }: FilterProps) => {
             <FilterButton
                 checked={(checked.every(value => value == true))}
                 onClick={handleAllChange}
-            >전체 참석자</FilterButton>
+            >전체 참여자</FilterButton>
             {filterButton}
         </Accordion>
     )

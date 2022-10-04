@@ -41,7 +41,11 @@ const ClickTimeBox = ({ time, participants }: ClickTimeBoxProps) => {
                 style="secondary"
                 gap= "8px"
             >
-                <StyledP><StyledSpan>{time!='' && time!=undefined ? time : '클릭한 시간대'}</StyledSpan>에 가능한 사람들은?</StyledP>
+                <StyledP>
+                    {time != '' && time != undefined ? "" : '궁금한 시간을 '}
+                    <StyledSpan>{time != '' && time != undefined ? time : '터치'}</StyledSpan>
+                    {time != '' && time != undefined ? "에 가능한 사람은?" : '해보세요'}
+                </StyledP>
                 {
                     (participants!=undefined && participants.length>0) && (
                         <StyledP>{participants.join(' ')}</StyledP>

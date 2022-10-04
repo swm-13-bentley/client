@@ -49,7 +49,7 @@ const ParticipantInput = ({ name, setName, password, setPassword, errorMessage }
                 {
                     errorMessage
                         ? <Body1 style={{ color: "#FF543A" }}>{errorMessage}</Body1>
-                        : <Body1>다른 참석자가 나를 알아볼 수 있도록 작성해주세요</Body1>
+                        : <Body1>다른 참여자가 나를 알아볼 수 있도록 작성해주세요</Body1>
                 }
             </VStack>
 

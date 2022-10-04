@@ -43,8 +43,12 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
     /* Auto layout */
     position: relative;
     padding: 16px;
-    gap: 10px;
+    gap: 4px;
     
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     width: 100%;
     max-width: 350px;
     height: 58px;

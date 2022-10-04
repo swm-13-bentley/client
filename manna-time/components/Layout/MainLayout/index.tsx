@@ -11,7 +11,7 @@ import { useRecoilState } from "recoil"
 import Header from "./Header"
 import Navbar from "./Navbar"
 
-const hideNavbar = ['test-page', 'make-room']
+const hideNavbar = ['test-page', 'make-room', 'invitation']
 
 const getPageName = (match: string[] | undefined | null) => {
     if (match)
@@ -32,6 +32,7 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
     const [agent, setAgent] = useRecoilState(userAgentState)
     useEffect(() => {
         setAgent(userAgent)
+        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }, [])
 
     if (hideNavbar.includes(pageName)) {

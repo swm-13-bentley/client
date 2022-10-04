@@ -10,7 +10,7 @@ import MainLayout from '@/components/Layout/MainLayout'
 
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
-import { MixpanelTracking } from '@/utils/mixpanel'
+import { MixpanelTracking } from '@/utils/sdk/mixpanel'
 import { RecoilRoot, useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
@@ -18,6 +18,12 @@ import Script from 'next/script'
 import * as gtag from '@/lib/gtag'
 import { AppContextType } from 'next/dist/shared/lib/utils'
 import { userAgentState } from '@/src/state/UserAgent'
+
+declare global {
+  interface Window {
+    Kakao: any
+  }
+}
 
 const clientSideEmotionCache = createEmotionCache();
 

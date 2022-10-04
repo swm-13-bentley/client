@@ -10,17 +10,22 @@ import FilterAccordion from "@/components/Organism/FilterAccordion";
 import ClickTimeBox from "@/components/Organism/ClickTimeBox";
 import { useRecoilValue } from "recoil";
 import { clickParticipantState, clickTimeState } from "@/src/state/ClickScheduler";
-import RankContainer from "@/components/Organism/RankContainer";
+import RankContainer, { Rank } from "@/components/Organism/RankContainer";
 import { Background } from "@/components/Layout/MainLayout/Wrapper";
 import RoomInfoBox from "@/components/Organism/RoomInfoBox";
 import Hours from "@/components/Molecule/Scheduler/Hours";
 import { changeDateToKorean } from "@/utils/changeFormat";
 import { FullButton } from "@/components/Atom/Button";
 import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer";
-import { MixpanelTracking } from "@/utils/mixpanel";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import copyTextUrl from "@/utils/copyTextUrl";
 import InvitationLayout from "@/components/Layout/InvitationLayout";
 import EmptyRank from "@/components/Organism/EmptyRank";
+import Image from "next/image";
+
+import kakaoIcon from "@/public/icons/kakao.svg"
+import { getShareTemplate } from "@/utils/sdk/kakaoShare";
+import { RoomInfo } from "@/models/roomInfo";
 
 const Entry: NextPage = function () {
 
@@ -33,18 +38,18 @@ const Entry: NextPage = function () {
     useEffect(() => {
         if (invitation != undefined && invitation == 'true')
             setShowInvitation(true)
-    },[invitation])
+    }, [invitation])
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + qid + '?invitation=true'
 
-    const [roomInfo, setRoomInfo] = useState(null)
+    const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null)
     const [loader, setLoader] = useState(true)
     const [groupSchedule, setGroupSchedule] = useState(null)
     const [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [participantNames, setParticipantNames] = useState(null)
 
-    const [timeRanks, setTimeRanks] = useState(undefined)
+    const [timeRanks, setTimeRanks] = useState<Rank[] | undefined>(undefined)
 
     const clickedTime = useRecoilValue(clickTimeState)
     const clickedParticipants = useRecoilValue(clickParticipantState)
@@ -81,7 +86,7 @@ const Entry: NextPage = function () {
 
     const [tab, setTab] = useState(0)
     const [enter, setEnter] = useState(false)
-    
+
     if (showInvitation && !enter) {
         return (
             roomInfo && participantNames && (
@@ -98,12 +103,12 @@ const Entry: NextPage = function () {
         )
     } else return (
         <>
-            
+
             <TabLayout
                 value={tab}
                 tabLabel={["종합 일정", "순위", "약속 정보"]}
                 onChange={setTab}
-                >
+            >
                 {
                     roomInfo && participantNames && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
@@ -136,14 +141,14 @@ const Entry: NextPage = function () {
                                 <BasicButtonContainer marginTop={"12"}>
                                     <FullButton style="primary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry/참석자일정: 내 일정 등록하기")
+                                            MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 내 일정 등록하기")
                                             router.push(`/${router.query.locale}/participant-login/${qid}`);
                                         }}
                                     >내 일정 등록하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry/참석자일정: 초대하기")
+                                            MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 초대하기")
                                             copyTextUrl(textUrl)
                                         }}
                                     >초대하기</FullButton>
@@ -167,7 +172,19 @@ const Entry: NextPage = function () {
                                             totalNum={participantNames.length}
                                         />
                                         <BasicButtonContainer marginTop={"12"}>
-                                            <FullButton style="kakao">카카오로 공유하기</FullButton>
+                                            <FullButton style="kakao"
+                                                onClick={() => {
+                                                    MixpanelTracking.getInstance().buttonClicked("entry/순위: 카카오로 공유하기")
+
+
+                                                    const { Kakao, location } = window
+                                                    const template = getShareTemplate(timeRanks, roomInfo, 'hi')
+                                                    Kakao.Share.sendDefault(template);
+                                                }}
+                                            >
+                                                <Image src={kakaoIcon} alt="kakao" />
+                                                카카오로 공유하기
+                                            </FullButton>
                                             <FullButton style="primary">알림 받기</FullButton>
                                             <FullButton style="secondary">이미지로 저장하기</FullButton>
                                         </BasicButtonContainer>
