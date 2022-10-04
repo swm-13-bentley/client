@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 
-import { MixpanelTracking } from "@/utils/mixpanel"
+import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 
 import { useRecoilState } from "recoil"
 import { FeedbackState } from "@/src/state";

@@ -17,7 +17,7 @@ import Hours from "@/components/Molecule/Scheduler/Hours";
 import { changeDateToKorean } from "@/utils/changeFormat";
 import { FullButton } from "@/components/Atom/Button";
 import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer";
-import { MixpanelTracking } from "@/utils/mixpanel";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import copyTextUrl from "@/utils/copyTextUrl";
 import InvitationLayout from "@/components/Layout/InvitationLayout";
 import EmptyRank from "@/components/Organism/EmptyRank";

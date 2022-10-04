@@ -10,7 +10,7 @@ import MainLayout from '@/components/Layout/MainLayout'
 
 import mixpanel from 'mixpanel-browser'
 import { useEffect } from 'react'
-import { MixpanelTracking } from '@/utils/mixpanel'
+import { MixpanelTracking } from '@/utils/sdk/mixpanel'
 import { RecoilRoot, useRecoilState } from 'recoil'
 import { useRouter } from 'next/router'
 import Script from 'next/script'
@@ -65,6 +65,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                   `,
                 }}
               />
+              {/* Kakao JavaScript SDK
+              <Script src="https://t1.kakaocdn.net/kakao_js_sdk/2.0.0/kakao.min.js"
+                    integrity="sha384-PFHeU/4gvSH8kpvhrigAPfZGBDPs372JceJq3jAXce11bVA6rMvGWzvP4fMQuBGL"
+                crossOrigin="anonymous" /> */}
               <Component {...pageProps} />
             </MainLayout>
           </RecoilRoot>

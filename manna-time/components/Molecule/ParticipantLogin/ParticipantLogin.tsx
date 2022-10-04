@@ -4,7 +4,7 @@ import { Avatar, Button, Checkbox, CssBaseline, FormControl, FormControlLabel, I
 import { Center } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { MixpanelTracking } from "@/utils/mixpanel";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import LoginIcon from '@mui/icons-material/Login';
 
 

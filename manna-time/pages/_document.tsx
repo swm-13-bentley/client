@@ -12,6 +12,7 @@ class MyDocument extends Document {
       <Html lang={currentLocale as string}>
         <Head>
           <link href='/app.css' rel='stylesheet' />
+          <script defer src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
         </Head>
         <body>
           <Main />
