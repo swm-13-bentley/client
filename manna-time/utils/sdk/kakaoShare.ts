@@ -66,6 +66,8 @@ export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUuid: s
         imageUrl:
             //이미지 규격 : 200 * 200 이상, 정사각형 준수할 이미지 추가할 것
             'https://www.mannatime.io/images/og_background.png',
+        imageWidth: 800,
+        imageHeight: 400,
         link: {
             mobileWebUrl: url,
             webUrl: url,
