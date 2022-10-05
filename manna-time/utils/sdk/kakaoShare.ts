@@ -45,9 +45,9 @@ const templateExample = {
 
 
 
-export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUid: string ) {
+export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUuid: string ) {
     let shareTemplate = { ...templateExample }
-    const url = 'https://' + process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + roomUid
+    const url = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + roomUuid
 
     const newItems = ranks?.reduce((arr: Item[], rank: Rank, index: number) => {
         if (index < 5) {

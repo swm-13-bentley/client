@@ -178,7 +178,8 @@ const Entry: NextPage = function () {
 
 
                                                     const { Kakao, location } = window
-                                                    const template = getShareTemplate(timeRanks, roomInfo, 'hi')
+                                                    const template = getShareTemplate(timeRanks, roomInfo, qid)
+                                                    console.log(template)
                                                     Kakao.Share.sendDefault(template);
                                                 }}
                                             >
