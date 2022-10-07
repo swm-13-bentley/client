@@ -11,7 +11,7 @@ import { useState } from "react";
 
 const ParticipantLogin: NextPage = () => {
     const router = useRouter()
-    const { qid } = router.query
+    const { qid, dayOnly } = router.query
 
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
@@ -36,8 +36,19 @@ const ParticipantLogin: NextPage = () => {
     )
 
     function sendLoginRequest() {
-        let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid + '/participant/entry'
+        let srcUrl = process.env.NEXT_PUBLIC_API_URL
+        let pushPath = ""
 
+        if (dayOnly == 'true') {
+            srcUrl += '/day/room/' + qid + '/participant/entry'
+            pushPath = `/${router.query.locale}/date/room/${qid}/${name}`
+        }
+        else {
+            srcUrl += '/room/' + qid + '/participant/entry'
+            pushPath = `/${router.query.locale}/room/${qid}/${name}`
+        }
+
+        
         let sendFlag = (name != "")
         if (!sendFlag) {
             alert("이름을 입력해주세요.")
@@ -52,7 +63,7 @@ const ParticipantLogin: NextPage = () => {
                 }
             })
                 .then((result) => {
-                    router.push(`/${router.query.locale}/room/${qid}/${name}`);
+                    router.push(pushPath);
                 })
                 .catch((e) => {
                     const status = e.response.status

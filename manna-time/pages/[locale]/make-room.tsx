@@ -131,7 +131,7 @@ const MakeRoom: NextPage = () => {
                 }
             })
                 .then((result) => {
-                    router.push(`/${router.query.locale}/date/${result.data.roomUuid}`);
+                    router.push(`/${router.query.locale}/date/entry/${result.data.roomUuid}`);
                 })
                 .catch((e) => {
                     // console.log(e)

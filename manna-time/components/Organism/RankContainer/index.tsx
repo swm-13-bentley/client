@@ -7,9 +7,9 @@ import styled from "@emotion/styled"
 export type Rank = {
     count: number,
     availableDate: string,
-    startTime: string,
-    endTime: string,
-    participantNames: string[]
+    startTime?: string,
+    endTime?: string,
+    participants: string[]
 }
 
 export interface RankContainerProps {
@@ -24,12 +24,18 @@ const StyledDiv = styled.div`
 const RankContainer = ({ ranks, totalNum }: RankContainerProps) => {
 
     const rankItems = ranks?.map((rank, index) => {
+        let time
+        if (rank.startTime && rank.endTime)
+            time = `${changeDateFormat(rank.availableDate)} ${changeTimeFormat(rank.startTime)} ~ ${changeTimeFormat(rank.endTime)}`
+        else
+            time = changeDateFormat(rank.availableDate)
+        
         return (
             <Rank
                 key={`rank-${index}`}
                 rank={index + 1}
-                time={`${changeDateFormat(rank.availableDate)} ${changeTimeFormat(rank.startTime)} ~ ${changeTimeFormat(rank.endTime)}`}
-                participants={rank.participantNames} />
+                time={time}
+                participants={rank.participants} />
         )
     })
 

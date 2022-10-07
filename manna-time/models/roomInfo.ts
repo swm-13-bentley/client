@@ -5,3 +5,9 @@ export interface RoomInfo {
     startTime: number
     endTime: number
 }
+
+export interface RoomInfoDayOnly {
+    title: string
+    dates: string[]
+    participants: string[]
+}

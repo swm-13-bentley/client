@@ -47,13 +47,26 @@ const templateExample = {
 
 export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUuid: string ) {
     let shareTemplate = { ...templateExample }
-    const url = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + roomUuid
+    let url = process.env.NEXT_PUBLIC_SERVICE_URL
+    if (roomInfo.startTime != undefined && roomInfo.endTime != undefined)
+        url += '/ko/entry/' + roomUuid
+    else
+        url += '/ko/date/entry/' + roomUuid
+    
 
     const newItems = ranks?.reduce((arr: Item[], rank: Rank, index: number) => {
         if (index < 5) {
-            const newItem = {
-                itemOp: getKoDateTime(rank.availableDate, rank.startTime, rank.endTime),
-                item: `${rank.participantNames.length}명`
+            let newItem: Item = {itemOp:"",item:""}
+            if (rank.startTime != undefined && rank.endTime != undefined) {
+                newItem = {
+                    itemOp: getKoDateTime(rank.availableDate, rank.startTime, rank.endTime),
+                    item: `${rank.participants.length}명`
+                }
+            } else {
+                newItem = {
+                    itemOp: rank.availableDate,
+                    item: `${rank.participants.length}명`
+                }
             }
             arr.push(newItem)
         }
@@ -64,7 +77,7 @@ export function getShareTemplate (ranks: Rank[], roomInfo: RoomInfo, roomUuid: s
         title: `참여자 총 ${roomInfo.participants.length}명`,
         description: `${roomInfo.participants.join(' ')}`,
         imageUrl:
-            //이미지 규격 : 200 * 200 이상, 정사각형 준수할 이미지 추가할 것
+            //이미지 규격 : 200 * 200 이상
             'https://www.mannatime.io/images/og_background.png',
         imageWidth: 800,
         imageHeight: 400,
