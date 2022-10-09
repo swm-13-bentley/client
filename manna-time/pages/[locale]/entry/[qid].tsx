@@ -200,8 +200,8 @@ const Entry: NextPage = function () {
                                                 <Image src={kakaoIcon} alt="kakao" />
                                                 카카오로 공유하기
                                             </FullButton>
-                                            <FullButton style="primary">알림 받기</FullButton>
-                                            <FullButton style="secondary">이미지로 저장하기</FullButton>
+                                            {/* <FullButton style="primary">알림 받기</FullButton>
+                                            <FullButton style="secondary">이미지로 저장하기</FullButton> */}
                                         </BasicButtonContainer>
                                     </Background>
                             }

@@ -65,7 +65,6 @@ const Rank = ({ rank, time, participants }: RankProps) => {
                 <StyledSpan color="#333333">
                     {time}
                 </StyledSpan>
-                <BasicButton>확정</BasicButton>
             </div>
             <Line color="lightgrey" />
             <StyledButton className="mt-3 w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>

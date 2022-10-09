@@ -134,12 +134,12 @@ const Room: NextPage = function () {
                                             submitMySchedule(mySchedule)
                                         }}
                                     >내 일정 등록/수정하기</FullButton>
-                                    <FullButton
+                                    {/* <FullButton
                                         style="secondary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("room/내일정: 캘린더 연동하기")
                                         }}
-                                    >구글 캘린더 연동하기</FullButton>
+                                    >구글 캘린더 연동하기</FullButton> */}
                                 </BasicButtonContainer>
                             </Background>
 
