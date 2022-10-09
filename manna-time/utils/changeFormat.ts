@@ -12,7 +12,7 @@ export const changeTimeFormat = (hhmmss: string) => {
 
 export const changeDateToKorean = (yyyymmdd: string) => {
     const date = new Date(yyyymmdd)
-    let changedDate = yyyymmdd.replace('-', '년 ').replace('-', '월 ') + '일 '
+    let changedDate = yyyymmdd.replace('-', '년 ').replace('-', '월 ') + '일'
     
     //2022년 2월 2일 (수)
     return changedDate + `(${dayOfTheWeek[date.getDay()]})`
