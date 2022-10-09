@@ -1,196 +1,147 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable react/jsx-key */
-/* eslint-disable react/display-name */
+import { FullButton } from "@/components/Atom/Button";
+import ProgressBar from "@/components/Atom/ProgressBar";
+import { Background } from "@/components/Layout/MainLayout/Wrapper";
+import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer";
+import { AppointmentName, PickDate, PickTimeRange } from "@/components/Organism/MakeRoom";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Center, Flex, VStack } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { NextPage } from "next";
+import { SetStateAction, useEffect, useState } from "react";
 
-import { Box, Center, Circle, Collapse, Flex, Heading, HStack, Input, VStack } from '@chakra-ui/react'
-import type { NextPage } from 'next'
-import { useTranslation } from 'next-i18next'
-import { getStaticPaths, makeStaticProps } from '../../lib/getStatic'
+import { IconButton } from "@mui/material";
+import _ from "lodash";
+import axios from "axios";
+import { useRouter } from "next/router";
+import useViewport from "@/hooks/useViewport";
 
-import { Calendar, DateObject, getAllDatesInRange } from "react-multi-date-picker"
-import type { Value } from "react-multi-date-picker"
-import { ReactNode, useState } from 'react'
-import { Button, ButtonGroup, ButtonTypeMap, Checkbox, ExtendButtonBase, FormControlLabel, TextField } from '@mui/material'
-import ProcedureLayout from '../../components/Layout/ProcedureLayout'
-import "react-multi-date-picker/styles/layouts/mobile.css"
-import CenterFlexLayout from '../../components/Layout/CenterFlexLayout'
-import axios from 'axios'
-import { ConstructionOutlined } from '@mui/icons-material'
-import { useRouter } from 'next/router'
-import { MixpanelTracking } from '@/utils/mixpanel'
-import TimeRangeSelectbox from '@/components/Molecule/TimeRangeSelectbox/TimeRangeSelectbox'
+const WhiteBoard = styled.div`
+background: #ffffff;
+width: 100%;
+height: 100%;
+`
 
-const dateRangeFormat = "YYYY-MM-DD"
-const timeRangeFormat = "HH:mm";
-const googleTimeRangeFormat = "HH:mm:ss";
+const Navbar = styled.div`
+position: fixed;
+width: 100%;
+height: 56px;
+left: 0px;
+top: 0px;
+z-index: 100;
+
+display: flex;
+align-items: center;
+justify-content: center;
+background: #FFFFFF;
+`
+
+const Title = styled.p`
+font-family: 'Pretendard';
+font-style: normal;
+font-weight: 500;
+font-size: 16px;
+line-height: 150%;
+/* identical to box height, or 24px */
+
+letter-spacing: -0.003em;
+
+color: #333333;
+`
 
 const MakeRoom: NextPage = () => {
     const router = useRouter()
-    const { t } = useTranslation(['make-room', 'common'])
+    const viewport = useViewport()
 
-    const defaultTime: string[] = []
+    const [stepIndex, setStepIndex] = useState(0)
 
-    const [dateRange, setDateRange] = useState([new Date()]);
-    const [isDateOnly, setIsDateOnly] = useState(false)
-    const [timeRange, setTimeRange] = useState(defaultTime)
-    const [manualTimeRange, setManualTimeRange] = useState(["", ""])
-    const [manualClicked, setManualClicked] = useState(false)
-    const [roomName, setRoomName] = useState("")
+    // each step value
+    const [appointmentName, setAppointmentName] = useState("")
+    const [date, setDate] = useState<string[]>([])
+    const [timeRange, setTimeRange] = useState<string[] | 'date-only'>([])
 
-    const [checked, setChecked] = useState([false, false, false])
-
-    const buttonText = [
-        ["아침", "(7~12시)"],
-        ["점심", "(10~15시)"],
-        ["저녁", "(17~24시)"],
-        ["전체", "(9~24시)"]
-
+    const stepFlags = [appointmentName, date, timeRange]
+    const steps = [
+        <AppointmentName
+            key={'step-0'}
+            value={appointmentName}
+            setValue={setAppointmentName}
+        />,
+        <PickDate
+            key={'step-1'}
+            value={date}
+            setValue={setDate}
+        />,
+        <PickTimeRange
+            key={'step-2'}
+            setValue={setTimeRange}
+        />
     ]
-
-    const buttonTimeRange = [
-        ["07:00:00", "12:00:00"],
-        ["10:00:00", "15:00:00"],
-        ["17:00:00", "24:00:00"],
-        ["09:00:00", "24:00:00"]
-    ]
-
-    const buttonMap: ReactNode = buttonText.map((e, idx) => {
-        return (
-            <Button
-                className="md:text-lg text-xs"
-                key={idx}
-                sx={{ borderColor: "#757ce8", display: "inline" }}
-                variant={checked[idx] ? "contained" : "outlined"}
-                onClick={() => {
-                    setTimeRange(buttonTimeRange[idx])
-
-                    const tmpArr = [false, false, false]
-                    tmpArr[idx] = true
-
-                    setChecked(tmpArr)
-                }}
-            >{buttonText[idx][0]}<br />{buttonText[idx][1]}</Button>
-
-        )
-    })
 
 
     return (
-        <CenterFlexLayout>
-            <Center mb="30" width="100%">
-                <h1 className="text-2xl font-semibold">{t('common:make-room')}</h1>
-            </Center>
-
-            <ProcedureLayout index={1} title={t('set-date')}>
-                <Calendar className="rmdp-mobile" range value={dateRange}
-                    showOtherDays
-                    onChange={(dateObjects) => {
-                        if (dateObjects) {
-                            let tmpArr = getAllDatesInRange(dateObjects as DateObject[])
-                            let newDate: string[] = []
-                            tmpArr.map((date) => { newDate.push((date as DateObject).format(dateRangeFormat)) })
-                            setDateRange(newDate)
-                        }
+        <>
+            <Navbar>
+                <IconButton
+                    sx={{ position: 'fixed', left: '15px' }}
+                    onClick={() => {
+                        if (stepIndex == 0)
+                            router.push(`/${router.query.locale}/`)
+                        else
+                            setStepIndex(step => step - 1)
                     }}
-                    mapDays={({ date }) => {
-                        let props = {className:""}
-                        let isWeekend = [0, 6].includes(date.weekDay.index)
-                        
-                        if (isWeekend) props.className = "highlight highlight-red"
-                        
-                        return props
-                      }}
-                    zIndex={1}
-                />
-                <FormControlLabel
-                    className="md:text-md text-lg mt-2"
-                    sx={{ '& .MuiSvgIcon-root': { fontSize: 25 } }}
-                    label={"약속 날짜만 정하면 돼요"}
-                    control={
-                        <Checkbox
-                            checked={isDateOnly}
-                            onChange={() => setIsDateOnly(!isDateOnly)}
-                        />
-                    }
-                />
-            </ProcedureLayout>
-            <Box height={isDateOnly ? 0 : "100%"} width="100%" overflow={"hidden"} transition="height 500ms ease">
-                <ProcedureLayout index={2} title={t('set-timezone')}>
-                    <Box width="100%" opacity={manualClicked ? 0.5 : 1} onClick={() => setManualClicked(false)} mb={15}>
-                        <ButtonGroup variant="outlined" aria-label="outlined button group">
-                            {buttonMap}
-                        </ButtonGroup>
-                    </Box>
-                    <Box width="100%" opacity={manualClicked ? 1 : 0.5} onClick={() => setManualClicked(true)}>
-                        <TimeRangeSelectbox
-                            onSelectChange={(selected) => {
-                                setManualTimeRange(selected)
-                                setManualClicked(true)
-                            }}
-                        />
-                    </Box>
+                >
+                    <ArrowBackIosNewIcon sx={{ color: "#333333" }} fontSize="small" />
+                </IconButton>
 
-                </ProcedureLayout>
-            </Box>
-
-            <ProcedureLayout index={isDateOnly ? 2 : 3} title={t('set-event-name')}>
-                <HStack>
-                    <TextField inputProps={{ maxLength: 15 }} value={roomName} onChange={(e) => { setRoomName(e.target.value) }} placeholder="방 제목" variant='standard'></TextField>
-                    <Button
-                        className="md:text-lg text-sm"
-                        variant='outlined'
-                        sx={{ borderColor: "#757ce8" }}
-                        onClick={() => { setRoomName(randomNameGenerator(router.query.locale as string)) }}
-                    >자동 생성</Button>
-                </HStack>
-            </ProcedureLayout>
-            <Button
-                className="md:text-lg text-lg"
-                variant='contained'
-                sx={{ backgroundColor: "#757ce8" }}
-                onClick={() => {
-                    sendRoomRequest()
-                    MixpanelTracking.getInstance().buttonClicked("make-room: 방 만들기")
-                }}
-            >방 생성하기</Button>
-        </CenterFlexLayout>
+                <Title>약속 일정 만들기</Title>
+            </Navbar>
+            <ProgressBar filled={(stepIndex + 1) / steps.length} />
+            <Background>
+                <VStack mt={"56px"} mb={ viewport === 'mobile' ? "200px" : "0px"}>
+                    {steps[stepIndex]}
+                </VStack>
+                <StickyButtonContainer>
+                    <FullButton
+                        style={
+                            stepFlags[stepIndex] == "" || _.isEqual(stepFlags[stepIndex], []) ? "disabled" : "primary"
+                        }
+                        onClick={() => {
+                            if (stepIndex == steps.length - 1)
+                                sendRoomRequest()
+                            else
+                                setStepIndex(step => step + 1)
+                        }}
+                    >다음</FullButton>
+                </StickyButtonContainer>
+            </Background>
+        </>
     )
 
     function sendRoomRequest() {
-        let srcUrl,sendFlag
-        if (isDateOnly) {
+        let srcUrl, sendFlag
+        if (timeRange == 'date-only') {
             //날짜만 정하는 방
             srcUrl = process.env.NEXT_PUBLIC_API_URL + '/day/room'
-            sendFlag = (roomName != "" && dateRange.length > 0)
-            if (!sendFlag)
-                alert("날짜, 방 제목을 정확히 입력하세요")
-            else {
-                axios({
-                    method: 'post',
-                    url: srcUrl,
-                    data: {
-                        "title": roomName,
-                        "dates": dateRange
-                    }
+            axios({
+                method: 'post',
+                url: srcUrl,
+                data: {
+                    "title": appointmentName,
+                    "dates": date
+                }
+            })
+                .then((result) => {
+                    router.push(`/${router.query.locale}/date/entry/${result.data.roomUuid}`);
                 })
-                    .then((result) => {
-                        router.push(`/${router.query.locale}/date/${result.data.roomUuid}`);
-                    })
-                    .catch((e) => {
-                        // console.log(e)
-                        alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
-                    })
-            }
+                .catch((e) => {
+                    // console.log(e)
+                    alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
+                })
         } else {
             //시간대까지 정하는 방
             let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room'
-            let requestTimeRange = manualClicked ? manualTimeRange : timeRange
-            sendFlag = (roomName != "") && (requestTimeRange.length != 0 && requestTimeRange.every((time) => time.length > 0))
-    
-            if (!sendFlag) {
-                alert("날짜, 시간, 방 제목을 정확히 입력하세요")
-            }
-            else if (requestTimeRange[0] == requestTimeRange[1]) {
+
+            if (timeRange[0] == timeRange[1]) {
                 alert("시작 시간과 끝 시간은 같을 수 없습니다. 시간을 수정해주세요")
             }
             else {
@@ -198,15 +149,15 @@ const MakeRoom: NextPage = () => {
                     method: 'post',
                     url: srcUrl,
                     data: {
-                        "title": roomName,
-                        "dates": dateRange,
-                        "startTime": requestTimeRange[0],
-                        "endTime": requestTimeRange[1]
+                        "title": appointmentName,
+                        "dates": date,
+                        "startTime": timeRange[0],
+                        "endTime": timeRange[1]
                     }
                 })
                     .then((result) => {
                         // console.log(result.data.roomUuid)
-                        router.push(`/${router.query.locale}/entry/${result.data.roomUuid}`);
+                        router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}`);
                     })
                     .catch((e) => {
                         // console.log(e)
@@ -214,25 +165,7 @@ const MakeRoom: NextPage = () => {
                     })
             }
         }
-
     }
 }
-
-const randomNameGenerator = (locale: string) => {
-    const korean = ["우리 이때 만나요~", "그룹 약속", "우리 언제 만나?", "몇 시에 볼지 정해요", "약속 시간 정해요!"]
-    const english = ["Let's meet then", "See you soon~", "When to meet?"]
-    const tmpArr: string[] = []
-
-    const randomNum = Math.ceil((Math.random()) * 10)
-    if (locale == "ko") {
-        return korean[randomNum % korean.length];
-    } else {
-        return english[randomNum % english.length];
-    }
-}
-
 
 export default MakeRoom
-
-const getStaticProps = makeStaticProps(['make-room', 'common'])
-export { getStaticPaths, getStaticProps }

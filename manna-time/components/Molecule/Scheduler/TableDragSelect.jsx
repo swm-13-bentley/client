@@ -2,8 +2,25 @@ import React from "react";
 import clone from "clone";
 import PropTypes from "prop-types";
 import colors from "./Colors"
+import { useSetRecoilState } from "recoil";
+import { clickParticipantState, clickTimeState } from "@/src/state/ClickScheduler";
 
-export default class TableDragSelect extends React.Component {
+const TableDragSelectWrapper = (props) => {
+  const setSelectedTime = useSetRecoilState(clickTimeState)
+  const setSelectedParticipant = useSetRecoilState(clickParticipantState)
+  return (
+    <TableDragSelect
+      value={props.value}
+      onChange={props.onChange}
+      days={props.days}
+      setSelectedTime={setSelectedTime}
+      setSelectedParticipant={setSelectedParticipant}
+    >
+      {props.children}
+    </TableDragSelect>)
+}
+
+class TableDragSelect extends React.Component {
   static propTypes = {
     value: (props) => {
       const error = new Error(
@@ -63,9 +80,11 @@ export default class TableDragSelect extends React.Component {
     value: [],
     maxRows: Infinity,
     maxColumns: Infinity,
-    onSelectionStart: () => {},
-    onInput: () => {},
-    onChange: () => {}
+    onSelectionStart: () => { },
+    onInput: () => { },
+    onChange: () => { },
+    setSelectedTime: () => { },
+    setSelectedParticipant: () => {}
   };
 
   state = {
@@ -91,7 +110,7 @@ export default class TableDragSelect extends React.Component {
     return (
       <table className="table-drag-select">
         <colgroup>
-          <col width={"20px"}/>
+          <col width={"20px"} />
           <col />
           <col />
           <col />
@@ -116,6 +135,8 @@ export default class TableDragSelect extends React.Component {
               onTouchMove={this.handleTouchMoveCell}
               selected={this.props.value[i][j]}
               beingSelected={this.isCellBeingSelected(i, j)}
+              setSelectedTime={this.props.setSelectedTime}
+              setSelectedParticipant={this.props.setSelectedParticipant}
               {...cell.props}
             >
               {cell.props.children}
@@ -244,6 +265,8 @@ class Cell extends React.Component {
       white,
       disabled,
       time,
+      day,
+      date,
       beingSelected,
       selected,
       onTouchStart,
@@ -254,19 +277,23 @@ class Cell extends React.Component {
     } = this.props;
     // console.log(cellProperty)
     let style = {
-      background : ""
+      backgroundColor: "",
     }
     if (disabled) {
       if (white) {
         className += " cell-white-disabled";
         if (time) {
           className += "-time"
+        } else if (day) {
+          className += "-day-of-the-week"
+        } else if (date) {
+          className += "-date"
         }
-      } else{
+      } else {
         className += " cell-disabled";
       }
     } else {
-      
+
       className += " cell-enabled";
 
       if (cellProperty != undefined) {
@@ -274,20 +301,20 @@ class Cell extends React.Component {
           if (selected) {
             className += " cell-selected";
           }
-        
+
           if (beingSelected) {
             className += " cell-being-selected";
           }
-        } 
+        }
 
         if (!(selected || beingSelected) || cellProperty.isDisabled) {
           if (cellProperty.isCalendar) {
             className += " calendar"
           } else {
-            style.background = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            // style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
+            style.backgroundColor = `rgba(0, 86, 224, ${cellProperty.opacity})`
           }
 
-        
         }
 
       }
@@ -308,8 +335,14 @@ class Cell extends React.Component {
 
   handleTouchStart = (e) => {
     if (!this.props.disabled) {
-      if ((this.props.cellProperty != undefined) && (!this.props.cellProperty.isDisabled)) {
-        this.props.onTouchStart(e);
+      if (this.props.cellProperty != undefined) {
+        if (!this.props.cellProperty.isDisabled)
+          this.props.onTouchStart(e);
+        else {
+          this.props.setSelectedTime(this.props.cellProperty.time)
+          this.props.setSelectedParticipant(this.props.cellProperty.participantNames)
+        }
+
       }
     }
   };
@@ -347,3 +380,5 @@ const eventToCellLocation = (e) => {
     column: target.cellIndex
   };
 };
+
+export default TableDragSelectWrapper

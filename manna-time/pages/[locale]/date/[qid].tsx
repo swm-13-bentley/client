@@ -5,7 +5,7 @@ import { Button, Paper } from "@mui/material"
 import { NextPage } from "next"
 import { Calendar, DateObject } from "react-multi-date-picker"
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { MixpanelTracking } from "@/utils/mixpanel"
+import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 import copyTextUrl from "@/utils/copyTextUrl"
 import PublishIcon from '@mui/icons-material/Publish';
 import DownloadIcon from '@mui/icons-material/Download';

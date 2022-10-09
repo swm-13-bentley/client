@@ -27,8 +27,8 @@ interface Props {
 }
 
 const TimeRangeSelectbox = ({onSelectChange}:Props) => {
-    const [startTime, setStartTime] = useState("")
-    const [endTime, setEndTime] = useState("")
+    const [startTime, setStartTime] = useState("09:00:00")
+    const [endTime, setEndTime] = useState("17:00:00")
     
     const handleStartChange : ChangeEventHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setStartTime(event.target.value as string)
@@ -43,10 +43,9 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
     return (
         <Box width="100%">
             <HStack className=' space-x-5'>
-                <h4 className=' font-semibold'>직접설정 : </h4>
-                <FormControl variant='filled' sx={{width:"30%"}}>
+                <FormControl variant='filled' sx={{width:"50%"}}>
                     <NativeSelect
-                        defaultValue={""}
+                        defaultValue={startTime}
                         inputProps={{
                             name: 'start time',
                             id: 'start-time',
@@ -54,17 +53,16 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
                         value = {startTime}
                         onChange={handleStartChange}
                     >
-                        <option value="" selected disabled hidden ></option>
                         {options}
                     </NativeSelect>
                 </FormControl>
                 
                 <span>-</span>
 
-                <FormControl variant='filled' sx={{width:"30%"}}>
+                <FormControl variant='filled' sx={{width:"50%"}}>
                     <NativeSelect
                         sx={{width:"auto"}}
-                        defaultValue={""}
+                        defaultValue={endTime}
                         inputProps={{
                             name: 'end time',
                             id: 'end-time',
@@ -72,7 +70,6 @@ const TimeRangeSelectbox = ({onSelectChange}:Props) => {
                         value = {endTime}
                         onChange={handleEndChange}
                     >
-                        <option value="" selected disabled hidden ></option>
                         {options}
                     </NativeSelect>
                 </FormControl>                

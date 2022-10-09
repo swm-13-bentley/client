@@ -18,7 +18,7 @@ function Navbar() {
 		<>
 			{isFeedbackShown && <Feedback />}
 			<Box>
-				<nav className=" shadow fixed w-full z-10 bg-white" >
+				<nav className=" shadow fixed w-full z-20 bg-white" >
 					<div className="w-full">
 						<div className="flex items-center h-20 w-full">
 							<div className="flex items-center  mx-10  justify-between w-full">
@@ -119,7 +119,7 @@ function Navbar() {
 						leaveTo="opacity-0 scale-95"
 					>
 						{(ref) => (
-							<div className="md:hidden" id="mobile-menu" >
+							<div className="md:hidden z-50" id="mobile-menu" >
 								<div
 									ref={React.createRef}
 									className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3"
@@ -133,7 +133,7 @@ function Navbar() {
 										smooth={true}
 										offset={50}
 										duration={500}
-										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+										className="z-50 cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 									>
 										피드백 보내기
 									</Link>
@@ -146,7 +146,7 @@ function Navbar() {
 										smooth={true}
 										offset={50}
 										duration={500}
-										className="cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+										className="z-50 cursor-pointer hover:bg-blue-600 text-black hover:text-white block px-3 py-2 rounded-md text-base font-medium"
 									>
 										개인정보처리방침
 									</Link>
