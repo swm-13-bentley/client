@@ -82,7 +82,7 @@ const Room: NextPage = function () {
                 onChange={setTab}
                 >
                 {
-                    roomInfo && groupNamesExceptMe && (
+                    roomInfo && groupNamesExceptMe && filteredSchedule && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
                             <Background>
                                 <Center mt="12px">
@@ -110,15 +110,16 @@ const Room: NextPage = function () {
                                                 let color = "#333333"
                                                 let border = "none"
                                                 let backgroundColor = ""
-                                                if (filteredSchedule[formattedDate] && roomInfo.participants.length > 1 ) {
-                                                    opacity = filteredSchedule[formattedDate].length / (roomInfo.participants.length-1)
-                                                    color = "#ffffff"
-                                                    backgroundColor = `rgba(0, 86, 224, ${opacity})`
-                                                }
+                                                
                                                 const flag = (selectedDate.filter((d) => { return isSameDate(date, d) }).length > 0)
                                                 if (flag) {
                                                     backgroundColor = "#ffffff"
                                                     border = "3px solid #00D8F8"
+                                                }
+                                                if (filteredSchedule[formattedDate] && roomInfo.participants.length > 1 ) {
+                                                    opacity = filteredSchedule[formattedDate].length / (roomInfo.participants.length-1)
+                                                    color = "#ffffff"
+                                                    backgroundColor = `rgba(0, 86, 224, ${opacity})`
                                                 }
 
                                                 props.style = {
@@ -143,14 +144,13 @@ const Room: NextPage = function () {
                                 </Background>
 
                             <Background>
-
                                 <BasicButtonContainer marginTop={"12"}>
                                     <FullButton style="primary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("date/room/내일정: 내 일정 등록하기")
                                             submitMySchedule(selectedDates)
                                         }}
-                                    >내 일정 등록하기</FullButton>
+                                    >내 일정 등록/수정하기</FullButton>
                                 </BasicButtonContainer>
                             </Background>
 

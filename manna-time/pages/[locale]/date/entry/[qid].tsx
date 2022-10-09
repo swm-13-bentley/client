@@ -1,6 +1,6 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Center, VStack } from "@chakra-ui/react"
 import { GetServerSideProps, NextPage } from "next"
-import React, { SyntheticEvent, useEffect, useState } from "react"
+import React, { CSSProperties, SyntheticEvent, useEffect, useState } from "react"
 import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 import { useRouter } from "next/router";
 
@@ -24,15 +24,19 @@ import EmptyRank from "@/components/Organism/EmptyRank";
 import Image from "next/image";
 
 import kakaoIcon from "@/public/icons/kakao.svg"
+import tooltipIcon from "@/public/images/tooltip2.svg"
 import { getShareTemplate } from "@/utils/sdk/kakaoShare";
 import { RoomInfoDayOnly } from "@/models/roomInfo";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import { convertDateCriteria, convertIndividualCriteria, DateCriteria, getFilteredSchedule, GroupSchedule } from "@/utils/date/convertGroup";
+import styled from "@emotion/styled";
+import {css, keyframes} from "@emotion/react";
+import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
+
 
 const dateRangeFormat = "YYYY-MM-DD"
 
 const Entry: NextPage = function () {
-
     const router = useRouter()
     // const qid = "02258fae-f9cb-4582-ba0a-5b78c826ed33" // 일정 있음
     const { invitation, qid } = router.query
@@ -89,6 +93,12 @@ const Entry: NextPage = function () {
 
     const [tab, setTab] = useState(0)
     const [enter, setEnter] = useState(false)
+    const [shake, setShake] = useState(false)
+
+    const handleNoParticipantClick = () => {
+        setShake(true)
+        setTimeout(()=>setShake(false), 700)
+    }
 
     if (showInvitation && !enter) {
         return (
@@ -126,13 +136,17 @@ const Entry: NextPage = function () {
                                     <Calendar className="rmdp-mobile"
                                         onChange={
                                             (date: DateObject) => {
-                                                let selected = date.format(dateRangeFormat)
-                                                let participants: string[] = []
-                                                if (filteredSchedule[selected] != undefined)
-                                                    participants = filteredSchedule[selected]
-
-                                                setClickedTime(selected)
-                                                setClickedParticipants(participants)
+                                                if (roomInfo.participants.length == 0) {
+                                                    handleNoParticipantClick()
+                                                } else {
+                                                    let selected = date.format(dateRangeFormat)
+                                                    let participants: string[] = []
+                                                    if (filteredSchedule[selected] != undefined)
+                                                        participants = filteredSchedule[selected]
+    
+                                                    setClickedTime(selected)
+                                                    setClickedParticipants(participants)
+                                                }
                                             }
                                         }
                                         mapDays={({ date, selectedDate, isSameDate }) => {
@@ -179,12 +193,18 @@ const Entry: NextPage = function () {
 
 
                                 <BasicButtonContainer marginTop={"12"}>
+
+                                    {
+                                        roomInfo.participants.length == 0 && (
+                                            <AnimatedTooltip active={shake} />
+                                        )
+                                    }
                                     <FullButton style="primary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("date/entry/종합일정: 내 일정 등록하기")
                                             router.push(pushPath);
                                         }}
-                                    >내 일정 등록하기</FullButton>
+                                    >내 일정 등록/수정하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {

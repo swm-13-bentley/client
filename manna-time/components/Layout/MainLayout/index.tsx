@@ -32,7 +32,8 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
     const [agent, setAgent] = useRecoilState(userAgentState)
     useEffect(() => {
         setAgent(userAgent)
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
+        if (!window.Kakao.isInitialized())
+            window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }, [])
 
     if (hideNavbar.includes(pageName)) {

@@ -39,7 +39,7 @@ const EmptyRank = ({ url }: EmptyRankProps) => {
                     onClick={() => {   
                         router.push(url)
                     }}
-                >내 일정 등록하기</FullButton>
+                >내 일정 등록/수정하기</FullButton>
             </VStack>
         </Background>
     )

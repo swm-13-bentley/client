@@ -26,6 +26,7 @@ import Image from "next/image";
 import kakaoIcon from "@/public/icons/kakao.svg"
 import { getShareTemplate } from "@/utils/sdk/kakaoShare";
 import { RoomInfo } from "@/models/roomInfo";
+import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
 
 const Entry: NextPage = function () {
 
@@ -86,6 +87,12 @@ const Entry: NextPage = function () {
 
     const [tab, setTab] = useState(0)
     const [enter, setEnter] = useState(false)
+    const [shake, setShake] = useState(false)
+
+    const handleNoParticipantClick = () => {
+        setShake(true)
+        setTimeout(()=>setShake(false), 700)
+    }
 
     if (showInvitation && !enter) {
         return (
@@ -112,22 +119,24 @@ const Entry: NextPage = function () {
                 {
                     roomInfo && participantNames && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
-                            <Scheduler
-                                groupSchedule={groupSchedule}
-                                isGroup={true}
-                                roomInfo={roomInfo}
-                                isDisabled={true}
-                                groupFilterChecked={groupFilterChecked}
-                                participantNames={participantNames}
-                            >
-                                <div className="mb-5 mt-5">
-                                    <FilterAccordion
-                                        participantNames={participantNames}
-                                        onChange={checked => setGroupFilterChecked(checked)}
-                                        isChecked={null}
-                                    />
-                                </div>
-                            </Scheduler>
+                            <div onClick={roomInfo.participants.length == 0 ? handleNoParticipantClick : ()=>{}}>
+                                <Scheduler
+                                    groupSchedule={groupSchedule}
+                                    isGroup={true}
+                                    roomInfo={roomInfo}
+                                    isDisabled={true}
+                                    groupFilterChecked={groupFilterChecked}
+                                    participantNames={participantNames}
+                                >
+                                    <div className="mb-5 mt-5">
+                                        <FilterAccordion
+                                            participantNames={participantNames}
+                                            onChange={checked => setGroupFilterChecked(checked)}
+                                            isChecked={null}
+                                        />
+                                    </div>
+                                </Scheduler>
+                            </div>
 
                             <Background>
                                 <div className={participantNames.length > 0 ? "" : "hidden"}>
@@ -139,12 +148,17 @@ const Entry: NextPage = function () {
 
 
                                 <BasicButtonContainer marginTop={"12"}>
+                                    {
+                                        roomInfo.participants.length == 0 && (
+                                            <AnimatedTooltip active={shake} />
+                                        )
+                                    }
                                     <FullButton style="primary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 내 일정 등록하기")
                                             router.push(`/${router.query.locale}/participant-login/${qid}`);
                                         }}
-                                    >내 일정 등록하기</FullButton>
+                                    >내 일정 등록/수정하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {

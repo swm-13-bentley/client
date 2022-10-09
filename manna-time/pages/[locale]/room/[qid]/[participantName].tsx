@@ -133,7 +133,7 @@ const Room: NextPage = function () {
                                             const mySchedule = scheduleRef.current.testFn()
                                             submitMySchedule(mySchedule)
                                         }}
-                                    >내 일정 등록하기</FullButton>
+                                    >내 일정 등록/수정하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
