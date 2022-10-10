@@ -33,5 +33,5 @@ export const getKoDateTime = (availableDate: string, startTime: string, endTime:
 export const getKoDateRange = (dates: string[]) => {
     if (dates.length == 1)
         return `${dateConversion(dates[0])}`
-    return `${dateConversion(dates[0])} ~ ${dateConversion(dates[dates.length - 1])}`
+    return `${changeDateToKorean(dates[0])} ~ ${dateConversion(dates[dates.length - 1])}`
 }
