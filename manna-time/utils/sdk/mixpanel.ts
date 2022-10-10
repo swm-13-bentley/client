@@ -20,7 +20,7 @@ export class MixpanelTracking {
         })
     }
 
-    protected track(name: string, data: object = {}) {
+    public track(name: string, data: object = {}) {
         mixpanel.track(name, data)
     }
 

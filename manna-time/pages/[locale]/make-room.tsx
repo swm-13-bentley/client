@@ -14,6 +14,7 @@ import _ from "lodash";
 import axios from "axios";
 import { useRouter } from "next/router";
 import useViewport from "@/hooks/useViewport";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 
 const WhiteBoard = styled.div`
 background: #ffffff;
@@ -100,7 +101,9 @@ const MakeRoom: NextPage = () => {
                 <VStack mt={"56px"} mb={ viewport === 'mobile' ? "200px" : "0px"}>
                     {steps[stepIndex]}
                 </VStack>
-                <StickyButtonContainer>
+                <StickyButtonContainer
+                        id="next-button-container"
+                >
                     <FullButton
                         style={
                             stepFlags[stepIndex] == "" || _.isEqual(stepFlags[stepIndex], []) ? "disabled" : "primary"
@@ -134,7 +137,6 @@ const MakeRoom: NextPage = () => {
                     router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}?dayOnly=true`);
                 })
                 .catch((e) => {
-                    // console.log(e)
                     alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
                 })
         } else {
@@ -156,11 +158,10 @@ const MakeRoom: NextPage = () => {
                     }
                 })
                     .then((result) => {
-                        // console.log(result.data.roomUuid)
+                        MixpanelTracking.getInstance().track("make-room: 방 만들기 버튼 클릭", {uuid: result.data.roomUuid})
                         router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}`);
                     })
                     .catch((e) => {
-                        // console.log(e)
                         alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
                     })
             }

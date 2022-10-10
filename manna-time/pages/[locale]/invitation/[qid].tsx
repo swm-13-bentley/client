@@ -2,7 +2,7 @@ import { FullButton } from "@/components/Atom/Button"
 import { Headline3 } from "@/components/Atom/Letter"
 import { PopUpNavbar } from "@/components/Atom/Navbar"
 import { Background } from "@/components/Layout/MainLayout/Wrapper"
-import { StickyButtonContainer } from "@/components/Molecule/ButtonContainer"
+import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer"
 import Hours from "@/components/Molecule/Scheduler/Hours"
 import RoomInfoBox from "@/components/Organism/RoomInfoBox"
 import { changeDateToKorean } from "@/utils/changeFormat"
@@ -27,7 +27,6 @@ interface RoomInfo {
 
 const Invitation: NextPage = () => {
     const router = useRouter()
-    const viewport = useViewport()
 
     const { locale, qid, dayOnly } = router.query
     // const qid = "5334e361-7755-4cc9-b3d1-fbf319902e7b" // 일정 있음
@@ -37,7 +36,7 @@ const Invitation: NextPage = () => {
 
     useEffect(() => {
         if (qid != undefined) {
-            if (dayOnly=='true') {
+            if (dayOnly == 'true') {
                 setEntryUri(`/${locale}/date/entry/${qid}`)
                 setSrcUrl(process.env.NEXT_PUBLIC_API_URL + '/day/room/' + qid)
             } else {
@@ -45,7 +44,7 @@ const Invitation: NextPage = () => {
                 setSrcUrl(process.env.NEXT_PUBLIC_API_URL + '/room/' + qid)
             }
         }
-    }, [dayOnly,qid])
+    }, [dayOnly, qid])
 
     const [roomInfo, setRoomInfo] = useState<RoomInfo | null>(null)
     const [loader, setLoader] = useState(true)
@@ -70,14 +69,14 @@ const Invitation: NextPage = () => {
             }}
         />
         <Background>
-            <VStack mt="56px" mb={ viewport === 'mobile' ? "300px" : "0px"}>
+            <VStack mt="56px">
                 <VStack mt="60px" mb="40px">
                     <Headline3>초대하고</Headline3>
                     <Headline3>일정을 함께 정해요</Headline3>
                 </VStack>
                 {
-                    !loader && roomInfo && (
-                        dayOnly 
+                    !loader && roomInfo != undefined && roomInfo != null && (
+                        dayOnly
                             ?
                             <RoomInfoBox
                                 title={roomInfo.title}
@@ -92,22 +91,22 @@ const Invitation: NextPage = () => {
 
                     )
                 }
-            <StickyButtonContainer>
+            </VStack>
+            <BasicButtonContainer marginTop={"12"}>
                 <Image src={tooltipIcon} alt="tooltip" />
                 <FullButton
                     onClick={() => {
-                        MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 초대하기")
+                        MixpanelTracking.getInstance().buttonClicked("invitation: 초대하기")
                         copyTextUrl(process.env.NEXT_PUBLIC_SERVICE_URL + entryUri + '?invitation=true')
                     }}
                 >초대하기</FullButton>
                 <FullButton style="secondary"
                     onClick={() => {
-                        console.log(entryUri)
+                        MixpanelTracking.getInstance().buttonClicked("invitation: 입장하기")
                         router.push(entryUri)
                     }}
                 >입장하기</FullButton>
-            </StickyButtonContainer>
-            </VStack>
+            </BasicButtonContainer>
         </Background>
     </>)
 }

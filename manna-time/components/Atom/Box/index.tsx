@@ -109,13 +109,31 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
     } else {
         return <StyledInput
             value={value}
-            onChange={(e) => { setValue(e.target.value) }}
+            onChange={(e) => {
+                setValue(e.target.value)
+            }}
             size={350}
             maxLength={15}
             placeholder={placeholder}
             type="text"
             id={id}
             name={id}
+            onKeyDown={(event) => {
+                if (event.key == 'Enter')
+                    document.querySelector('input')?.blur();
+            }}
+            onFocus={() => {
+                const nextButton = document.getElementById('next-button-container')
+                if (nextButton) {
+                    nextButton.style.visibility = 'hidden'
+                }
+            }}
+            onBlur={() => {
+                const nextButton = document.getElementById('next-button-container')
+                if (nextButton) {
+                    nextButton.style.visibility = 'visible'
+                }
+            }}
             required />
     }
 }
