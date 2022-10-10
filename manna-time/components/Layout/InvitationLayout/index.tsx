@@ -24,7 +24,7 @@ const InvitationLayout = ({ title, date, timeArea, participants, isProceeding, o
     
     return (
             <Background>
-                <VStack className="mt-10">
+                <VStack className="mt-10" width="100%">
                     <Image src={calendarPic} alt="calendar" width="100px" height="100px"/>
                     <NoticeTitle className="mb-3">초대합니다</NoticeTitle>
                     <NoticeDescription>약속 가능한 시간을 등록해주세요</NoticeDescription>

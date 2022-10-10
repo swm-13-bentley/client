@@ -71,7 +71,7 @@ const RoomInfoBox = ({ title, date, timeArea, participants }: RoomInfoBoxProps) 
         )
     })
     return (
-        <VStack mt="30px">
+        <VStack mt="30px" width="100%">
             <CustomBox
                 style="skyblue"
             >

@@ -14,7 +14,7 @@ import RankContainer, { Rank } from "@/components/Organism/RankContainer";
 import { Background } from "@/components/Layout/MainLayout/Wrapper";
 import RoomInfoBox from "@/components/Organism/RoomInfoBox";
 import Hours from "@/components/Molecule/Scheduler/Hours";
-import { changeDateToKorean } from "@/utils/changeFormat";
+import { getKoDateRange } from "@/utils/changeFormat";
 import { FullButton } from "@/components/Atom/Button";
 import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer";
 import { MixpanelTracking } from "@/utils/sdk/mixpanel";
@@ -105,7 +105,7 @@ const Entry: NextPage = function () {
             roomInfo && (
                 <InvitationLayout
                     title={roomInfo.title}
-                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                    date={`${getKoDateRange(roomInfo.dates)}`}
                     participants={roomInfo.participants}
                     isProceeding={true}
                     onClick={() => { setEnter(true) }}
@@ -258,7 +258,7 @@ const Entry: NextPage = function () {
                             <Background>
                                 <RoomInfoBox
                                     title={roomInfo.title}
-                                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                    date={`${getKoDateRange(roomInfo.dates)}`}
                                     participants={roomInfo.participants} />
                                 <StickyButtonContainer>
                                     <FullButton

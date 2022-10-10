@@ -16,7 +16,7 @@ import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecu
 import { FullButton } from "@/components/Atom/Button"
 import RoomInfoBox from "@/components/Organism/RoomInfoBox"
 import FilterAccordion from "@/components/Organism/FilterAccordion"
-import { changeDateToKorean } from "@/utils/changeFormat"
+import { getKoDateRange } from "@/utils/changeFormat"
 import Hours from "@/components/Molecule/Scheduler/Hours"
 import { Center } from "@chakra-ui/react"
 import { Calendar, DateObject } from "react-multi-date-picker"
@@ -163,7 +163,7 @@ const Room: NextPage = function () {
                             <Background>
                                 <RoomInfoBox
                                     title={roomInfo.title}
-                                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                    date={`${getKoDateRange(roomInfo.dates)}`}
                                     participants={roomInfo.participants} />
                                 <StickyButtonContainer>
                                     <FullButton

@@ -5,7 +5,7 @@ import { Background } from "@/components/Layout/MainLayout/Wrapper"
 import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecule/ButtonContainer"
 import Hours from "@/components/Molecule/Scheduler/Hours"
 import RoomInfoBox from "@/components/Organism/RoomInfoBox"
-import { changeDateToKorean } from "@/utils/changeFormat"
+import { getKoDateRange } from "@/utils/changeFormat"
 import copyTextUrl from "@/utils/copyTextUrl"
 import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 import { VStack } from "@chakra-ui/react"
@@ -52,7 +52,7 @@ const Invitation: NextPage = () => {
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
-        if (dayOnly != 'undefined' && srcUrl != undefined) {
+        if (dayOnly != 'undefined' && srcUrl != "") {
             axios.get(srcUrl)
                 .then((result) => {
                     setRoomInfo(result.data);
@@ -80,12 +80,12 @@ const Invitation: NextPage = () => {
                             ?
                             <RoomInfoBox
                                 title={roomInfo.title}
-                                date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                date={`${getKoDateRange(roomInfo.dates)}`}
                                 participants={roomInfo.participants} />
                             :
                             <RoomInfoBox
                                 title={roomInfo.title}
-                                date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                date={`${getKoDateRange(roomInfo.dates)}`}
                                 timeArea={`${Hours[roomInfo.startTime % 48].realTime} ~ ${Hours[roomInfo.endTime % 48].realTime}`}
                                 participants={roomInfo.participants} />
 
