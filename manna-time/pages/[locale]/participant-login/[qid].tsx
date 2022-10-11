@@ -28,8 +28,8 @@ const ParticipantLogin: NextPage = () => {
             />
             <BasicButtonContainer marginTop={"10"}>
                 <FullButton onClick={sendLoginRequest}>내 일정 등록/수정하기</FullButton>
-                <Caption className=" mt-4 mb-4">또는</Caption>
-                <FullButton style="secondary">로그인/회원가입</FullButton>
+                {/* <Caption className=" mt-4 mb-4">또는</Caption>
+                <FullButton style="secondary">로그인/회원가입</FullButton> */}
             </BasicButtonContainer>
 
         </Background>

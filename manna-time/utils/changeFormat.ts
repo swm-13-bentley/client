@@ -12,7 +12,7 @@ export const changeTimeFormat = (hhmmss: string) => {
 
 export const changeDateToKorean = (yyyymmdd: string) => {
     const date = new Date(yyyymmdd)
-    let changedDate = yyyymmdd.replace('-', '년 ').replace('-', '월 ') + '일 '
+    let changedDate = yyyymmdd.replace('-', '년 ').replace('-', '월 ') + '일'
     
     //2022년 2월 2일 (수)
     return changedDate + `(${dayOfTheWeek[date.getDay()]})`
@@ -33,5 +33,5 @@ export const getKoDateTime = (availableDate: string, startTime: string, endTime:
 export const getKoDateRange = (dates: string[]) => {
     if (dates.length == 1)
         return `${dateConversion(dates[0])}`
-    return `${dateConversion(dates[0])} ~ ${dateConversion(dates[dates.length - 1])}`
+    return `${changeDateToKorean(dates[0])} ~ ${dateConversion(dates[dates.length - 1])}`
 }

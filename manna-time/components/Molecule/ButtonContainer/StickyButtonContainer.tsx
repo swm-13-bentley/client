@@ -5,6 +5,7 @@ import BasicButtonContainer from "./BasicButtonContainer"
 
 interface ButtonContainerProps {
     children?: React.ReactNode
+    id?: string
 }
 
 const MobileDiv = styled.div`
@@ -20,12 +21,14 @@ const MobileDiv = styled.div`
     gap: 10px;
 `
 
-const StickyButtonContainer = ({ children }: ButtonContainerProps) => {
+const StickyButtonContainer = ({ children, id }: ButtonContainerProps) => {
     const viewport = useViewport()
 
     if (viewport === 'mobile')
         return (
-            <MobileDiv>{children}</MobileDiv>
+            <MobileDiv
+                id={id}
+            >{children}</MobileDiv>
         )
     if (viewport === 'desktop')
         return (

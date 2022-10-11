@@ -16,7 +16,7 @@ import { BasicButtonContainer, StickyButtonContainer } from "@/components/Molecu
 import { FullButton } from "@/components/Atom/Button"
 import RoomInfoBox from "@/components/Organism/RoomInfoBox"
 import FilterAccordion from "@/components/Organism/FilterAccordion"
-import { changeDateToKorean } from "@/utils/changeFormat"
+import { getKoDateRange } from "@/utils/changeFormat"
 import Hours from "@/components/Molecule/Scheduler/Hours"
 
 const getParsedGroup = (data: object[], myName: string) => {
@@ -152,7 +152,7 @@ const Room: NextPage = function () {
                             <Background>
                                 <RoomInfoBox
                                     title={roomInfo.title}
-                                    date={`${changeDateToKorean(roomInfo.dates[0])} ~ ${changeDateToKorean(roomInfo.dates[roomInfo.dates.length - 1])}`}
+                                    date={`${getKoDateRange(roomInfo.dates)}`}
                                     timeArea={`${Hours[roomInfo.startTime % 48].realTime} ~ ${Hours[roomInfo.endTime % 48].realTime}`}
                                     participants={groupNamesExceptMe} />
                                 <StickyButtonContainer>

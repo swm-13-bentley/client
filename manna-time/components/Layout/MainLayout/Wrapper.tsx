@@ -33,13 +33,13 @@ const Background = ({ children }: BackgroundProps) => {
 
   if (viewport === 'mobile')
     return (
-      <VStack>
+      <VStack width="100%">
         <MobileBackground>{children}</MobileBackground>
       </VStack>
     )
   if (viewport === 'desktop')
     return (
-      <VStack>
+      <VStack width="100%">
         <DesktopBackground>{children}</DesktopBackground>
       </VStack>
     )

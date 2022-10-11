@@ -428,7 +428,7 @@ const Scheduler = forwardRef((props, ref) => {
           <tr>
             <td white disabled />
             <td white disabled day className="text-custom-black">월</td>
-            <td white disabled day className="text-custom-black">`화</td>
+            <td white disabled day className="text-custom-black">화</td>
             <td white disabled day className="text-custom-black">수</td>
             <td white disabled day className="text-custom-black">목</td>
             <td white disabled day className="text-custom-black">금</td>
