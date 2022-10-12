@@ -56,33 +56,36 @@ const Entry: NextPage = function () {
     const clickedParticipants = useRecoilValue(clickParticipantState)
 
     useEffect(() => {
-        axios.get(srcUrl)
-            .then((result) => {
-                setRoomInfo(result.data);
-                if (result.data?.title !== undefined) { setLoader(false); };
-            })
+        if (qid!=undefined)
+            axios.get(srcUrl)
+                .then((result) => {
+                    setRoomInfo(result.data);
+                    if (result.data?.title !== undefined) { setLoader(false); };
+                })
     }, [srcUrl]);
 
     // 전체 스케줄 가져오기
     useEffect(() => {
-        axios.get(srcUrl + '/group')
-            .then((result) => {
-                setGroupSchedule(result.data);
+        if (qid!=undefined)
+            axios.get(srcUrl + '/group')
+                .then((result) => {
+                    setGroupSchedule(result.data);
 
-                let tempParticipantNames: string[] = []
-                result.data.forEach(obj => {
-                    tempParticipantNames.push(obj.participantName)
+                    let tempParticipantNames: string[] = []
+                    result.data.forEach(obj => {
+                        tempParticipantNames.push(obj.participantName)
+                    })
+                    setParticipantNames(tempParticipantNames)
                 })
-                setParticipantNames(tempParticipantNames)
-            })
     }, [srcUrl]);
 
     // top 5 time ranks 가져오기
     useEffect(() => {
-        axios.get(srcUrl + '/top/5')
-            .then((result) => {
-                setTimeRanks(result.data)
-            })
+        if (qid!=undefined)
+            axios.get(srcUrl + '/top/5')
+                .then((result) => {
+                    setTimeRanks(result.data)
+                })
     }, [srcUrl])
 
     const [tab, setTab] = useState(0)
