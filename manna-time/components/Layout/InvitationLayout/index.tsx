@@ -38,7 +38,7 @@ const InvitationLayout = ({ title, date, timeArea, participants, isProceeding, o
                     <FullButton
                         style="primary"
                         onClick={() => {
-                            MixpanelTracking.getInstance().buttonClicked("entry: 입장하기")
+                            MixpanelTracking.getInstance().buttonClicked(timeArea != undefined ? "date/entry: 입장하기" : "entry: 입장하기")
                             onClick()
                         }}
                     >입장하기</FullButton>

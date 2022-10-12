@@ -111,8 +111,10 @@ const MakeRoom: NextPage = () => {
                         onClick={() => {
                             if (stepIndex == steps.length - 1)
                                 sendRoomRequest()
-                            else
+                            else {
+                                MixpanelTracking.getInstance().buttonClicked(`make-room: ${stepIndex + 1}단계 다음`)
                                 setStepIndex(step => step + 1)
+                            }
                         }}
                     >다음</FullButton>
                 </StickyButtonContainer>
@@ -134,7 +136,8 @@ const MakeRoom: NextPage = () => {
                 }
             })
                 .then((result) => {
-                    router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}?dayOnly=true`);
+                        MixpanelTracking.getInstance().track("make-room: 마지막 단계 클릭", {uuid: result.data.roomUuid, dayOnly: true})
+                        router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}?dayOnly=true`);
                 })
                 .catch((e) => {
                     alert("네트워크 오류가 발생했습니다. 관리자에게 문의하세요.")
@@ -158,7 +161,7 @@ const MakeRoom: NextPage = () => {
                     }
                 })
                     .then((result) => {
-                        MixpanelTracking.getInstance().track("make-room: 방 만들기 버튼 클릭", {uuid: result.data.roomUuid})
+                        MixpanelTracking.getInstance().track("make-room: 마지막 단계 클릭", {uuid: result.data.roomUuid, dayOnly: false})
                         router.push(`/${router.query.locale}/invitation/${result.data.roomUuid}`);
                     })
                     .catch((e) => {

@@ -1,6 +1,7 @@
 import { FullButton } from "@/components/Atom/Button";
 import { Headline3 } from "@/components/Atom/Letter";
 import { Background } from "@/components/Layout/MainLayout/Wrapper";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import { VStack } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { NextPage } from "next";
@@ -41,7 +42,8 @@ const Home: NextPage = () => {
                 <StyledP className="mb-10">약속 일정을 만들고 만날 시간을 함께 정해요</StyledP>
                 <FullButton
                     onClick={() => {
-                        router.push(router.asPath + '/make-room')
+                        MixpanelTracking.getInstance().buttonClicked("home: 약속 만들기")
+                        router.push(router.asPath + 'make-room')
                     }}
                 >약속 만들기</FullButton>
             </CenterScreen>

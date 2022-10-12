@@ -96,13 +96,13 @@ const Invitation: NextPage = () => {
                 <Image src={tooltipIcon} alt="tooltip" />
                 <FullButton
                     onClick={() => {
-                        MixpanelTracking.getInstance().buttonClicked("invitation: 초대하기")
+                        MixpanelTracking.getInstance().track("invitation: 초대하기", {roomUuid: qid, dayOnly: dayOnly})
                         copyTextUrl(process.env.NEXT_PUBLIC_SERVICE_URL + entryUri + '?invitation=true')
                     }}
                 >초대하기</FullButton>
                 <FullButton style="secondary"
                     onClick={() => {
-                        MixpanelTracking.getInstance().buttonClicked("invitation: 입장하기")
+                        MixpanelTracking.getInstance().track("invitation: 입장하기", {roomUuid: qid, dayOnly: dayOnly})
                         router.push(entryUri)
                     }}
                 >입장하기</FullButton>
