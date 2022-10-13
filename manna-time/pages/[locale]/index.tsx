@@ -43,7 +43,7 @@ const Home: NextPage = () => {
                 <FullButton
                     onClick={() => {
                         MixpanelTracking.getInstance().buttonClicked("home: 약속 만들기")
-                        router.push(router.asPath + 'make-room')
+                        router.push('/ko/make-room')
                     }}
                 >약속 만들기</FullButton>
             </CenterScreen>
