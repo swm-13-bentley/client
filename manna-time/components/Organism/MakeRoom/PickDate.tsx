@@ -16,7 +16,7 @@ const PickDate = ({value, setValue} : PickDateProps) => {
     return (<>
         <VStack className="mt-12 mb-10">
             <Headline2 className="mb-4">날짜를 선택해주세요</Headline2>
-            <Body1>특정 날짜 또는 기간을 선택할 수 있어요</Body1>
+            <Body1>약속을 잡기 원하는 후보 날짜들을 선택하세요</Body1>
         </VStack>
         <Calendar className="rmdp-mobile" range value={value}
                     showOtherDays

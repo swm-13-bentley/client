@@ -114,6 +114,7 @@ const Room: NextPage = function () {
                                 isDisabled={false}
                                 groupFilterChecked={groupFilterChecked}
                                 participantNames={groupNamesExceptMe}
+                                hasComment={true}
                             >
                                 <div className="mb-5 mt-5">
                                     <FilterAccordion

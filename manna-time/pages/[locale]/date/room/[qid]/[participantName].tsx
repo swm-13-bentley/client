@@ -22,8 +22,23 @@ import { Center } from "@chakra-ui/react"
 import { Calendar, DateObject } from "react-multi-date-picker"
 import { DateCriteria, getFilteredSchedule } from "@/utils/date/convertGroup"
 import { ScreenLockRotationRounded } from "@mui/icons-material"
+import styled from "@emotion/styled"
 
 const dateRangeFormat = "YYYY-MM-DD"
+
+const StyledP = styled.p`
+    font-family: 'Pretendard';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 160%;
+/* or 19px */
+
+text-align: center;
+letter-spacing: -0.003em;
+
+color: #5194FF;
+`
 
 const Room: NextPage = function () {
     const [tab, setTab] = useState(0); // 0: 내 스케줄 , 1: 그룹 스케줄
@@ -31,11 +46,11 @@ const Room: NextPage = function () {
     const router = useRouter()
     const { participantName, qid } = router.query
 
-    
+
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
     let [groupButtonChecked, setGroupButtonChecked] = useState(true)
-    
+
     let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     const [selectedDates, setSelectedDates] = useState([])
@@ -80,7 +95,7 @@ const Room: NextPage = function () {
                 value={tab}
                 tabLabel={["내 일정", "약속 정보"]}
                 onChange={setTab}
-                >
+            >
                 {
                     roomInfo && groupNamesExceptMe && filteredSchedule && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
@@ -92,7 +107,7 @@ const Room: NextPage = function () {
                                         isChecked={null}
                                     />
                                 </Center>
-                                <Center mt="20px">
+                                <Center mt="20px" mb="12px">
                                     <Calendar className="rmdp-mobile"
                                         multiple
                                         value={selectedDates}
@@ -103,34 +118,33 @@ const Room: NextPage = function () {
                                         mapDays={({ date, selectedDate, isSameDate }) => {
                                             const formattedDate = date.format(dateRangeFormat)
                                             let isDateRange = roomInfo.dates.includes(formattedDate)
-
+                                            
                                             if (isDateRange) {
                                                 let props = { className: "", disabled: false, style: {} }
                                                 let opacity = 0
                                                 let color = "#333333"
                                                 let border = "none"
-                                                let backgroundColor = ""
+                                                let backgroundColor = "#ffffff"
                                                 
                                                 const flag = (selectedDate.filter((d) => { return isSameDate(date, d) }).length > 0)
                                                 if (flag) {
                                                     backgroundColor = "#ffffff"
                                                     border = "3px solid #00D8F8"
                                                 }
-                                                if (filteredSchedule[formattedDate] && roomInfo.participants.length > 1 ) {
-                                                    opacity = filteredSchedule[formattedDate].length / (roomInfo.participants.length-1)
+                                                if (filteredSchedule[formattedDate] && roomInfo.participants.length > 1) {
+                                                    opacity = filteredSchedule[formattedDate].length / (roomInfo.participants.length - 1)
                                                     color = "#ffffff"
                                                     backgroundColor = `rgba(0, 86, 224, ${opacity})`
                                                 }
-
+                                                
                                                 props.style = {
                                                     backgroundColor: backgroundColor,
                                                     color: color,
                                                     border: border
                                                 }
-                                                let isWeekend = [0, 6].includes(date.weekDay.index)
-
-                                                if (isWeekend) props.className = "highlight highlight-red"
-
+                                                // let isWeekend = [0, 6].includes(date.weekDay.index)
+                                                
+                                                
                                                 return props
                                             }
                                             else return {
@@ -139,12 +153,13 @@ const Room: NextPage = function () {
                                             }
                                         }}
                                         zIndex={1}
-                                    />
+                                        />
                                 </Center>
-                                </Background>
+                                    <StyledP>약속 가능한 날짜들을 선택해주세요</StyledP>
+                            </Background>
 
                             <Background>
-                                <BasicButtonContainer marginTop={"12"}>
+                                <BasicButtonContainer marginTop={"10"}>
                                     <FullButton style="primary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("date/room/내일정: 내 일정 등록하기")
@@ -179,7 +194,7 @@ const Room: NextPage = function () {
                     )
 
                 }
-                </TabLayout>
+            </TabLayout>
         </>
     )
 
