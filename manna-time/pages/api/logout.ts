@@ -7,7 +7,7 @@ export default function logout (
 ) {
   res.setHeader(
     "Set-Cookie",
-    cookie.serialize("accessToken", "", {
+    cookie.serialize("jwt", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV !== "development",
       expires: new Date(0),

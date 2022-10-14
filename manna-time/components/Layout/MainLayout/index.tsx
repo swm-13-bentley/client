@@ -1,5 +1,6 @@
 import useViewport from "@/hooks/useViewport"
 import { userAgentState } from "@/src/state/UserAgent"
+import { userInfoState } from "@/src/state/UserInfo"
 import { Flex } from "@chakra-ui/react"
 import { useTranslation } from "next-i18next"
 import { AppProps } from "next/app"
@@ -7,11 +8,11 @@ import { AppContextType } from "next/dist/shared/lib/utils"
 import { useRouter } from "next/router"
 import { ScriptProps } from "next/script"
 import { useEffect } from "react"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import Header from "./Header"
 import Navbar from "./Navbar"
 
-const hideNavbar = ['make-room', 'invitation']
+const hideNavbar = ['make-room', 'invitation', 'oauth/redirect']
 
 const getPageName = (match: string[] | undefined | null) => {
     if (match)
@@ -30,10 +31,17 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
     const { t } = useTranslation(['common'])
 
     const [agent, setAgent] = useRecoilState(userAgentState)
+    const [userInfo, setUserInfo] = useRecoilState(userInfoState)
     useEffect(() => {
         setAgent(userAgent)
+
         if (!window.Kakao.isInitialized())
             window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
+        if (userInfo.accessToken == undefined) {
+            console.log("access token doesn't exist")
+            setUserInfo({ accessToken: "abcde", name: "hi", email: "nomail@gmail.com" })
+            //todo: api로 userInfo 세팅하기
+        }
     }, [])
 
     if (hideNavbar.includes(pageName)) {
