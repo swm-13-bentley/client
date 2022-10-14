@@ -32,15 +32,18 @@ const Invitation: NextPage = () => {
     // const qid = "5334e361-7755-4cc9-b3d1-fbf319902e7b" // 일정 있음
 
     const [entryUri, setEntryUri] = useState("")
+    const [loginUri, setLoginUri] = useState("")
     const [srcUrl, setSrcUrl] = useState("")
 
     useEffect(() => {
         if (qid != undefined) {
             if (dayOnly == 'true') {
                 setEntryUri(`/${locale}/date/entry/${qid}`)
+                setLoginUri(`/${locale}/participant-login/${qid}?dayOnly=true`)
                 setSrcUrl(process.env.NEXT_PUBLIC_API_URL + '/day/room/' + qid)
             } else {
                 setEntryUri(`/${locale}/entry/${qid}`)
+                setLoginUri(`/${locale}/participant-login/${qid}`)
                 setSrcUrl(process.env.NEXT_PUBLIC_API_URL + '/room/' + qid)
             }
         }
@@ -103,7 +106,7 @@ const Invitation: NextPage = () => {
                 <FullButton style="secondary"
                     onClick={() => {
                         MixpanelTracking.getInstance().track("invitation: 입장하기", {roomUuid: qid, dayOnly: dayOnly})
-                        router.push(entryUri)
+                        router.push(loginUri)
                     }}
                 >입장하기</FullButton>
             </BasicButtonContainer>

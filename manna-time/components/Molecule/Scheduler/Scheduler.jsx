@@ -46,6 +46,7 @@ const Scheduler = forwardRef((props, ref) => {
   let isDisabled = false
   let calendarEvents = [] //비회원 캘린더 내 스케줄
   let mySchedule // 이전에 selected해놓은 내 스케줄
+  let hasComment = false
   if (props.roomInfo == undefined) {
     // Dummy Data
     startDate = new Date('2022-06-09');
@@ -122,6 +123,9 @@ const Scheduler = forwardRef((props, ref) => {
     }
     if (props.participantNames != undefined) {
       participantNames = props.participantNames
+    }
+    if (props.hasComment != undefined) {
+      hasComment = true
     }
     isDisabled = props.isDisabled
   }
@@ -421,6 +425,7 @@ const Scheduler = forwardRef((props, ref) => {
         lastPage={currIdx.index == tableState.length - 1}
         onLeftClick={handleLeft}
         onRightClick={handleRight}
+        hasComment={hasComment}
       />
       <Background>
         {props.children}

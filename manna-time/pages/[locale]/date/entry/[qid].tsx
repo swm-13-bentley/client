@@ -105,13 +105,14 @@ const Entry: NextPage = function () {
 
     if (showInvitation && !enter) {
         return (
-            roomInfo && (
+            roomInfo && qid &&(
                 <InvitationLayout
                     title={roomInfo.title}
                     date={`${getKoDateRange(roomInfo.dates)}`}
                     participants={roomInfo.participants}
                     isProceeding={true}
                     onClick={() => { setEnter(true) }}
+                    uuid = {qid}
                 />
 
             )
