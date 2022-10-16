@@ -1,7 +1,5 @@
-import BlackBoard from "@/components/Atom/BlackBoard/BlackBoard"
 import styled from "@emotion/styled"
 import { useRouter } from "next/router"
-import { useRecoilState } from "recoil"
 
 const Board = styled.div`
 position: fixed;
@@ -22,13 +20,6 @@ const Redirect = () => {
         window.close()
     }
 
-    //test code
-    // if (window.opener != null) {
-    //     let accessToken = "abcdefg"
-    //     window.opener.postMessage(accessToken)
-    //     // window.close()
-    // }
-    
     return (<>
         <Board/>
     </>)
