@@ -13,9 +13,7 @@ background-color: var(--ds-background-blanket,rgba(255,255,255,1));
 const Redirect = () => {
     const router = useRouter()
 
-    // console.log('parent window : ', window.opener)
     if (typeof (router.query.accessToken) === 'string' && window.opener != null) {
-        console.log(router.query.accessToken)
         window.opener.postMessage(router.query.accessToken)
         window.close()
     }

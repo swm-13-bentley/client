@@ -8,15 +8,15 @@ interface UserInfo {
     email: string
 }
 
-function parseJwt (token : string) {
+function parseJwt(token: string) {
     try {
         let base64 = token.split('.')[1]
         let jsonPayload = Buffer.from(base64, 'base64').toString()
-        return JSON.parse(jsonPayload);
-    } catch {
-        return {}
+        return JSON.parse(jsonPayload)
+    } catch (e) {
+        console.error(e)
+        return {"error": e}
     }
-
 };
 
 export const tokenState = atom<string>({
@@ -31,8 +31,7 @@ export const decodedTokenState = selector({
         const jwt = get(tokenState)
         if (jwt == "") {
             return {}
-        }
-        else {
+        } else {
             const payload = parseJwt(jwt)
             return payload
         }
