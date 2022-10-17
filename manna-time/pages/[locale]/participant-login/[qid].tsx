@@ -5,6 +5,7 @@ import { BasicButtonContainer } from "@/components/Molecule/ButtonContainer";
 import ParticipantInput from "@/components/Organism/ParticipantInput";
 import { VStack } from "@chakra-ui/react";
 import axios from "axios";
+import _ from "lodash";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -27,7 +28,10 @@ const ParticipantLogin: NextPage = () => {
                 errorMessage={errorMessage}
             />
             <BasicButtonContainer marginTop={"10"}>
-                <FullButton onClick={sendLoginRequest}>내 일정 등록/수정하기</FullButton>
+                <FullButton onClick={
+                    //비동기 중복 처리 방지 grouping by 10 millisecond
+                    _.debounce(sendLoginRequest, 10)}
+                >내 일정 등록/수정하기</FullButton>
                 {/* <Caption className=" mt-4 mb-4">또는</Caption>
                 <FullButton style="secondary">로그인/회원가입</FullButton> */}
             </BasicButtonContainer>
@@ -48,7 +52,7 @@ const ParticipantLogin: NextPage = () => {
             pushPath = `/${router.query.locale}/room/${qid}/${name}`
         }
 
-        
+
         let sendFlag = (name != "")
         if (!sendFlag) {
             alert("이름을 입력해주세요.")
@@ -74,7 +78,7 @@ const ParticipantLogin: NextPage = () => {
                         setErrorMessage("이전에 등록한 비밀번호를 입력하세요")
                     else if (status == 404)
                         setErrorMessage("해당 약속이 존재하지 않습니다")
-                        
+
                 })
         }
     }
