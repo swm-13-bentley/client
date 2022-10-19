@@ -6,7 +6,7 @@ import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 
 import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { FeedbackState } from "@/src/state";
 
 import copyTextUrl from "@/utils/copyTextUrl"
@@ -20,6 +20,7 @@ import { getKoDateRange } from "@/utils/changeFormat"
 import Hours from "@/components/Molecule/Scheduler/Hours"
 import { Body2 } from "@/components/Atom/Letter"
 import UnknownParticipant from "@/components/Organism/UnknownParticipant"
+import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -49,6 +50,8 @@ const Room: NextPage = function () {
     const router = useRouter()
     const { qid, name } = router.query
 
+    const token = useRecoilValue(tokenState)
+    const isLoggedIn = useRecoilValue(isLoggedInState)
     const [participantName, setParticipantName] = useState(name)
 
     let [roomInfo, setRoomInfo] = useState(null)
@@ -68,29 +71,52 @@ const Room: NextPage = function () {
 
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
-        axios.get(srcUrl)
-            .then((result) => {
-                setRoomInfo(result.data);
-                if (result.data?.title !== undefined) { setLoader(false); };
-            })
+        if (qid != undefined) {
+            axios.get(srcUrl)
+                .then((result) => {
+                    setRoomInfo(result.data);
+                    if (result.data?.title !== undefined) { setLoader(false); };
+                })
+        }
     }, [srcUrl]);
 
     // 전체 스케줄 가져오기
     useEffect(() => {
-        axios.get(srcUrl + '/group')
-            .then((result) => {
-                let parsedGroup = getParsedGroup(result.data, participantName)
+        if (qid != undefined) {
+            if (isLoggedIn) {
+                axios.get(
+                    `/api/user/time/${qid}/seperate`,
+                    { headers: { token: `${token}`} }
+                )
+                    .then((result) => {
+                        setParticipantName(result.data.myself.participantName)
+                        setGroupSchedule(result.data.others)
+                        setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
+                            allNames.push(obj.participantName)
+                            return allNames
+                        },[]))
+                        setMySchedule(result.data.myself)
+                        setGroupFilterChecked(Array(result.data.others.length).fill(true))
+                    })
+            } else if (participantName != undefined) {
+                axios.get(srcUrl + `/group/seperate/${participantName}`)
+                    .then((result) => {
+                        setGroupSchedule(result.data.others)
+                        setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
+                            allNames.push(obj.participantName)
+                            return allNames
+                        },[]))
+                        setMySchedule(result.data.myself)
+                        setGroupFilterChecked(Array(result.data.others.length).fill(true))
+                    })
+            }
+        }
+    }, [srcUrl, isLoggedIn]);
 
-                setGroupSchedule(parsedGroup.schedulesExceptMe);
-                setGroupNamesExceptMe(parsedGroup.namesExceptMe)
-                setMySchedule(parsedGroup.mySchedule)
-                setGroupFilterChecked(Array(parsedGroup.namesExceptMe.length).fill(true))
-            })
-    }, [srcUrl]);
 
-    if (participantName == undefined) {
-        return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
-    }
+    // if (!isLoggedIn && participantName == undefined) {
+    //     return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
+    // }
 
     return (
         <>
@@ -173,23 +199,43 @@ const Room: NextPage = function () {
 
     function submitMySchedule(props) {
         // console.log(props)
-        axios({
-            method: 'post',
-            url: srcUrl + '/participant/available',
-            data: {
-                "participantName": participantName,
-                "available": props
-            }
-        })
-            .then((result) => {
-                alert('일정이 등록되었습니다.')
-                router.push(`/${router.query.locale}/entry/${qid}`);
-
+        if (isLoggedIn) {
+            axios.post(
+                `/api/user/time/${qid}/submit`,
+                {
+                    "participantName": participantName,
+                    "available": props
+                },
+                { headers: { token: `${token}`} }
+            )
+                .then((result) => {
+                    alert('일정이 등록되었습니다.')
+                    router.push(`/${router.query.locale}/entry/${qid}`);
+    
+                })
+                .catch((e) => {
+                    console.log(e)
+                    alert('일정등록이 실패하였습니다!')
+                })
+        } else {
+            axios({
+                method: 'post',
+                url: srcUrl + '/participant/available',
+                data: {
+                    "participantName": participantName,
+                    "available": props
+                }
             })
-            .catch((e) => {
-                // console.log(e.response)
-                alert('일정등록이 실패하였습니다!')
-            })
+                .then((result) => {
+                    alert('일정이 등록되었습니다.')
+                    router.push(`/${router.query.locale}/entry/${qid}`);
+    
+                })
+                .catch((e) => {
+                    // console.log(e.response)
+                    alert('일정등록이 실패하였습니다!')
+                })
+        }
 
     }
 

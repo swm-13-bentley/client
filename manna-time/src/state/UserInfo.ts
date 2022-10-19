@@ -37,3 +37,15 @@ export const decodedTokenState = selector({
         }
     }
 })
+
+export const isLoggedInState = selector({
+    key: 'isLoggedInState',
+    get: ({ get }) => {
+        const jwt = get(tokenState)
+        const payload = parseJwt(jwt)
+        
+        if (jwt == "" || payload.error != undefined) 
+            return false
+        return true
+    }
+})
