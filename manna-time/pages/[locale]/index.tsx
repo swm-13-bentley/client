@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { NextPage} from "next"
 import { useEffect, useState } from "react";
 
@@ -7,7 +8,7 @@ const Home: NextPage = function () {
     useEffect(() => {
         setHeight(window.innerHeight)
         window.addEventListener('resize', ()=> {
-            setHeight(window.innerHeight)
+            _.debounce(() => { setHeight(window.innerHeight) }, 10)
         })
      }, [])
     return (
