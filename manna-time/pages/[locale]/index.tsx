@@ -5,10 +5,11 @@ import { useEffect, useState } from "react";
 // const Test: NextPage = function ({ data }:InferGetStaticPropsType<typeof getStaticProps>) {
 const Home: NextPage = function () {
     const [height, setHeight] = useState(0)
+
     useEffect(() => {
         setHeight(window.innerHeight)
-        window.addEventListener('resize', ()=> {
-            _.debounce(() => { setHeight(window.innerHeight) }, 10)
+        window.addEventListener('resize', () => {
+            setHeight(window.innerHeight)
         })
      }, [])
     return (
