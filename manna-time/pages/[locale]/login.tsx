@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Background } from "@/components/Layout/MainLayout/Wrapper"
 import { VStack } from "@chakra-ui/react"
 import Image from "next/image"
@@ -30,7 +31,7 @@ const Login = () => {
 
     const {redirect} = router.query
     const [token, setToken] = useRecoilState(tokenState)
-    const decededToken = useRecoilValue(decodedTokenState)
+    const decodedToken = useRecoilValue(decodedTokenState)
 
     const redirectPage = () => {
         if (redirect == undefined || _.isArray(redirect)) {
@@ -45,14 +46,20 @@ const Login = () => {
         //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
         window.addEventListener("message", (event) => {
             setToken(event.data)
-            if (JSON.stringify(decededToken) === JSON.stringify({})) {
-                alert("로그인이 유효하지 않습니다. 로그인을 다시 시도해주세요.")
+        }, false)
+    }, [])
+    
+    // token 변했을 시 시행
+    useEffect(() => {
+        if (!_.isEmpty(decodedToken)) {
+            if (decodedToken.error != undefined) {
+                alert("로그인이 유효하지 않습니다. 관리자에게 문의하세요.")
                 setToken("")
             } else {
                 redirectPage()
             }
-        }, false)
-    }, [])
+        }
+    },[decodedToken])
     
     return (<Background>
         <CenterScreen>

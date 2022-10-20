@@ -45,11 +45,11 @@ const ParticipantLogin: NextPage = () => {
 
         if (dayOnly == 'true') {
             srcUrl += '/day/room/' + qid + '/participant/entry'
-            pushPath = `/${router.query.locale}/date/room/${qid}/${name}`
+            pushPath = `/${router.query.locale}/date/room/${qid}`
         }
         else {
             srcUrl += '/room/' + qid + '/participant/entry'
-            pushPath = `/${router.query.locale}/room/${qid}/${name}`
+            pushPath = `/${router.query.locale}/room/${qid}`
         }
 
 
@@ -67,7 +67,15 @@ const ParticipantLogin: NextPage = () => {
                 }
             })
                 .then((result) => {
-                    router.push(pushPath);
+                    router.push(
+                        {
+                            pathname: pushPath,
+                            query: {
+                                name: name
+                            }
+                        },
+                        pushPath
+                    );
                 })
                 .catch((e) => {
                     const status = e.response.status
