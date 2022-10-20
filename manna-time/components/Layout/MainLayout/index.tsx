@@ -1,6 +1,6 @@
 import useViewport from "@/hooks/useViewport"
 import { userAgentState } from "@/src/state/UserAgent"
-import { decodedTokenState, tokenState, userInfoState } from "@/src/state/UserInfo"
+import { decodedTokenState, tokenState } from "@/src/state/UserInfo"
 import { Flex } from "@chakra-ui/react"
 import { useTranslation } from "next-i18next"
 import { AppProps } from "next/app"
