@@ -39,10 +39,10 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
         if (!window.Kakao.isInitialized())
             window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
         if (token == "") {
-            console.log("access token doesn't exist")
+            // console.log("access token doesn't exist")
             //todo: api로 userInfo 세팅하기
         } else {
-            console.log(decodedToken)
+            // console.log(decodedToken)
         }
     }, [])
 
