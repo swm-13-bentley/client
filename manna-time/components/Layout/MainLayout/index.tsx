@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 import Header from "./Header"
 import Navbar from "./Navbar"
+import TestNavbar from "./TestNavbar"
 
 const hideNavbar = ['make-room', 'invitation', 'oauth']
 
@@ -25,6 +26,7 @@ const getPageName = (match: string[] | undefined | null) => {
 
 function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent: string }) {
     const router = useRouter()
+    const viewport = useViewport()
     const match = router.asPath.match(/[^/?]*[^/?]/g)
     const pageName = getPageName(match)
 
@@ -58,8 +60,8 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
     return (
         <>
             <Header title={t(pageName) as string} service={t('service') as string} />
-            <Navbar />
-            <Flex paddingTop="59px" width="100%" justifyContent="center" >
+            <TestNavbar />
+            <Flex paddingTop={viewport === 'mobile' ? "56px" : "72px"} width="100%" justifyContent="center" >
                 {children}
             </Flex>
         </>
