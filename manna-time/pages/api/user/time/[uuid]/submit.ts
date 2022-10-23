@@ -2,7 +2,7 @@ import axios from "axios";
 import cookie from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getSeperatedSchedule(
+export default async function submitSchedule(
     req: NextApiRequest,
     res: NextApiResponse
 ) {

@@ -6,7 +6,7 @@ import Scheduler from "@/components/Molecule/Scheduler/Scheduler"
 
 import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { FeedbackState } from "@/src/state";
 
 import copyTextUrl from "@/utils/copyTextUrl"
@@ -23,6 +23,7 @@ import { Calendar, DateObject } from "react-multi-date-picker"
 import { DateCriteria, getFilteredSchedule } from "@/utils/date/convertGroup"
 import { ScreenLockRotationRounded } from "@mui/icons-material"
 import styled from "@emotion/styled"
+import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 
 const dateRangeFormat = "YYYY-MM-DD"
 
@@ -44,12 +45,13 @@ const Room: NextPage = function () {
     const [tab, setTab] = useState(0); // 0: 내 스케줄 , 1: 그룹 스케줄
 
     const router = useRouter()
-    const { participantName, qid } = router.query
+    const { qid, name } = router.query
 
+    const token = useRecoilValue(tokenState)
+    const isLoggedIn = useRecoilValue(isLoggedInState)
+    const [participantName, setParticipantName] = useState(name)
 
     let [roomInfo, setRoomInfo] = useState(null)
-    let [loader, setLoader] = useState(true)
-    let [groupButtonChecked, setGroupButtonChecked] = useState(true)
 
     let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
@@ -75,14 +77,36 @@ const Room: NextPage = function () {
 
     // 전체 스케줄 가져오기
     useEffect(() => {
-        axios.get(srcUrl + '/group')
-            .then((result) => {
-                let groupScheduleExceptMe = result.data.filter((participant) => { return participant.participantName != participantName })
-                let mySchedule = result.data.filter((participant) => { return participant.participantName == participantName })[0].availableDates
-                setGroupSchedule(groupScheduleExceptMe)
-                setSelectedDates(mySchedule)
-            })
-    }, [srcUrl]);
+        if (qid != undefined) {
+            if (isLoggedIn) {
+                axios.get(
+                    `/api/user/date/${qid}/seperate`,
+                    { headers: { token: `${token}`} }
+                )
+                    .then((result) => {
+                        setParticipantName(result.data.myself.participantName)
+                        setGroupSchedule(result.data.others)
+                        setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
+                            allNames.push(obj.participantName)
+                            return allNames
+                        },[]))
+                        setSelectedDates(result.data.myself.availableDates)
+                        setGroupFilterChecked(Array(result.data.others.length).fill(true))
+                    })
+            } else if (participantName != undefined) {
+                axios.get(srcUrl + `/group/seperate/${participantName}`)
+                    .then((result) => {
+                        setGroupSchedule(result.data.others)
+                        setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
+                            allNames.push(obj.participantName)
+                            return allNames
+                        },[]))
+                        setSelectedDates(result.data.myself.availbaleDates)
+                        setGroupFilterChecked(Array(result.data.others.length).fill(true))
+                    })
+            }
+        }
+    }, [srcUrl, isLoggedIn]);
 
     useEffect(() => {
         if (groupSchedule != null && roomInfo != undefined && groupFilterChecked != null)
