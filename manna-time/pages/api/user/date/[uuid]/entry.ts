@@ -2,14 +2,14 @@ import axios from "axios";
 import cookie from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function enterRoom(
+export default async function enterDayOnlyRoom(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const { uuid } = req.query
     const { token } = req.headers
     axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/room/${uuid}/entry`, {},
+        `${process.env.NEXT_PUBLIC_API_URL}/user/day/room/${uuid}/entry`, {},
         { headers: { 'Authorization': `Bearer ${token}` } }
     )
         .then((result) => {

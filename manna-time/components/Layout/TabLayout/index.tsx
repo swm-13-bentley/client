@@ -1,3 +1,4 @@
+import useViewport from "@/hooks/useViewport";
 import { AppBar, styled, Tab, Tabs } from "@mui/material";
 import { ScriptProps } from "next/script";
 import { useState } from "react";
@@ -38,6 +39,8 @@ const TabLayout = ({ children, value, tabLabel, onChange }: TabLayoutProps) => {
         />)
     })
 
+    const viewport = useViewport()
+
     return (
         
         <>
@@ -47,7 +50,7 @@ const TabLayout = ({ children, value, tabLabel, onChange }: TabLayoutProps) => {
                 borderBottom: 2,
                 borderBottomColor: "#DDDDDD",
                 height: '48px'
-            }} position="fixed" className="mt-14 z-10">
+            }} position="fixed" className={viewport=='mobile'? "mt-14 z-10" : "mt-16 z-10" }>
                 <Tabs
                     value={value}
                     onChange={(event: React.SyntheticEvent, tabValue: number) => { onChange(tabValue) }}

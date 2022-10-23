@@ -8,7 +8,9 @@ import axios from "axios";
 import _ from "lodash";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { isLoggedInState } from "@/src/state/UserInfo";
+import { useRecoilValue } from "recoil";
 
 const ParticipantLogin: NextPage = () => {
     const router = useRouter()
@@ -17,6 +19,22 @@ const ParticipantLogin: NextPage = () => {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("")
+    const isLoggedIn = useRecoilValue(isLoggedInState)
+
+    useEffect(() => {
+        if (qid != undefined && isLoggedIn) {
+            router.push(
+                {
+                    pathname: `/${router.query.locale}/user/enter-room`,
+                    query: {
+                        dayOnly: dayOnly == 'true' ? 'true' : 'false',
+                        qid: qid
+                    }
+                },
+                `/${router.query.locale}/user/enter-room`
+            );
+        }
+    },[qid,dayOnly])
 
     return (
         <Background>
@@ -31,7 +49,7 @@ const ParticipantLogin: NextPage = () => {
                 <FullButton onClick={
                     //비동기 중복 처리 방지 grouping by 10 millisecond
                     _.debounce(sendLoginRequest, 10)}
-                >내 일정 등록/수정하기</FullButton>
+                >입장하기</FullButton>
                 {/* <Caption className=" mt-4 mb-4">또는</Caption>
                 <FullButton style="secondary">로그인/회원가입</FullButton> */}
             </BasicButtonContainer>

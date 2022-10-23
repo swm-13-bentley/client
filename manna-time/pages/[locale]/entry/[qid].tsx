@@ -159,10 +159,10 @@ const Entry: NextPage = function () {
                                     }
                                     <FullButton style="primary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 내 일정 등록하기")
+                                            MixpanelTracking.getInstance().buttonClicked("entry/종합일정: 입장하기")
                                             router.push(`/${router.query.locale}/participant-login/${qid}`);
                                         }}
-                                    >내 일정 등록/수정하기</FullButton>
+                                    >입장하기</FullButton>
                                     <FullButton
                                         style="secondary"
                                         onClick={() => {
