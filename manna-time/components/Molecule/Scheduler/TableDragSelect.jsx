@@ -328,6 +328,7 @@ class Cell extends React.Component {
         onMouseMove={this.handleTouchMove}
         {...props}
       >
+        {/* <div className=" absolute w-20 bg-custom-orange opacity-50 text-white"><p>안녕하세요</p></div> */}
         {this.props.children || <span>&nbsp;</span>}
       </td>
     );

@@ -56,7 +56,6 @@ const Room: NextPage = function () {
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
-    let [groupButtonChecked, setGroupButtonChecked] = useState(true)
     
     //parsed Group Schedule
     let [groupSchedule, setGroupSchedule] = useState(null)
@@ -113,7 +112,6 @@ const Room: NextPage = function () {
         }
     }, [srcUrl, isLoggedIn]);
 
-
     // if (!isLoggedIn && participantName == undefined) {
     //     return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
     // }
@@ -151,19 +149,20 @@ const Room: NextPage = function () {
                             <Background>
 
                                 <BasicButtonContainer marginTop={"12"}>
-                                    <FullButton style="primary"
+                                    <FullButton style={"primary"}
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("room/내일정: 내 일정 등록하기")
                                             const mySchedule = scheduleRef.current.testFn()
                                             submitMySchedule(mySchedule)
                                         }}
                                     >내 일정 등록/수정하기</FullButton>
-                                    {/* <FullButton
+                                    <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 캘린더 연동하기")
+                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 구글 캘린더 연동하기")
+                                            linkGoogleCalendar()
                                         }}
-                                    >구글 캘린더 연동하기</FullButton> */}
+                                    >구글 캘린더 연동하기</FullButton>
                                 </BasicButtonContainer>
                             </Background>
 
@@ -239,42 +238,28 @@ const Room: NextPage = function () {
 
     }
 
-    function postCalendarRequest() {
-        const requestUrl = process.env.NEXT_PUBLIC_API_URL + `/google/calendar`
-        axios({
-            method: 'post',
-            url: requestUrl
-        })
-            .then((result) => {
-                // 구글 로그인 창 열기
-                window.open(result.data.authUrl,"self",'popup')
+    function linkGoogleCalendar() {
+        if (isLoggedIn) {
+            axios.get(`/api/user/time/${qid}/calendar/schedule`,
+                { headers: { token: `${token}` } }
+            )
+                .then((result) => {
+                    console.log(result)
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        } else {
+            //todo: 비로그인은 어떻게 처리할 지...?
+            // router.push({
+            //     pathname: '/ko/login',
+            //     query: {
 
-            })
-            .catch((e) => {
-                console.log(e.response)
-                alert('캘린더 요청 실패')
-            })
+            //     }
+            // })
+        }
     }
 
-    function sendCalendarRequest(state: string, roomUuid: string) {
-        const requestUrl = srcUrl + `/google/calendar`
-        axios({
-            method: 'get',
-            url: requestUrl,
-            data: {
-                "roomUuid": roomUuid,
-                "state" : state
-            }
-        })
-            .then((result) => {
-                console.log(result)
-
-            })
-            .catch((e) => {
-                console.log(e.response)
-                alert('캘린더 불러오기 실패')
-            })
-    }
 }
 
 export default Room
