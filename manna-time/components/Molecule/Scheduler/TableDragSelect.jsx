@@ -277,6 +277,7 @@ class Cell extends React.Component {
     } = this.props;
     // console.log(cellProperty)
     let style = {
+      overflow: "visible",
       backgroundColor: "",
     }
     if (disabled) {
@@ -308,15 +309,9 @@ class Cell extends React.Component {
         }
 
         if (!(selected || beingSelected) || cellProperty.isDisabled) {
-          if (cellProperty.isCalendar) {
-            className += " calendar"
-          } else {
             // style.backgroundColor = '#' + colors[Math.ceil((colors.length - 1) * cellProperty.opacity)]
             style.backgroundColor = `rgba(0, 86, 224, ${cellProperty.opacity})`
-          }
-
         }
-
       }
     }
     return (
@@ -328,7 +323,16 @@ class Cell extends React.Component {
         onMouseMove={this.handleTouchMove}
         {...props}
       >
-        {/* <div className=" absolute w-20 bg-custom-orange opacity-50 text-white"><p>안녕하세요</p></div> */}
+        {cellProperty && cellProperty.calendarInfo != undefined && (
+          <div className="relative overflow-y-visible top-0 pointer-events-none">
+            <div
+              style={{height: `${cellProperty.calendarInfo.timeLength * 18}px`, lineHeight:"120%", fontFamily:"pretendard", padding:'3px'}}
+              className="absolute overflow-y-visible left-0 right-0 bg-custom-orange opacity-50 text-white"
+            >
+              {cellProperty.calendarInfo.summary}
+            </div>
+          </div>
+        )}
         {this.props.children || <span>&nbsp;</span>}
       </td>
     );

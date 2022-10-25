@@ -21,6 +21,7 @@ import Hours from "@/components/Molecule/Scheduler/Hours"
 import { Body2 } from "@/components/Atom/Letter"
 import UnknownParticipant from "@/components/Organism/UnknownParticipant"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
+import { CircularProgress } from "@mui/material"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -62,7 +63,11 @@ const Room: NextPage = function () {
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     let [mySchedule, setMySchedule] = useState(null)
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
-    
+
+    //calendar button
+    const [isLoading, setIsLoading] = useState(false)
+    const [calendarEvents, setCalendarEvents] = useState([])
+
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
@@ -136,6 +141,7 @@ const Room: NextPage = function () {
                                 groupFilterChecked={groupFilterChecked}
                                 participantNames={groupNamesExceptMe}
                                 hasComment={true}
+                                calendarEvents={calendarEvents}
                             >
                                 <div className="mb-5 mt-5">
                                     <FilterAccordion
@@ -160,9 +166,16 @@ const Room: NextPage = function () {
                                         style="secondary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("room/내일정: 구글 캘린더 연동하기")
-                                            linkGoogleCalendar()
+                                            if (!isLoading)
+                                                linkGoogleCalendar()
                                         }}
-                                    >구글 캘린더 연동하기</FullButton>
+                                    >{
+                                            isLoading
+                                                ?
+                                                <CircularProgress style={{color: "#5194FF"}} color="inherit" size="30px"></CircularProgress>
+                                                :
+                                                '구글 캘린더 연동하기'
+                                        }</FullButton>
                                 </BasicButtonContainer>
                             </Background>
 
@@ -197,7 +210,6 @@ const Room: NextPage = function () {
     )
 
     function submitMySchedule(props) {
-        // console.log(props)
         if (isLoggedIn) {
             axios.post(
                 `/api/user/time/${qid}/submit`,
@@ -240,17 +252,21 @@ const Room: NextPage = function () {
 
     function linkGoogleCalendar() {
         if (isLoggedIn) {
+            setIsLoading(true)
             axios.get(`/api/user/time/${qid}/calendar/schedule`,
                 { headers: { token: `${token}` } }
             )
                 .then((result) => {
-                    console.log(result)
+                    setCalendarEvents(result.data.scheduleList)
+                    setIsLoading(false)
+                    alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 캘린더에 등록됩니다.")
                 })
                 .catch((e) => {
                     console.log(e)
+                    alert("연동에 실패하였습니다. 개발자에게 문의해주세요.")
                 })
         } else {
-            //todo: 비로그인은 어떻게 처리할 지...?
+            //비로그인 처리
             // router.push({
             //     pathname: '/ko/login',
             //     query: {

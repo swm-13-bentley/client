@@ -19,10 +19,10 @@ import TableDragSelectWrapper from "./TableDragSelect"
 class CellProperty {
   opacity = 1
 
-  constructor(isDisabled, opacity, isCalendar, participantNames, time) {
+  constructor(isDisabled, opacity, calendarInfo, participantNames, time) {
     this.isDisabled = isDisabled
     this.opacity = opacity
-    this.isCalendar = isCalendar
+    this.calendarInfo = calendarInfo
     this.participantNames = participantNames
     this.time = time
   }
@@ -83,20 +83,7 @@ const Scheduler = forwardRef((props, ref) => {
     ]
     totalNum = 2
     groupFilterChecked = [true, true]
-    calendarEvents = [
-      {
-        scheduledDate: "2022-06-10",
-        scheduledTimeList: [
-          3, 4, 5
-        ]
-      },
-      {
-        scheduledDate: "2022-06-11",
-        scheduledTimeList: [
-          1, 2, 5
-        ]
-      }
-    ]
+  
   } else {
     // props args
 
@@ -119,6 +106,33 @@ const Scheduler = forwardRef((props, ref) => {
       mySchedule = props.mySchedule.available
     }
     if (props.calendarEvents != undefined) {
+      // calendarEvents = [
+      //   {
+      //     "scheduledDate": "2022-10-25",
+      //     "scheduleInfoList": [
+      //       {
+      //         "summary": "titl sdfsdf sdfs dfsf sd fsdfsf sdfsdfsdf sdf ds fsfsdf sssdf sf dsf",
+      //         "startTime": 36,
+      //         "endTime": 39
+      //       },
+      //       {
+      //         "summary": "title2",
+      //         "startTime": 45,
+      //         "endTime": 47
+      //       }
+      //     ]
+      //   },
+      //   {
+      //     "scheduledDate": "2022-10-26",
+      //     "scheduleInfoList": [
+      //       {
+      //         "summary": "title3",
+      //         "startTime": 40,
+      //         "endTime": 42
+      //       }
+      //     ]
+      //   }
+      // ]
       calendarEvents = props.calendarEvents
     }
     if (props.participantNames != undefined) {
@@ -233,28 +247,40 @@ const Scheduler = forwardRef((props, ref) => {
           let diff = ((new Date(obj.scheduledDate)).getTime() - startDateTime) / (1000 * 3600 * 24);
           let weekIdx = Math.floor(((startDate.getDay() + 6) % 7 + diff) / 7);
           let dayIdx = (startDate.getDay() + diff + 6) % 7;
-          obj.scheduledTimeList.forEach(
-            timeIdx => {
-              calendarState[weekIdx][timeIdx - startTime][dayIdx] = true;
-            }
+          obj.scheduleInfoList.forEach(
+            scheduleInfo => {
+              const info = {
+                'summary': scheduleInfo.summary,
+                'timeLength': scheduleInfo.endTime - scheduleInfo.startTime
+              }
+              calendarState[weekIdx][scheduleInfo.startTime - startTime][dayIdx] = info;
+              }
           )
         }
       )
     }
-    // console.log(calendarState)
   }
 
-  calendarElements(calendarEvents)
+  if (calendarEvents != undefined)
+    calendarElements(calendarEvents)
+  // useEffect(() => {
+  // }, [calendarEvents])
+  
+  useEffect(() => {
+    if (mySchedule != undefined) {
+      setSelectionState(mySchedule)
+    }
+  }, [mySchedule])
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().slice(5,-1).split(' ').join('') });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().slice(5, -1).split(' ').join('') });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
@@ -331,7 +357,7 @@ const Scheduler = forwardRef((props, ref) => {
       changeCurrIdx({ index: currIdx.index - 1 });
       let currWeek = weeks[currIdx.index - 1];
       dayChanges.forEach(
-        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().slice(5,-1).split(' ').join('') })
+        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().slice(5, -1).split(' ').join('') })
       )
       // console.log(getSelectionState());
     }
@@ -343,7 +369,7 @@ const Scheduler = forwardRef((props, ref) => {
       dayChanges.forEach(
         (changeText, idx) => {
           // console.log(currWeek[idx].toLocaleDateString())
-          changeText({ text: currWeek[idx].toLocaleDateString().slice(5,-1).split(' ').join('') })
+          changeText({ text: currWeek[idx].toLocaleDateString().slice(5, -1).split(' ').join('') })
         }
       )
       let temp = [...currTot.cellsTot]
@@ -354,36 +380,24 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }
 
-
-  useEffect(() => {
-    if (mySchedule != undefined) {
-      setSelectionState(mySchedule)
-    }
-  }, [mySchedule])
-
   const weekDays = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
   const weekDaysKo = ["월", "화", "수", "목", "금", "토", "일"]
 
   const eachRow = times.map(t => {
 
     const eachCell = weekDays.map((weekDay, weekIdx) => {
-      // const isDisabled = (groupState[currIdx.index][t - startTime][weekIdx] ==0 ? false : true)
       const opacity = groupState[currIdx.index][t - startTime][weekIdx].length / totalNum
-      // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
-      // console.log(opacity)
-      const isCalendar = calendarState[currIdx.index][t - startTime][weekIdx]
-      // const color = "#FFFFFF"
-
+      const calendarInfo = calendarState[currIdx.index][t - startTime][weekIdx]
+      
       let cellProperty = new CellProperty(
         isDisabled,
         opacity,
-        // color,
-        isCalendar,
+        calendarInfo==false ? undefined : calendarInfo,
         groupState[currIdx.index][t - startTime][weekIdx],
         `${dayTexts[weekIdx].text}(${weekDaysKo[weekIdx]}) ${hours[t % 48].realTime} ~ ${hours[(t + 1) % 48].realTime}`
       )
 
-      const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
+      const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}-${calendarEvents}`
       return (
         <td
           key={key}
