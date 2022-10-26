@@ -251,7 +251,7 @@ const Scheduler = forwardRef((props, ref) => {
             scheduleInfo => {
               const info = {
                 'summary': scheduleInfo.summary,
-                'timeLength': scheduleInfo.endTime - scheduleInfo.startTime
+                'timeLength': scheduleInfo.endTime - scheduleInfo.startTime + 1
               }
               calendarState[weekIdx][scheduleInfo.startTime - startTime][dayIdx] = info;
               }
