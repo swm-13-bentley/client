@@ -9,12 +9,13 @@ import styled from "@emotion/styled"
 import { FullButton } from "@/components/Atom/Button"
 
 import googleIcon from "@/public/icons/google.svg"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { decodedTokenState, tokenState } from "@/src/state/UserInfo"
 import { isArray } from "lodash"
 import _ from "lodash"
+import axios from "axios"
 
 const CenterScreen = styled.div`
 display: flex;
@@ -27,9 +28,10 @@ min-height: 70vh;
 
 const Login = () => {
     const router = useRouter()
-    const authUrl = "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email%20https://www.googleapis.com/auth/calendar&response_type=code&redirect_uri=https://dev.swm-bentley-server.link/sign/in/redirect/google&client_id=276796066670-078gh8hvcfs0f5ok7rj70508qc3i6pk2.apps.googleusercontent.com"
+    // participantName, roomUuid의 경우 비회원 참가자가 로그인 할 때만 사용
+    const { redirect, participantName, roomUuid } = router.query
 
-    const {redirect} = router.query
+    const [authUrl, setAuthUrl] = useState("")
     const [token, setToken] = useRecoilState(tokenState)
     const decodedToken = useRecoilValue(decodedTokenState)
 
@@ -40,15 +42,35 @@ const Login = () => {
             router.push(decodeURIComponent(redirect))
         }
     }
-    
+
     // 팝업창으로부터 message 받아 local storage 저장
     useEffect(() => {
         //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
         window.addEventListener("message", (event) => {
             setToken(event.data)
         }, false)
+
+        //로그인 url 설정
+        if (participantName != undefined && roomUuid != undefined) {
+            axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/sign/in/google`,
+                {
+                    "roomUuid": roomUuid,
+                    "participantName": participantName
+                }
+            )
+                .then((result) => {
+                    setAuthUrl(result.data.authUrl)
+                })
+                .catch((e) => {
+                    console.log(e)
+                    alert("오류가 발생했습니다.")
+                })
+        } else {
+            setAuthUrl("https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email%20https://www.googleapis.com/auth/calendar&response_type=code&redirect_uri=https://dev.swm-bentley-server.link/sign/in/redirect/google&client_id=276796066670-078gh8hvcfs0f5ok7rj70508qc3i6pk2.apps.googleusercontent.com")
+        }
     }, [])
-    
+
     // token 변했을 시 시행
     useEffect(() => {
         if (!_.isEmpty(decodedToken)) {
@@ -59,15 +81,15 @@ const Login = () => {
                 redirectPage()
             }
         }
-    },[decodedToken])
-    
+    }, [decodedToken])
+
     return (<Background>
         <CenterScreen>
             <Image src={logo} alt="logo" width="50px" height="50px" />
             <VStack className="mt-4 mb-10">
                 <Body2 >약속 일정을 만들고 만날 시간을 함께 정해요</Body2>
             </VStack>
-            <FullButton style="lightgrey"    
+            <FullButton style="lightgrey"
                 onClick={() => { window.open(authUrl, "self", 'popup') }}
             >
                 <Image src={googleIcon} alt="google-icon" />

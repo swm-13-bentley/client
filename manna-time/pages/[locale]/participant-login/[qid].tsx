@@ -50,8 +50,17 @@ const ParticipantLogin: NextPage = () => {
                     //비동기 중복 처리 방지 grouping by 10 millisecond
                     _.debounce(sendLoginRequest, 10)}
                 >입장하기</FullButton>
-                {/* <Caption className=" mt-4 mb-4">또는</Caption>
-                <FullButton style="secondary">로그인/회원가입</FullButton> */}
+                <Caption className=" mt-4 mb-4">또는</Caption>
+                <FullButton style="secondary"
+                    onClick={() => {
+                        router.push({
+                            pathname: `/ko/login`,
+                            query: {
+                                redirect: `/ko/user/enter-room?qid=${qid}`
+                            }
+                        },'/ko/login')
+                    }}
+                >로그인/회원가입</FullButton>
             </BasicButtonContainer>
 
         </Background>

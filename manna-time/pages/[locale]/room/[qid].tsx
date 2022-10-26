@@ -266,13 +266,16 @@ const Room: NextPage = function () {
                     alert("연동에 실패하였습니다. 개발자에게 문의해주세요.")
                 })
         } else {
-            //비로그인 처리
-            // router.push({
-            //     pathname: '/ko/login',
-            //     query: {
-
-            //     }
-            // })
+            // 비로그인 처리
+            router.push({
+                pathname: '/ko/login',
+                query: {
+                    redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
+                    participantName: name,
+                    roomUuid: qid
+                }
+            }, '/ko/login'
+            )
         }
     }
 
