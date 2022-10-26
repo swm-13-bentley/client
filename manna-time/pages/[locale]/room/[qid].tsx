@@ -259,7 +259,7 @@ const Room: NextPage = function () {
                 .then((result) => {
                     setCalendarEvents(result.data.scheduleList)
                     setIsLoading(false)
-                    alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 캘린더에 등록됩니다.")
+                    alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 메일이 발송됩니다.")
                 })
                 .catch((e) => {
                     console.log(e)

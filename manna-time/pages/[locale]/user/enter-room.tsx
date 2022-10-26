@@ -36,7 +36,7 @@ const EnterRoom = () => {
                     { headers: { token: token } }
                 )
                     .then((res) => {
-                        console.log(res)
+                        // console.log(res)
                         redirectPage()
                     })
                     .catch((e) => {
