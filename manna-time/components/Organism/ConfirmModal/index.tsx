@@ -10,12 +10,12 @@ import { useRecoilState } from "recoil"
 import hours from "@/components/Molecule/Scheduler/Hours"
 import axios from "axios"
 import { stringify } from "querystring"
+import { useRouter } from "next/router"
 
 interface ConfirmProps {
     startTime?: number
     endTime?: number
     date: string
-    roomUuid: string
 }
 
 interface RequestData {
@@ -101,8 +101,12 @@ const ConfirmResult = () => {
 }
 
 
-const ConfirmModal = ({ startTime, endTime, date, roomUuid }: ConfirmProps) => {
+const ConfirmModal = ({ startTime, endTime, date }: ConfirmProps) => {
+    const router = useRouter()
+
+    const {qid} = router.query
     const dayOnly = (startTime == undefined || endTime == undefined)
+
     const [stepIndex, setStepIndex] = useState(0)
     const [timeValue, setTimeValue] = useState([startTime, endTime])
     const modalStep = [
@@ -134,15 +138,15 @@ const ConfirmModal = ({ startTime, endTime, date, roomUuid }: ConfirmProps) => {
         }
 
         axios.patch(
-            `${process.env.NEXT_PUBLIC_API_URL}/room/${roomUuid}/confirm`,
+            `${process.env.NEXT_PUBLIC_API_URL}/room/${qid}/confirm`,
             data
         )
             .then((response) => {
                 setStepIndex(stepIndex + 1)
-                console.log(response.data)
             })
             .catch((e) => {
                 console.log(e)
+                alert("에러가 발생했습니다. 관리자에게 문의하세요.")
             })
     }
 

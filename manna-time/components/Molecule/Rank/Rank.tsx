@@ -16,7 +16,6 @@ interface RankProps {
     startTime?: number
     endTime?: number
     date: string
-    roomUuid: string
 }
 
 const StyledSpan = styled.span < { color: string; } >`
@@ -59,7 +58,7 @@ const ParticipantSpan = styled.span`
         color: #999999;
 `
 
-const Rank = ({ rank, time, participants, startTime, endTime, date, roomUuid }: RankProps) => {
+const Rank = ({ rank, time, participants, startTime, endTime, date }: RankProps) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
@@ -89,9 +88,9 @@ const Rank = ({ rank, time, participants, startTime, endTime, date, roomUuid }: 
                     thisClicked && isModalShown && (
                         startTime != undefined && endTime != undefined
                             ?
-                            < ConfirmModal startTime={startTime} endTime={endTime} date={date} roomUuid={roomUuid} />
+                            < ConfirmModal startTime={startTime} endTime={endTime} date={date}/>
                         :
-                        < ConfirmModal date={date} roomUuid={roomUuid} />
+                        < ConfirmModal date={date} />
                     )
                 }
             </div>

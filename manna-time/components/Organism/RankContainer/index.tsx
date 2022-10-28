@@ -15,14 +15,13 @@ export type Rank = {
 export interface RankContainerProps {
     ranks?: Rank[]
     totalNum: number
-    roomUuid: string
 }
 
 const StyledDiv = styled.div`
     max-width: 350px;
 `
 
-const RankContainer = ({ ranks, totalNum, roomUuid }: RankContainerProps) => {
+const RankContainer = ({ ranks, totalNum }: RankContainerProps) => {
 
     const rankItems = ranks?.map((rank, index) => {
         let time
@@ -40,7 +39,6 @@ const RankContainer = ({ ranks, totalNum, roomUuid }: RankContainerProps) => {
                 date={rank.availableDate}
                 startTime={rank.startTime == undefined ? undefined : timeStringToIndex(rank.startTime)}
                 endTime={rank.endTime == undefined ? undefined : timeStringToIndex(rank.endTime)}
-                roomUuid={roomUuid}
             />
         )
     })

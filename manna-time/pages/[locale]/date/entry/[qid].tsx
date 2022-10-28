@@ -223,7 +223,7 @@ const Entry: NextPage = function () {
                     )
                 }
                 {
-                    qid != undefined && roomInfo && timeRanks != undefined && (
+                    roomInfo && timeRanks != undefined && (
                         <div className={tab == 1 ? "mb-20" : "hidden"}>
                             {
                                 roomInfo.participants.length == 0
@@ -234,7 +234,7 @@ const Entry: NextPage = function () {
                                         <RankContainer
                                             ranks={timeRanks}
                                             totalNum={roomInfo.participants.length}
-                                            roomUuid={qid as string} />
+                                            />
                                         <BasicButtonContainer marginTop={"12"}>
                                             <FullButton style="kakao"
                                                 onClick={() => {
