@@ -1,15 +1,22 @@
 import { CustomBox } from "@/components/Atom/Box"
 import { BasicButton } from "@/components/Atom/Button"
 import Line from "@/components/Atom/Line"
+import ConfirmModal from "@/components/Organism/ConfirmModal";
+import { ModalState } from "@/src/state/Modal";
 import styled from "@emotion/styled"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 
 interface RankProps {
-    rank: number,
-    time: string,
+    rank: number
+    time: string
     participants: string[]
+    startTime?: number
+    endTime?: number
+    date: string
+    roomUuid: string
 }
 
 const StyledSpan = styled.span < { color: string; } >`
@@ -52,10 +59,16 @@ const ParticipantSpan = styled.span`
         color: #999999;
 `
 
-const Rank = ({ rank, time, participants }: RankProps) => {
+const Rank = ({ rank, time, participants, startTime, endTime, date, roomUuid }: RankProps) => {
 
     const [isOpen, setIsOpen] = useState(false)
+    const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
+    const [thisClicked, setThisClicked] = useState(false)
 
+    useEffect(() => {
+        if (isModalShown == false)
+            setThisClicked(false)
+    },[isModalShown])
 
     return (
         <CustomBox style="secondary">
@@ -68,9 +81,19 @@ const Rank = ({ rank, time, participants }: RankProps) => {
                 </StyledSpan>
                 <BasicButton
                     onClick={() => {
-                        alert(time)
+                        setThisClicked(true)
+                        setIsModalShown(true)
                     }}
                 >확정</BasicButton>
+                {
+                    thisClicked && isModalShown && (
+                        startTime != undefined && endTime != undefined
+                            ?
+                            < ConfirmModal startTime={startTime} endTime={endTime} date={date} roomUuid={roomUuid} />
+                        :
+                        < ConfirmModal date={date} roomUuid={roomUuid} />
+                    )
+                }
             </div>
             <Line color="lightgrey" />
             <StyledButton className="mt-3 w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
