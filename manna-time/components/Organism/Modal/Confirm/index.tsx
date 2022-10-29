@@ -11,6 +11,7 @@ import hours from "@/components/Molecule/Scheduler/Hours"
 import axios from "axios"
 import { stringify } from "querystring"
 import { useRouter } from "next/router"
+import { ModalBody, ModalTitle } from "@/components/Atom/Letter/Modal"
 
 interface ConfirmProps {
     startTime?: number
@@ -24,39 +25,11 @@ interface RequestData {
     endTime?: string
 }
 
-const Title = styled.p`
-    font-family: 'pretendard';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 150%;
-    /* identical to box height, or 36px */
-
-    text-align: center;
-    letter-spacing: -0.003em;
-
-    color: #333333;
-`
-
-const Body = styled.p`
-    font-family: 'pretendard';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 160%;
-    /* or 22px */
-
-    text-align: center;
-    letter-spacing: -0.003em;
-
-    color: #333333;
-`
-
 const TimeCheck = ({ startTime, endTime, date, onNextClick, onChange }: { startTime: number, endTime: number, date: string, onNextClick: () => void, onChange: (value: number[]) => void }) => {
     return (
         <VStack>
             <div className="w-full mb-4">
-                <Title className="mb-4">확정 시간을 조정하세요</Title>
+                <ModalTitle className="mb-4">확정 시간을 조정하세요</ModalTitle>
                 <NonLinearSlider startTime={startTime} endTime={endTime} date={changeDateToKorean(date)} onChange={onChange} />
             </div>
             <FullButton
@@ -71,8 +44,8 @@ const ConfirmCheck = ({ onConfirm }: { onConfirm: () => void }) => {
     const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
     return (<>
         <div className="mb-12">
-            <Title className="mb-4">일정을 확정할까요?</Title>
-            <Body>확정 시 로그인 참여자들에게 알림이<br />가며, 연동된 캘린더에 등록 가능합니다</Body>
+            <ModalTitle className="mb-4">일정을 확정할까요?</ModalTitle>
+            <ModalBody>확정 시 로그인 참여자들에게 알림이<br />가며, 연동된 캘린더에 등록 가능합니다</ModalBody>
         </div>
         <HStack>
             <div className=" w-3/5">
@@ -94,7 +67,7 @@ const ConfirmResult = () => {
     const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
     return (<VStack>
         <div className="mb-8">
-            <Title>약속 일정이<br />확정되었습니다!</Title>
+            <ModalTitle>약속 일정이<br />확정되었습니다!</ModalTitle>
         </div>
         <FullButton style="white-black" size="small" onClick={() => setIsModalShown(false)}>확인</FullButton>
     </VStack>)

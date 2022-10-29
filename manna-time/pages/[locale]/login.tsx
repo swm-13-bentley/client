@@ -64,7 +64,7 @@ const Login = () => {
                 })
                 .catch((e) => {
                     console.log(e)
-                    alert("오류가 발생했습니다.")
+                    alert("오류가 발생했습니다. 방 id와 이름이 존재하지 않습니다")
                 })
         } else {
             setAuthUrl("https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=profile%20email%20https://www.googleapis.com/auth/calendar&response_type=code&redirect_uri=https://dev.swm-bentley-server.link/sign/in/redirect/google&client_id=276796066670-078gh8hvcfs0f5ok7rj70508qc3i6pk2.apps.googleusercontent.com")

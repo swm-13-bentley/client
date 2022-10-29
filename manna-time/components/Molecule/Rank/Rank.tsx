@@ -1,7 +1,7 @@
 import { CustomBox } from "@/components/Atom/Box"
 import { BasicButton } from "@/components/Atom/Button"
 import Line from "@/components/Atom/Line"
-import ConfirmModal from "@/components/Organism/ConfirmModal";
+import ConfirmModal from "@/components/Organism/Modal/Confirm";
 import { ModalState } from "@/src/state/Modal";
 import styled from "@emotion/styled"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
