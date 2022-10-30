@@ -62,7 +62,6 @@ const Room: NextPage = function () {
     let scheduleRef = useRef()
 
     let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/day/room/' + qid
-    // const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&scope=profile%20email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&response_type=code&redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&client_id=1089339257767-8rqr5aicc05veuh76584pbf3el7cqvhk.apps.googleusercontent.com`
     let textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/date/entry/' + qid + '?invitation=true'
 
     useEffect(() => {

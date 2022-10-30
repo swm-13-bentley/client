@@ -103,16 +103,16 @@ const SubmitModal = ({ isLoggedIn, dayOnly }: ModalProps) => {
         />,
         <AlarmPage
             onAgree={() => {
-                if (!dayOnly)
-                    router.push({
-                        pathname: '/ko/login',
-                        query: {
-                            redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
-                            participantName: name,
-                            roomUuid: qid
-                        }
-                    }, '/ko/login'
-                    )
+                //날짜방, 시간방을 구분할 필요 없음
+                router.push({
+                    pathname: '/ko/login',
+                    query: {
+                        redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
+                        participantName: name,
+                        roomUuid: qid
+                    }
+                }, '/ko/login'
+                )
             }}
             key="alarm-page"
         />
