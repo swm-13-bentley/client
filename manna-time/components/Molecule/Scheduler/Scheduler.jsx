@@ -2,22 +2,29 @@
 /* eslint-disable react/display-name */
 
 import { Checkbox, FormControlLabel, FormGroup } from "@mui/material"
-import {Flex} from "@chakra-ui/react"
+import { Flex, HStack, VStack } from "@chakra-ui/react"
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useCallback } from "react"
-import TableDragSelect from "./TableDragSelect"
 import hours from "./Hours"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { IconButton } from "@mui/material";
+import Pager from "../Pager"
+import getWeekNumber from "@/utils/getWeekNumberOfMonth"
+import { Background } from "@/components/Layout/MainLayout/Wrapper"
+import Accordion from "@/components/Molecule/Accordion";
+import { FilterButton } from "@/components/Atom/Button"
+import styled from "@emotion/styled"
+import TableDragSelectWrapper from "./TableDragSelect"
 
 class CellProperty {
   opacity = 1
 
-  constructor(isDisabled, opacity, color, isCalendar) {
+  constructor(isDisabled, opacity, isCalendar, participantNames, time) {
     this.isDisabled = isDisabled
     this.opacity = opacity
-    this.color = color
     this.isCalendar = isCalendar
+    this.participantNames = participantNames
+    this.time = time
   }
 
   setOpacity(total, availableNum) {
@@ -35,10 +42,11 @@ const Scheduler = forwardRef((props, ref) => {
   }))
 
   let startDate, endDate, startTime, endTime, isGroup;
-  let groupSchedule, totalNum, groupFilterChecked // 필터 누를 때마다 그룹스케줄
+  let groupSchedule, totalNum, groupFilterChecked, participantNames // 필터 누를 때마다 그룹스케줄
   let isDisabled = false
   let calendarEvents = [] //비회원 캘린더 내 스케줄
   let mySchedule // 이전에 selected해놓은 내 스케줄
+  let hasComment = false
   if (props.roomInfo == undefined) {
     // Dummy Data
     startDate = new Date('2022-06-09');
@@ -113,6 +121,12 @@ const Scheduler = forwardRef((props, ref) => {
     if (props.calendarEvents != undefined) {
       calendarEvents = props.calendarEvents
     }
+    if (props.participantNames != undefined) {
+      participantNames = props.participantNames
+    }
+    if (props.hasComment != undefined) {
+      hasComment = true
+    }
     isDisabled = props.isDisabled
   }
   endTime += 1;
@@ -128,7 +142,7 @@ const Scheduler = forwardRef((props, ref) => {
   let temp;
   for (temp = 0; temp < (endTime - startTime + 2); temp++) {
     initCells.push([false, false, false, false, false, false, false, false]) // 시간대 : 1, 월~일 : 7 => 총 8개
-    initGroupCells.push(new Array(8).fill(0))
+    initGroupCells.push(new Array(8).fill([]))
   }
 
   const [curr, changeCurr] = useState({
@@ -202,7 +216,7 @@ const Scheduler = forwardRef((props, ref) => {
           let dayIdx = (startDate.getDay() + diff + 6) % 7;
           obj.availableTimeList.forEach(
             timeIdx => {
-              groupState[weekIdx][timeIdx - startTime][dayIdx] += 1;
+              groupState[weekIdx][timeIdx - startTime][dayIdx].push(participantNames[index]);
             }
           )
         }
@@ -234,18 +248,18 @@ const Scheduler = forwardRef((props, ref) => {
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().substring(5) });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().substring(5) });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().substring(5) });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().substring(5) });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().substring(5) });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().substring(5) });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().substring(5) });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().slice(5,-1).split(' ').join('') });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().slice(5,-1).split(' ').join('') });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
   function handleChange(cells) {
-    changeCurr({ cells : cells });
+    changeCurr({ cells: cells });
   }
 
   const handleClick = () => {
@@ -317,7 +331,7 @@ const Scheduler = forwardRef((props, ref) => {
       changeCurrIdx({ index: currIdx.index - 1 });
       let currWeek = weeks[currIdx.index - 1];
       dayChanges.forEach(
-        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
+        (changeText, idx) => changeText({ text: currWeek[idx].toLocaleDateString().slice(5,-1).split(' ').join('') })
       )
       // console.log(getSelectionState());
     }
@@ -329,7 +343,7 @@ const Scheduler = forwardRef((props, ref) => {
       dayChanges.forEach(
         (changeText, idx) => {
           // console.log(currWeek[idx].toLocaleDateString())
-          changeText({ text: currWeek[idx].toLocaleDateString().substring(5) })
+          changeText({ text: currWeek[idx].toLocaleDateString().slice(5,-1).split(' ').join('') })
         }
       )
       let temp = [...currTot.cellsTot]
@@ -354,7 +368,7 @@ const Scheduler = forwardRef((props, ref) => {
 
     const eachCell = weekDays.map((weekDay, weekIdx) => {
       // const isDisabled = (groupState[currIdx.index][t - startTime][weekIdx] ==0 ? false : true)
-      const opacity = groupState[currIdx.index][t - startTime][weekIdx] / totalNum
+      const opacity = groupState[currIdx.index][t - startTime][weekIdx].length / totalNum
       // opacity == 0 ? opacity = 1 : null // 아무도 신청안했을때는 색을 보여줘야하므로 opacity = 1
       // console.log(opacity)
       const isCalendar = calendarState[currIdx.index][t - startTime][weekIdx]
@@ -364,7 +378,9 @@ const Scheduler = forwardRef((props, ref) => {
         isDisabled,
         opacity,
         // color,
-        isCalendar
+        isCalendar,
+        groupState[currIdx.index][t - startTime][weekIdx],
+        `${dayTexts[weekIdx].text}(${weekDaysKo[weekIdx]}) ${hours[t % 48].realTime} ~ ${hours[(t + 1) % 48].realTime}`
       )
 
       const key = `${weekDay}-${t}-${currIdx.index}-${isGroup}-${isDisabled}-${groupFilterChecked}`
@@ -379,7 +395,7 @@ const Scheduler = forwardRef((props, ref) => {
     })
 
     return (
-      <tr>
+      <tr className={t % 2 == 0 ? "sharp" : "half"}>
         <td white disabled time>{hours[t].time}</td>
         {eachCell}
       </tr>
@@ -403,41 +419,43 @@ const Scheduler = forwardRef((props, ref) => {
 
   return (
     <div>
+      <Pager
+        title={getWeekNumber(weeks[currIdx.index][3])}
+        firstPage={currIdx.index == 0}
+        lastPage={currIdx.index == tableState.length - 1}
+        onLeftClick={handleLeft}
+        onRightClick={handleRight}
+        hasComment={hasComment}
+      />
+      <Background>
+        {props.children}
+        <TableDragSelectWrapper value={curr.cells} onChange={handleChange} days={""}>
+          <tr>
+            <td white disabled />
+            <td white disabled day className="text-custom-black">월</td>
+            <td white disabled day className="text-custom-black">화</td>
+            <td white disabled day className="text-custom-black">수</td>
+            <td white disabled day className="text-custom-black">목</td>
+            <td white disabled day className="text-custom-black">금</td>
+            <td white disabled day className="text-custom-pink">토</td>
+            <td white disabled day className="text-custom-pink">일</td>
+          </tr>
+          <tr>
+            <td white disabled />
+            {
+              dayTexts.map(
+                (text, index) => <td white disabled date text={text.text}>{text.text}</td>
+              )
+            }
+          </tr>
+          {eachRow}
+        </TableDragSelectWrapper>
+      </Background>
 
-      <Flex>
-        <IconButton onClick={handleLeft} size="small">
-          <ArrowBackIosNewIcon fontSize="small"/>
-        </IconButton>
-      <TableDragSelect value={curr.cells} onChange={handleChange} days={""}>
-        <tr>
-          <td white disabled />
-          {
-            dayTexts.map(
-              (text,index) => <td white disabled text={text.text}>{text.text}</td>
-            )
-          }
-        </tr>
-        <tr>
-          <td white disabled />
-          <td white disabled>월</td>
-          <td white disabled>화</td>
-          <td white disabled>수</td>
-          <td white disabled>목</td>
-          <td white disabled>금</td>
-          <td white disabled className=" text-red-600">토</td>
-          <td white disabled className=" text-red-600">일</td>
-        </tr>
-        {eachRow}
-      </TableDragSelect >
-        <IconButton onClick={handleRight} sx={"float:right"} size="small">
-          <ArrowForwardIosIcon fontSize="small"/>
-        </IconButton>
-      </Flex>
     </div>
 
   );
 
 })
-
 
 export default Scheduler

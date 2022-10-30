@@ -4,7 +4,7 @@ import { Avatar, Button, Checkbox, CssBaseline, FormControl, FormControlLabel, I
 import { Center } from "@chakra-ui/react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/router";
-import { MixpanelTracking } from "@/utils/mixpanel";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import LoginIcon from '@mui/icons-material/Login';
 import { StringIfPlural } from "react-i18next";
 import { useRecoilState } from "recoil";
@@ -113,34 +113,6 @@ const DateOnlyCard = ({ onConfirm }: Props) => {
             </Paper>
         </main>
     );
-
-    // function sendLoginRequest() {
-    //     let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid + '/participant/entry'
-    //     // console.log(srcUrl)
-
-    //     let sendFlag = (userName != "")
-    //     if (!sendFlag) {
-    //         alert("이름을 입력해주세요.")
-    //     }
-    //     else {
-    //         axios({
-    //             method: 'post',
-    //             url: srcUrl,
-    //             data: {
-    //                 "participantName": userName,
-    //                 "password": password
-    //             }
-    //         })
-    //             .then((result) => {
-    //                 setLoginError(false)
-    //                 router.push(`/${router.query.locale}/room/${qid}/${userName}`);
-    //             })
-    //             .catch((e) => {
-    //                 setLoginError(true)
-    //             })
-    //     }
-    // }
 }
 
 export default DateOnlyCard
-// export default withStyles(styles)(Login);

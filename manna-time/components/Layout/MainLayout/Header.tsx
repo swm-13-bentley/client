@@ -2,7 +2,7 @@ import { useTranslation } from "next-i18next"
 import Head from "next/head"
 import { useRouter } from "next/router"
 
-interface Props{
+interface Props {
     title: string,
     service: string
 }
@@ -10,6 +10,7 @@ interface Props{
 const Header: React.FC<Props> = function ({ title, service }: Props) {
     const router = useRouter()
     const url = process.env.NEXT_PUBLIC_SERVICE_URL + router.asPath
+
     return (
 
         <>
@@ -21,7 +22,7 @@ const Header: React.FC<Props> = function ({ title, service }: Props) {
                     name="keywords"
                     content="단체약속, 그룹약속, 약속시간, 시간 정하기, 약속 투표"
                 />
-                
+
                 <link rel="canonical" href={url}></link>
                 <link rel="shortcut icon" href="/images/favicon.ico" />
 

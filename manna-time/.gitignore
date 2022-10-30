@@ -1,6 +1,8 @@
 # for test
 /components/test.tsx
 /pages/test.tsx
+/pages/test-component.tsx
+/pages/test-page.tsx
 /styles/test.module.css
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
