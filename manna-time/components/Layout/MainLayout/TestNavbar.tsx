@@ -38,6 +38,7 @@ function Navbar() {
     }, [flag])
 
     const pushLogin = () => {
+        setMenuOpen(false)
         router.push({
             pathname: '/ko/login',
             query: {

@@ -22,6 +22,8 @@ import { Body2 } from "@/components/Atom/Letter"
 import UnknownParticipant from "@/components/Organism/UnknownParticipant"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 import { CircularProgress } from "@mui/material"
+import { ModalState } from "@/src/state/Modal"
+import SubmitModal from "@/components/Organism/Modal/SubmitModal"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -68,11 +70,17 @@ const Room: NextPage = function () {
     const [isLoading, setIsLoading] = useState(false)
     const [calendarEvents, setCalendarEvents] = useState([])
 
+    const [submitSchedule, setSubmitSchedule] = useState()
+    const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
+
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string) + '?invitation=true'
 
+    useEffect(() => {
+        setIsModalShown(false)
+    },[])
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
         if (qid != undefined) {
@@ -127,7 +135,10 @@ const Room: NextPage = function () {
                 value={tab}
                 tabLabel={["내 일정", "약속 정보"]}
                 onChange={setTab}
-                >
+            >
+                {
+                    isModalShown && <SubmitModal isLoggedIn={isLoggedIn} dayOnly={false} schedule={submitSchedule}/>
+                }
                 {
                     roomInfo && groupNamesExceptMe && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
@@ -159,7 +170,9 @@ const Room: NextPage = function () {
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("room/내일정: 내 일정 등록하기")
                                             const mySchedule = scheduleRef.current.testFn()
-                                            submitMySchedule(mySchedule)
+                                            setSubmitSchedule(mySchedule)
+                                            setIsModalShown(true)
+                                            // submitMySchedule(mySchedule) 
                                         }}
                                     >내 일정 등록/수정하기</FullButton>
                                     <FullButton
@@ -208,47 +221,6 @@ const Room: NextPage = function () {
                 </TabLayout>
         </>
     )
-
-    function submitMySchedule(props) {
-        if (isLoggedIn) {
-            axios.post(
-                `/api/user/time/${qid}/submit`,
-                {
-                    "participantName": participantName,
-                    "available": props
-                },
-                { headers: { token: `${token}`} }
-            )
-                .then((result) => {
-                    alert('일정이 등록되었습니다.')
-                    router.push(`/${router.query.locale}/entry/${qid}`);
-    
-                })
-                .catch((e) => {
-                    console.log(e)
-                    alert('일정등록이 실패하였습니다!')
-                })
-        } else {
-            axios({
-                method: 'post',
-                url: srcUrl + '/participant/available',
-                data: {
-                    "participantName": participantName,
-                    "available": props
-                }
-            })
-                .then((result) => {
-                    alert('일정이 등록되었습니다.')
-                    router.push(`/${router.query.locale}/entry/${qid}`);
-    
-                })
-                .catch((e) => {
-                    // console.log(e.response)
-                    alert('일정등록이 실패하였습니다!')
-                })
-        }
-
-    }
 
     function linkGoogleCalendar() {
         if (isLoggedIn) {
