@@ -56,7 +56,7 @@ const ParticipantLogin: NextPage = () => {
                         router.push({
                             pathname: `/ko/login`,
                             query: {
-                                redirect: `/ko/user/enter-room?qid=${qid}`
+                                redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=${dayOnly=='true' ? 'true' : 'false'}`
                             }
                         },'/ko/login')
                     }}

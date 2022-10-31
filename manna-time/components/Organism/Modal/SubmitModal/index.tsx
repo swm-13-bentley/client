@@ -98,7 +98,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 router.push({
                     pathname: '/ko/login',
                     query: {
-                        redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
+                        redirect: `/ko/entry/${qid}`,
                         participantName: name,
                         roomUuid: qid
                     }
