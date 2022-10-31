@@ -26,6 +26,10 @@ text-align: center;
 min-height: 70vh;
 `
 
+const StyledP = styled.div`
+font-family: 'Roboto';
+`
+
 const Login = () => {
     const router = useRouter()
     // participantName, roomUuid의 경우 비회원 참가자가 로그인 할 때만 사용
@@ -99,11 +103,11 @@ const Login = () => {
             <VStack className="mt-4 mb-10">
                 <Body2 >약속 일정을 만들고 만날 시간을 함께 정해요</Body2>
             </VStack>
-            <FullButton style="lightgrey"
+            <FullButton style="white-black"
                 onClick={() => { window.open(authUrl, "self", 'popup') }}
             >
-                <Image src={googleIcon} alt="google-icon" />
-                구글로 시작하기
+                <Image src={googleIcon} alt="google-icon"/>
+                <StyledP>Google 계정으로 로그인</StyledP>
             </FullButton>
         </CenterScreen>
     </Background>)

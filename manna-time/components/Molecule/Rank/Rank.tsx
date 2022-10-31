@@ -67,10 +67,19 @@ const Rank = ({ rank, time, participants, startTime, endTime, date }: RankProps)
     useEffect(() => {
         if (isModalShown == false)
             setThisClicked(false)
-    },[isModalShown])
+    }, [isModalShown])
 
     return (
         <CustomBox style="secondary">
+            {
+                thisClicked && isModalShown && (
+                    startTime != undefined && endTime != undefined
+                        ?
+                        < ConfirmModal startTime={startTime} endTime={endTime} date={date} />
+                        :
+                        < ConfirmModal date={date} />
+                )
+            }
             <div className="flex flex-row space-x-3 relative h-9 mb-3">
                 <StyledSpan color="#5194FF">
                     {rank}위
@@ -84,15 +93,6 @@ const Rank = ({ rank, time, participants, startTime, endTime, date }: RankProps)
                         setIsModalShown(true)
                     }}
                 >확정</BasicButton>
-                {
-                    thisClicked && isModalShown && (
-                        startTime != undefined && endTime != undefined
-                            ?
-                            < ConfirmModal startTime={startTime} endTime={endTime} date={date}/>
-                        :
-                        < ConfirmModal date={date} />
-                    )
-                }
             </div>
             <Line color="lightgrey" />
             <StyledButton className="mt-3 w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
