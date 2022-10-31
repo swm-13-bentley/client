@@ -31,8 +31,7 @@ import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
 const Entry: NextPage = function () {
 
     const router = useRouter()
-    // const qid = "5334e361-7755-4cc9-b3d1-fbf319902e7b" // 일정 있음
-    // const qid = "8e151343-a955-434c-9246-880a742b9c5f" // 일정 없음.
+    
     const { qid, invitation } = router.query
     let [showInvitation, setShowInvitation] = useState(false)
 
@@ -187,7 +186,7 @@ const Entry: NextPage = function () {
                                     <Background>
                                         <RankContainer
                                             ranks={timeRanks}
-                                            totalNum={participantNames.length}
+                                            totalNum={participantNames.length}                                         
                                         />
                                         <BasicButtonContainer marginTop={"12"}>
                                             <FullButton style="kakao"

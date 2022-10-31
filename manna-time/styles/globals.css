@@ -61,12 +61,11 @@ p {
 /* Table cells */
 .table-drag-select td {
   font-size: 10px;
-  height: 0.5em;
+  height: 18px;
   text-align: center;
   /* Cut off long strings of text with ... */
   text-overflow: ellipsis;
   overflow: hidden;
-  background-clip: padding-box;
   padding-left: 0rem;
   padding-right: 0rem;
   border-bottom: 0.05rem dashed #D6E6FF;
@@ -86,6 +85,7 @@ p {
 /* Cells that can be interacted with */
 .table-drag-select td.cell-enabled {
   background-color: rgb(255, 255, 255);
+  padding-top:0px;
   /* Make the cursor a + symbol */
   /* cursor: cell; */
 }

@@ -38,12 +38,28 @@ function Navbar() {
     }, [flag])
 
     const pushLogin = () => {
+        setMenuOpen(false)
         router.push({
             pathname: '/ko/login',
             query: {
                 redirect: router.asPath
             }
         }, '/ko/login')
+    }
+
+    const pushMyPlans = () => {
+        setMenuOpen(false)
+        // todo: 로그인 안된 경우
+        // if (!isLoggedIn) {
+        //     router.push({
+        //         pathname: '/ko/login',
+        //         query: {
+        //             redirect: '/ko/user/plans'
+        //         }
+        //     }, '/ko/login')
+        // } else {
+            router.push('/ko/user/plans')
+        // }
     }
 
     return (
@@ -59,26 +75,26 @@ function Navbar() {
                     <nav id={styles.nav} className={styles.only_pc}>
                         <ul className={styles.ul}>
                             <li className={styles.li}>
-                                <Link className={styles.a} onClick={() => {
+                                <button className={styles.a} style={{fontWeight:"400", fontSize:"14px"}} onClick={() => {
                                     window.location.href = `/ko/make-room`;
-                                }} to="make-room">약속 만들기</Link>
+                                }}>약속 만들기</button>
                             </li>
                             {/* TODO: 로그인 후  */}
                             {
                                 isLoggedIn && (
                                     <>
-                                        <li className={styles.li}><a className={styles.a} href="#n">내 약속</a></li>
-                                        <li className={styles.li}><a className={styles.a} href="#n">캘린더 관리</a></li>
+                                        <li className={styles.li}><button style={{fontWeight:"400", fontSize:"14px"}} className={styles.a} onClick={()=>{pushMyPlans()}}>내 약속</button></li>
+                                        {/* <li className={styles.li}><button style={{fontWeight:"400", fontSize:"14px"}} className={styles.a}>캘린더 관리</button></li> */}
                                     </>
                                 )
                             }
 
                             <li className={styles.li}>
-                                <a className={styles.a}
+                                <button className={styles.a} style={{fontWeight:"400", fontSize:"14px"}}
                                     onClick={() => {
                                         setIsFeedbackShown(true)
                                     }}
-                                >피드백 보내기</a>
+                                >피드백 보내기</button>
                             </li>
                         </ul>
                     </nav>
@@ -140,29 +156,29 @@ function Navbar() {
 
                             <ul className={styles.ul}>
                                 <li className={styles.li}>
-                                    <Link className={styles.a} onClick={() => {
+                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={() => {
                                         window.location.href = `/ko/make-room`;
-                                    }} to="make-room">
+                                    }}>
                                         <Image src={gnbIcon1} alt="약속 만들기" />
                                         약속 만들기
-                                    </Link>
+                                    </button>
                                 </li>
                                 <li className={styles.li}>
-                                    <Link className={styles.a} href="/" to="my-plan">
+                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={()=>{pushMyPlans()}}>
                                         <Image src={gnbIcon2} alt="내 약속" />내 약속
-                                    </Link>
+                                    </button>
                                 </li>
-                                <li className={styles.li}>
-                                    <Link className={styles.a} href="/" to="my-calendar">
+                                {/* <li className={styles.li}>
+                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}}>
                                         <Image src={gnbIcon3} alt="캘린더 관리" />
                                         캘린더 관리
-                                    </Link>
-                                </li>
+                                    </button>
+                                </li> */}
                                 <li className={styles.li}>
-                                    <a className={styles.a} onClick={() => setIsFeedbackShown(true)}>
+                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={() => setIsFeedbackShown(true)}>
                                         <Image src={gnbIcon4} alt="피드백 보내기" />
                                         피드백 보내기
-                                    </a>
+                                    </button>
                                 </li>
                             </ul>
                             {/* TODO: 로그인 후    */}

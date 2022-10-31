@@ -19,13 +19,13 @@ const EnterRoom = () => {
     }
 
     useEffect(() => {
-        if (qid != undefined && dayOnly != undefined && isLoggedIn) {
+        if (qid != undefined && isLoggedIn) {
             if (dayOnly == 'true') {
                 axios.post(`/api/user/date/${qid}/entry`, {},
                     { headers: { token: token } }
                 )
                     .then((res) => {
-                        console.log(res)
+                        // console.log(res)
                         redirectPage()
                     })
                     .catch((e) => {
@@ -36,7 +36,7 @@ const EnterRoom = () => {
                     { headers: { token: token } }
                 )
                     .then((res) => {
-                        console.log(res)
+                        // console.log(res)
                         redirectPage()
                     })
                     .catch((e) => {

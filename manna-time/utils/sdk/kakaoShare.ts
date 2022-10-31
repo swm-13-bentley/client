@@ -1,4 +1,4 @@
-import { Rank, RankContainerProps } from "@/components/Organism/RankContainer"
+import { Rank } from "@/components/Organism/RankContainer"
 import { RoomInfo } from "@/models/roomInfo"
 import { getKoDateRange, getKoDateTime } from "@/utils/changeFormat"
 

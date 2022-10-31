@@ -234,7 +234,7 @@ const Entry: NextPage = function () {
                                         <RankContainer
                                             ranks={timeRanks}
                                             totalNum={roomInfo.participants.length}
-                                        />
+                                            />
                                         <BasicButtonContainer marginTop={"12"}>
                                             <FullButton style="kakao"
                                                 onClick={() => {

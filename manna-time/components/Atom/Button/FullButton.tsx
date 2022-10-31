@@ -4,7 +4,8 @@ import { ScriptProps } from "next/script"
 interface ButtonProps {
     style?: 'primary' | 'secondary' | 'white-black' | 'lightgrey' | 'disabled' | 'kakao',
     children?: React.ReactNode,
-    onClick?: () => void
+    onClick?: () => void,
+    size?: 'small' | 'large'
 }
 
 const theme = {
@@ -36,7 +37,18 @@ const theme = {
     }
 }
 
-const FullButton = ({ style, children, onClick }: ButtonProps) => {
+const sizeTheme = {
+    'small': {
+        fontSize: '14px',
+        height: '46px'
+    },
+    'large': {
+        fontSize: '16px',
+        height: '58px'
+    }
+}
+
+const FullButton = ({ style, children, onClick, size }: ButtonProps) => {
     const StyledButton = styled('button', {
         name: "button"
     })`
@@ -51,7 +63,7 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
 
     width: 100%;
     max-width: 350px;
-    height: 58px;
+    height: ${size != undefined ? sizeTheme[size].height : sizeTheme['large'].height};
     
     background: ${style != undefined ? theme[style].background : theme['primary'].background};
     border-radius: 6px;
@@ -60,7 +72,7 @@ const FullButton = ({ style, children, onClick }: ButtonProps) => {
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: ${size != undefined ? sizeTheme[size].fontSize : sizeTheme['large'].fontSize};
     line-height: 160%;
     /* identical to box height, or 26px */
 

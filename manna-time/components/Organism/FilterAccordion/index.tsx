@@ -50,7 +50,7 @@ const Filter = ({ participantNames, isChecked, onChange }: FilterProps) => {
 
     const title = () => {
         if (participantNames.length == 0)
-            return ''
+            return '참여자'
         
         else if (checked.every(value => value == true))
             return '전체 참여자'
@@ -60,7 +60,7 @@ const Filter = ({ participantNames, isChecked, onChange }: FilterProps) => {
 
     const emphasizedTitle = () => {
         if (participantNames.length == 0)
-            return '일정을 등록해 주세요'
+            return '0명'
         
         else if (checked.every(value => value == false))
             return '0명'

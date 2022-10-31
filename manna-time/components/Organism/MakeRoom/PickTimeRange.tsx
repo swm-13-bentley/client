@@ -82,7 +82,7 @@ const PickTimeRange = ({setValue}:PickTimeRangeProps) => {
         <>
             <VStack className="mt-12 mb-10">
                 <Headline2 className="mb-4">시간대를 선택해주세요</Headline2>
-                <Body1>가능한 시간대를 복수로 선택할 수 있어요</Body1>
+                <Body1>선택한 범위 내에서만 약속을 정할 수 있게 돼요.</Body1>
             </VStack>
             <VStack className="w-full space-y-2">
                 <CheckButton

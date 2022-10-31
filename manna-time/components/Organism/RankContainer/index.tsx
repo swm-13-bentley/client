@@ -1,6 +1,6 @@
 import { StyledP, StyledSpan } from "@/components/Atom/Letter"
 import Rank from "@/components/Molecule/Rank/Rank"
-import { changeDateFormat, changeTimeFormat } from "@/utils/changeFormat"
+import { changeDateFormat, changeDateToKorean, changeTimeFormat, timeStringToIndex } from "@/utils/changeFormat"
 import { VStack } from "@chakra-ui/react"
 import styled from "@emotion/styled"
 
@@ -35,7 +35,11 @@ const RankContainer = ({ ranks, totalNum }: RankContainerProps) => {
                 key={`rank-${index}`}
                 rank={index + 1}
                 time={time}
-                participants={rank.participants} />
+                participants={rank.participants}
+                date={rank.availableDate}
+                startTime={rank.startTime == undefined ? undefined : timeStringToIndex(rank.startTime)}
+                endTime={rank.endTime == undefined ? undefined : timeStringToIndex(rank.endTime)}
+            />
         )
     })
 

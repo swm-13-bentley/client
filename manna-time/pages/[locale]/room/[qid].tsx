@@ -21,6 +21,9 @@ import Hours from "@/components/Molecule/Scheduler/Hours"
 import { Body2 } from "@/components/Atom/Letter"
 import UnknownParticipant from "@/components/Organism/UnknownParticipant"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
+import { CircularProgress } from "@mui/material"
+import { ModalState } from "@/src/state/Modal"
+import SubmitModal from "@/components/Organism/Modal/SubmitModal"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -56,19 +59,28 @@ const Room: NextPage = function () {
 
     let [roomInfo, setRoomInfo] = useState(null)
     let [loader, setLoader] = useState(true)
-    let [groupButtonChecked, setGroupButtonChecked] = useState(true)
     
     //parsed Group Schedule
     let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
     let [mySchedule, setMySchedule] = useState(null)
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
-    
+
+    //calendar button
+    const [isLoading, setIsLoading] = useState(false)
+    const [calendarEvents, setCalendarEvents] = useState([])
+
+    const [submitSchedule, setSubmitSchedule] = useState()
+    const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
+
     let scheduleRef = useRef()
 
     const srcUrl = process.env.NEXT_PUBLIC_API_URL + '/room/' + qid
     const textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/entry/' + (qid as string) + '?invitation=true'
 
+    useEffect(() => {
+        setIsModalShown(false)
+    },[])
     // 방 정보 가져오기 -> 추후에 props로 최적화할 것!
     useEffect(() => {
         if (qid != undefined) {
@@ -113,7 +125,6 @@ const Room: NextPage = function () {
         }
     }, [srcUrl, isLoggedIn]);
 
-
     // if (!isLoggedIn && participantName == undefined) {
     //     return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
     // }
@@ -124,7 +135,10 @@ const Room: NextPage = function () {
                 value={tab}
                 tabLabel={["내 일정", "약속 정보"]}
                 onChange={setTab}
-                >
+            >
+                {
+                    isModalShown && <SubmitModal isLoggedIn={isLoggedIn} dayOnly={false} schedule={submitSchedule}/>
+                }
                 {
                     roomInfo && groupNamesExceptMe && (
                         <div className={tab == 0 ? "mb-20" : "hidden"}>
@@ -138,6 +152,7 @@ const Room: NextPage = function () {
                                 groupFilterChecked={groupFilterChecked}
                                 participantNames={groupNamesExceptMe}
                                 hasComment={true}
+                                calendarEvents={calendarEvents}
                             >
                                 <div className="mb-5 mt-5">
                                     <FilterAccordion
@@ -151,19 +166,29 @@ const Room: NextPage = function () {
                             <Background>
 
                                 <BasicButtonContainer marginTop={"12"}>
-                                    <FullButton style="primary"
+                                    <FullButton style={"primary"}
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("room/내일정: 내 일정 등록하기")
                                             const mySchedule = scheduleRef.current.testFn()
-                                            submitMySchedule(mySchedule)
+                                            setSubmitSchedule(mySchedule)
+                                            setIsModalShown(true)
+                                            // submitMySchedule(mySchedule) 
                                         }}
                                     >내 일정 등록/수정하기</FullButton>
-                                    {/* <FullButton
+                                    <FullButton
                                         style="secondary"
                                         onClick={() => {
-                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 캘린더 연동하기")
+                                            MixpanelTracking.getInstance().buttonClicked("room/내일정: 구글 캘린더 연동하기")
+                                            if (!isLoading)
+                                                linkGoogleCalendar()
                                         }}
-                                    >구글 캘린더 연동하기</FullButton> */}
+                                    >{
+                                            isLoading
+                                                ?
+                                                <CircularProgress style={{color: "#5194FF"}} color="inherit" size="30px"></CircularProgress>
+                                                :
+                                                '구글 캘린더 연동하기'
+                                        }</FullButton>
                                 </BasicButtonContainer>
                             </Background>
 
@@ -197,84 +222,35 @@ const Room: NextPage = function () {
         </>
     )
 
-    function submitMySchedule(props) {
-        // console.log(props)
+    function linkGoogleCalendar() {
         if (isLoggedIn) {
-            axios.post(
-                `/api/user/time/${qid}/submit`,
-                {
-                    "participantName": participantName,
-                    "available": props
-                },
-                { headers: { token: `${token}`} }
+            setIsLoading(true)
+            axios.get(`/api/user/time/${qid}/calendar/schedule`,
+                { headers: { token: `${token}` } }
             )
                 .then((result) => {
-                    alert('일정이 등록되었습니다.')
-                    router.push(`/${router.query.locale}/entry/${qid}`);
-    
+                    setCalendarEvents(result.data.scheduleList)
+                    setIsLoading(false)
+                    alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 메일이 발송됩니다.")
                 })
                 .catch((e) => {
                     console.log(e)
-                    alert('일정등록이 실패하였습니다!')
+                    alert("연동에 실패하였습니다. 개발자에게 문의해주세요.")
                 })
         } else {
-            axios({
-                method: 'post',
-                url: srcUrl + '/participant/available',
-                data: {
-                    "participantName": participantName,
-                    "available": props
+            // 비로그인 처리
+            router.push({
+                pathname: '/ko/login',
+                query: {
+                    redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
+                    participantName: name,
+                    roomUuid: qid
                 }
-            })
-                .then((result) => {
-                    alert('일정이 등록되었습니다.')
-                    router.push(`/${router.query.locale}/entry/${qid}`);
-    
-                })
-                .catch((e) => {
-                    // console.log(e.response)
-                    alert('일정등록이 실패하였습니다!')
-                })
+            }, '/ko/login'
+            )
         }
-
     }
 
-    function postCalendarRequest() {
-        const requestUrl = process.env.NEXT_PUBLIC_API_URL + `/google/calendar`
-        axios({
-            method: 'post',
-            url: requestUrl
-        })
-            .then((result) => {
-                // 구글 로그인 창 열기
-                window.open(result.data.authUrl,"self",'popup')
-
-            })
-            .catch((e) => {
-                console.log(e.response)
-                alert('캘린더 요청 실패')
-            })
-    }
-
-    function sendCalendarRequest(state: string, roomUuid: string) {
-        const requestUrl = srcUrl + `/google/calendar`
-        axios({
-            method: 'get',
-            url: requestUrl,
-            data: {
-                "roomUuid": roomUuid,
-                "state" : state
-            }
-        })
-            .then((result) => {
-                console.log(result)
-
-            })
-            .catch((e) => {
-                console.log(e.response)
-                alert('캘린더 불러오기 실패')
-            })
-    }
 }
 
 export default Room
