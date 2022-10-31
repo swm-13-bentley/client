@@ -133,7 +133,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 { headers: { token: `${token}`} }
             )
                 .then((result) => {
-                    setStepIndex(index => index + 1)
+                    setStepIndex(index => index + 2)
                 })
                 .catch((e) => {
                     console.log(e)
@@ -149,10 +149,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 }
             })
                 .then((result) => {
-                    if(isLoggedIn)
-                        setStepIndex(index => index + 2)
-                    else
-                        setStepIndex(index => index + 1) 
+                    setStepIndex(index => index + 1) 
                 })
                 .catch((e) => {
                     // console.log(e.response)

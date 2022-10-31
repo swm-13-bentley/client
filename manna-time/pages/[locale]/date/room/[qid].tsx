@@ -55,8 +55,7 @@ const Room: NextPage = function () {
 
     let [groupSchedule, setGroupSchedule] = useState(null)
     let [groupNamesExceptMe, setGroupNamesExceptMe] = useState(null)
-    const [selectedDates, setSelectedDates] = useState([])
-
+    const [selectedDates, setSelectedDates] = useState<string[]>([])
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [filteredSchedule, setFilteredSchedule] = useState<DateCriteria | null>(null)
     let scheduleRef = useRef()
@@ -88,21 +87,22 @@ const Room: NextPage = function () {
                         setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
                             allNames.push(obj.participantName)
                             return allNames
-                        },[]))
+                        }, []))
                         setSelectedDates(result.data.myself.availableDates)
                         setGroupFilterChecked(Array(result.data.others.length).fill(true))
                     })
             } else if (participantName != undefined) {
                 axios.get(srcUrl + `/group/seperate/${participantName}`)
                     .then((result) => {
+                        setSelectedDates(result.data.myself.availableDates)
                         setGroupSchedule(result.data.others)
                         setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
                             allNames.push(obj.participantName)
                             return allNames
                         },[]))
-                        setSelectedDates(result.data.myself.availbaleDates)
                         setGroupFilterChecked(Array(result.data.others.length).fill(true))
                     })
+                    .catch((e)=> {console.log(e)})
             }
         }
     }, [srcUrl, isLoggedIn]);
