@@ -35,11 +35,11 @@ const CheckPage = ({ onSubmit }: { onSubmit: () => void }) => {
     </>)
 }
 
-const AlarmPage = ({ onAgree, onDisagree }: { onAgree: () => void, onDisagree: ()=>void }) => {
+const AlarmPage = ({ onAgree, onDisagree }: { onAgree: () => void, onDisagree: () => void }) => {
     return (<>
         <div className="mb-9">
             <ModalTitle className="mb-4">확정 알림을 받으실래요?</ModalTitle>
-            <ModalBody>약속 확정 시 메일로 알림을 보내드리며<br/>구글 캘린더에 등록도 할 수 있어요</ModalBody>
+            <ModalBody>약속 확정 시 메일로 알림을 보내드리며<br />구글 캘린더에 등록도 할 수 있어요</ModalBody>
         </div>
         <HStack>
             <div className=" w-3/5">
@@ -98,7 +98,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 router.push({
                     pathname: '/ko/login',
                     query: {
-                        redirect: `/ko/entry/${qid}`,
+                        redirect: `/ko/${dayOnly ? 'date/' : ''}entry/${qid}`,
                         participantName: name,
                         roomUuid: qid
                     }
@@ -106,7 +106,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 )
             }}
             onDisagree={() => {
-                setStepIndex(index=>index+1)
+                setStepIndex(index => index + 1)
             }}
             key="alarm-page"
         />,
@@ -130,7 +130,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                     "participantName": name,
                     "available": props
                 },
-                { headers: { token: `${token}`} }
+                { headers: { token: `${token}` } }
             )
                 .then((result) => {
                     setStepIndex(index => index + 2)
@@ -149,7 +149,7 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 }
             })
                 .then((result) => {
-                    setStepIndex(index => index + 1) 
+                    setStepIndex(index => index + 1)
                 })
                 .catch((e) => {
                     // console.log(e.response)
