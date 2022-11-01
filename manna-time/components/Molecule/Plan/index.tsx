@@ -1,4 +1,4 @@
 import ConfirmedPlan from "./Confirmed"
-import WaitingPlan from "./Waiting"
+import UnconfirmedPlan from "./unConfirmed"
 
-export {ConfirmedPlan, WaitingPlan}
+export {ConfirmedPlan, UnconfirmedPlan}

@@ -82,6 +82,7 @@ const ConfirmModal = ({ startTime, endTime, date }: ConfirmProps) => {
 
     const [stepIndex, setStepIndex] = useState(0)
     const [timeValue, setTimeValue] = useState([startTime, endTime])
+    const [isWaiting, setIsWaiting] = useState(false)
     const modalStep = [
         <ConfirmCheck
             onConfirm={() => {
@@ -110,17 +111,21 @@ const ConfirmModal = ({ startTime, endTime, date }: ConfirmProps) => {
             data.endTime = getServerTimeFormat(timeValue[1])
         }
 
-        axios.patch(
-            `${process.env.NEXT_PUBLIC_API_URL}/room/${qid}/confirm`,
-            data
-        )
-            .then((response) => {
-                setStepIndex(stepIndex + 1)
-            })
-            .catch((e) => {
-                console.log(e)
-                alert("에러가 발생했습니다. 관리자에게 문의하세요.")
-            })
+        if (!isWaiting) {
+            setIsWaiting(true)
+            axios.patch(
+                `${process.env.NEXT_PUBLIC_API_URL}/room/${qid}/confirm`,
+                data
+            )
+                .then((response) => {
+                    setStepIndex(stepIndex + 1)
+                    setIsWaiting(false)
+                })
+                .catch((e) => {
+                    setIsWaiting(false)
+                    alert("에러가 발생했습니다. 관리자에게 문의하세요.")
+                })
+        }
     }
 
     return (

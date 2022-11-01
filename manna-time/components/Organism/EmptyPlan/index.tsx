@@ -30,13 +30,6 @@ const EmptyPlan = () => {
                 <StyledP>아직 등록된 약속이 없어요</StyledP>
                 <NoticeDescription>약속을 만들어 구성원들에게 공유해보세요!</NoticeDescription>
             </VStack>
-            <VStack>
-                <FullButton style="secondary"
-                    onClick={() => {   
-                        router.push('/ko/make-room')
-                    }}
-                >약속 만들기</FullButton>
-            </VStack>
         </Background>
     )
 }

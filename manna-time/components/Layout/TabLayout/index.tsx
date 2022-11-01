@@ -1,5 +1,5 @@
 import useViewport from "@/hooks/useViewport";
-import { AppBar, styled, Tab, Tabs } from "@mui/material";
+import { AppBar, Box, styled, Tab, Tabs } from "@mui/material";
 import { ScriptProps } from "next/script";
 import { useState } from "react";
 
@@ -9,6 +9,15 @@ interface TabLayoutProps {
     tabLabel: string[],
     onChange(tabValue:number): void
 }
+
+const WhiteBox = styled(Box, {})`
+    background-color: white;
+    top:0;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    z-index: 9;
+`
 
 const StyledTab = styled(Tab, {})`
         font-family: 'Pretendard';
@@ -42,8 +51,8 @@ const TabLayout = ({ children, value, tabLabel, onChange }: TabLayoutProps) => {
     const viewport = useViewport()
 
     return (
-        
         <>
+            <WhiteBox/>
             <AppBar sx={{
                 bgcolor: "#FFFFFF",
                 boxShadow: "0",
