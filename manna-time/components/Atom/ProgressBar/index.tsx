@@ -1,7 +1,10 @@
+import { css, keyframes } from "@emotion/react"
 import styled from "@emotion/styled"
+import React from "react"
 
 interface ProgressBarProps {
-    filled: number // 0 < filled < 1
+    from: number // 0 < filled < 1
+    to: number
 }
 
 const UnfilledProgressbar = styled.div`
@@ -15,22 +18,29 @@ z-index: 10;
 background: #EEEEEE;
 `
 
-const FilledProgressbar = styled.div<{ filled: number }>`
-position: fixed;
-width: ${({ filled } )=> Math.floor(filled*100) }%;
-height: 2px;
-left: 0px;
-top: 56px;
-z-index: 11;
-
-background: #5194FF;
-`
-
-const ProgressBar = ({filled}:ProgressBarProps) => {
+const ProgressBar = ({ from, to }: ProgressBarProps) => {
+    const animation = keyframes`
+        from {
+        width: ${from}%;
+        }
+        to {
+        width: ${to}%;
+        }
+    `
+    const FilledProgressbar = styled.div`
+        position: fixed;
+        height: 2px;
+        left: 0px;
+        top: 56px;
+        z-index: 11;
+        background: #5194FF;
+        
+        ${css`animation: ${animation} .3s forwards`}
+    `
     return (<>
         <UnfilledProgressbar />
-        <FilledProgressbar filled={filled}/>
+        <FilledProgressbar/>
     </>)
 }
 
-export default ProgressBar
+export default React.memo(ProgressBar)

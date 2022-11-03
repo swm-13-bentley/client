@@ -24,6 +24,7 @@ import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 import { CircularProgress } from "@mui/material"
 import { ModalState } from "@/src/state/Modal"
 import SubmitModal from "@/components/Organism/Modal/SubmitModal"
+import { useToast } from "@chakra-ui/react"
 
 const getParsedGroup = (data: object[], myName: string) => {
     let namesExceptMe: string[] = []
@@ -48,6 +49,15 @@ const getParsedGroup = (data: object[], myName: string) => {
 }
 
 const Room: NextPage = function () {
+    const toast = useToast({
+        position: 'bottom',
+        title: '로그인 실패',
+        description: "access denied",
+        status: 'error',
+        duration: 1000,
+        isClosable: true,
+    })
+    
     const [tab, setTab] = useState(0); // 0: 내 스케줄 , 1: 그룹 스케줄
 
     const router = useRouter()
@@ -69,6 +79,7 @@ const Room: NextPage = function () {
     //calendar button
     const [isLoading, setIsLoading] = useState(false)
     const [calendarEvents, setCalendarEvents] = useState([])
+    const [eventListenerCount, setEventListenerCount] = useState(0)
 
     const [submitSchedule, setSubmitSchedule] = useState()
     const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
@@ -128,6 +139,22 @@ const Room: NextPage = function () {
     // if (!isLoggedIn && participantName == undefined) {
     //     return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
     // }
+
+    const calendarAuthPopUp = (url: string) => {
+        if (eventListenerCount == 0) {
+            window.addEventListener("message", (event) => {
+                // 캘린더 권한 동의했을 시 다시 캘린더 연동 진행
+                if (event.data == 'fail')
+                    toast()
+                else if (event.data == 'success')
+                    linkGoogleCalendar()
+            }, false)
+            setEventListenerCount(value=>value+1)
+        }
+
+        window.open(url, "self", 'popup')
+
+    }
 
     return (
         <>
@@ -234,8 +261,10 @@ const Room: NextPage = function () {
                     alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 메일이 발송됩니다.")
                 })
                 .catch((e) => {
-                    console.log(e)
-                    alert("연동에 실패하였습니다. 개발자에게 문의해주세요.")
+                    //권한 미동의 시 권한 변경하는 url 리턴받음
+                    const authorityUrl = e.response.data
+                    calendarAuthPopUp(authorityUrl)
+                    setIsLoading(false)
                 })
         } else {
             // 비로그인 처리

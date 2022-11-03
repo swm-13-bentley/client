@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Background } from "@/components/Layout/MainLayout/Wrapper"
-import { VStack } from "@chakra-ui/react"
+import { useToast, VStack } from "@chakra-ui/react"
 import Image from "next/image"
 
 import logo from "@/public/images/favicon.ico"
@@ -39,6 +39,15 @@ const Login = () => {
     const [token, setToken] = useRecoilState(tokenState)
     const decodedToken = useRecoilValue(decodedTokenState)
 
+    const toast = useToast({
+        position: 'bottom',
+        title: '로그인 실패',
+        description: "access denied",
+        status: 'error',
+        duration: 1000,
+        isClosable: true,
+      })
+
     const redirectPage = () => {
         if (redirect == undefined || _.isArray(redirect)) {
             router.push('/')
@@ -51,7 +60,10 @@ const Login = () => {
     useEffect(() => {
         //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
         window.addEventListener("message", (event) => {
-            setToken(event.data)
+            if (event.data == 'fail')
+                toast()
+            else
+                setToken(event.data)
         }, false)
 
         //로그인 url 설정

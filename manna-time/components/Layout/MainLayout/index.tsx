@@ -13,7 +13,7 @@ import Header from "./Header"
 import Navbar from "./Navbar"
 import TestNavbar from "./TestNavbar"
 
-const hideNavbar = ['make-room', 'invitation', 'oauth', 'test']
+const hideNavbar = ['make-room', 'invitation', 'oauth', 'test', 'user']
 
 const getPageName = (match: string[] | undefined | null) => {
     if (match)

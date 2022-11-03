@@ -50,16 +50,20 @@ function Navbar() {
     const pushMyPlans = () => {
         setMenuOpen(false)
         // todo: 로그인 안된 경우
-        // if (!isLoggedIn) {
-        //     router.push({
-        //         pathname: '/ko/login',
-        //         query: {
-        //             redirect: '/ko/user/plans'
-        //         }
-        //     }, '/ko/login')
-        // } else {
+        if (!isLoggedIn) {
+            router.push({
+                pathname: '/ko/login',
+                query: {
+                    redirect: '/ko/user/plans'
+                }
+            }, '/ko/login')
+        } else {
             router.push('/ko/user/plans')
-        // }
+        }
+    }
+
+    const pushMyPage = () => {
+        // router.push('/ko/user/my-page')
     }
 
     return (
@@ -68,9 +72,9 @@ function Navbar() {
             <header id={styles.header}>
                 <div className={`${styles.div} ${styles.inner} ${styles.clearfix}`}>
                     <h1 className={styles.h1}>
-                        <Link className={styles.a} onClick={() => { window.location.href = "/" }} to="home">
+                        <button className={`h-min leading-none ${styles.a}`} onClick={() => { window.location.href = "/" }}>
                             <Image src={logo} alt="Mannatime" />
-                        </Link>
+                        </button>
                     </h1>
                     <nav id={styles.nav} className={styles.only_pc}>
                         <ul className={styles.ul}>
@@ -104,10 +108,10 @@ function Navbar() {
                         {
                             isLoggedIn
                                 ?
-                                (<div className={`${styles.div} ${styles.user_box}`}>
+                                (<button className={`h-min leading-none ${styles.div} ${styles.user_box}`} onClick={pushMyPage}>
                                     <Image className={`${styles.div} ${styles.profile}`} src={profileIcon} alt="profile"></Image>
                                     <h2 className={`${styles.h2}`}>{decodedToken.sub}님</h2>
-                                </div>)
+                                </button>)
                                 :
                                 (<div className={`${styles.div} ${styles.hd_login}`}>
                                     <Link className={styles.a} onClick={pushLogin} to="login">로그인</Link>
@@ -125,10 +129,12 @@ function Navbar() {
                                         ?
                                         <div className={`${styles.div} ${styles.user_box}`}>
                                             <Image className={`${styles.div} ${styles.profile}`} src={profileIcon} alt="profile" width="50px" height="50px"></Image>
-                                            <div className={`ml-3`}>
-                                                <h2 className={`${styles.h2}`}>{decodedToken.sub}님</h2>
-                                                <p className={`${styles.p}`}>{decodedToken.email}</p>
-                                            </div>
+                                            <button className="text-left">
+                                                <div className={`ml-3`}>
+                                                    <h2 className={`${styles.h2}`}>{decodedToken.sub}님</h2>
+                                                    <p className={`${styles.p}`}>{decodedToken.email}</p>
+                                                </div>
+                                            </button>
                                         </div>
                                         :
                                         <button className={`${styles.button} ${styles.btn_blue}`} onClick={pushLogin}>로그인/회원가입</button>

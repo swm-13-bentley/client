@@ -1,15 +1,13 @@
 import axios from "axios";
-import cookie from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function getSeperatedSchedule(
+export default async function getMyPlans(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { uuid } = req.query
   const { token } = req.headers
   axios.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/day/room/${uuid}/group/seperate`,
+    `${process.env.NEXT_PUBLIC_API_URL}/user/myRoom/unConfirmed`,
     { headers: { 'Authorization': `Bearer ${token}` } }
   )
     .then((result) => {

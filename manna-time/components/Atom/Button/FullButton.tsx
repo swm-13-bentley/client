@@ -5,7 +5,7 @@ interface ButtonProps {
     style?: 'primary' | 'secondary' | 'white-black' | 'lightgrey' | 'disabled' | 'kakao',
     children?: React.ReactNode,
     onClick?: () => void,
-    size?: 'small' | 'large'
+    size?: 'small' | 'large' | 'x-small'
 }
 
 const theme = {
@@ -45,6 +45,10 @@ const sizeTheme = {
     'large': {
         fontSize: '16px',
         height: '58px'
+    },
+    'x-small': {
+        fontSize: '14px',
+        height: '34px'
     }
 }
 

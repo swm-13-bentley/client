@@ -1,15 +1,13 @@
 import axios from "axios";
-import cookie from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function enterRoom(
+export default async function deletePlan(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { uuid } = req.query
-    const { token } = req.headers
-    axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/room/${uuid}/entry`, {},
+    const { token, uuid } = req.headers
+    axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/room/${uuid}/exit`,
         { headers: { 'Authorization': `Bearer ${token}` } }
     )
         .then((result) => {
