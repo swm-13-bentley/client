@@ -129,6 +129,18 @@ const Room: NextPage = function () {
     //     return (<UnknownParticipant url={`/ko/participant-login/${qid}`} />)
     // }
 
+    const calendarAuthPopUp = (url: string) => {
+        window.addEventListener("message", (event) => {
+            // 캘린더 권한 동의했을 시 다시 캘린더 연동 진행
+            if (event.data == 'success') {
+                linkGoogleCalendar()
+            } 
+        }, false)
+
+        window.open(url, "self", 'popup')
+
+    }
+
     return (
         <>
             <TabLayout
@@ -234,7 +246,11 @@ const Room: NextPage = function () {
                     alert("연동이 완료되었습니다. 해당 시간에 일정이 있는 경우 스케줄러에 표시되며, 약속 확정시 메일이 발송됩니다.")
                 })
                 .catch((e) => {
-                    console.log(e)
+                    //권한 미동의 시 권한 변경하는 url 리턴받음
+                    const authorityUrl = e.response.data
+                    console.log(authorityUrl)
+                    calendarAuthPopUp(authorityUrl)
+
                     alert("연동에 실패하였습니다. 개발자에게 문의해주세요.")
                 })
         } else {
