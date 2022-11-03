@@ -1,6 +1,6 @@
 import { CustomBox } from "@/components/Atom/Box"
 import Line from "@/components/Atom/Line"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import styled from "@emotion/styled";
 import { Rectangle } from "@/components/Atom/Rectangle";
@@ -9,6 +9,11 @@ import { FullButton } from "@/components/Atom/Button";
 import { Rank } from "@/components/Organism/RankContainer";
 import { useRouter } from "next/router";
 import { changeTimeFormat, dateConversion, getKoDateRange } from "@/utils/changeFormat";
+import Option from "@/components/Atom/Option"
+import { useRecoilState } from "recoil";
+import { ModalState } from "@/src/state/Modal";
+import DeleteModal from "@/components/Organism/Modal/DeleteModal";
+import axios from "axios";
 
 export interface UnConfirmedPlan {
     count: number
@@ -96,11 +101,31 @@ const StyledLine = styled(Box, {})`
     background: #EEEEEE;
     `
 
-const Unconfirmed = ({ plan }: { plan: UnConfirmedPlan }) => {
-    const router= useRouter()
+const Unconfirmed = ({ plan, onDelete }: { plan: UnConfirmedPlan, onDelete:()=>void }) => {
+    const router = useRouter()
+
     const [isOpen, setIsOpen] = useState(false)
+    const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
+    const [thisClicked, setThisClicked] = useState(false)
+
+    useEffect(() => {
+        if (isModalShown == false)
+            setThisClicked(false)
+    }, [isModalShown])
+
     return (
         <CustomBox style="skyblue">
+            <Option onDelete={() => {
+                setIsModalShown(true)
+                setThisClicked(true)
+            }} />
+            {
+                isModalShown && thisClicked && (
+                    <DeleteModal onDelete={()=>onDelete()} />
+                )
+            }
+            <button style={{ position: "absolute", right: "20px", top: "25px" }}>
+            </button>
             <Title>{plan.roomTitle}</Title>
             <div className="mb-4">
                 <div className="mb-1 flex flex-left">
@@ -120,7 +145,7 @@ const Unconfirmed = ({ plan }: { plan: UnConfirmedPlan }) => {
                 <div className="mb-4">
                     <StyledButton className="mt-3 w-full text-left" onClick={() => { setIsOpen(!isOpen) }}>
                         총 {plan.participants.length}명
-                        <KeyboardArrowDownIcon className="absolute right-8" />
+                        <KeyboardArrowDownIcon className="absolute right-8 z-0" />
                     </StyledButton>
                     {
                         isOpen &&
@@ -138,9 +163,9 @@ const Unconfirmed = ({ plan }: { plan: UnConfirmedPlan }) => {
                         <StyledTitleSpan className=" ml-2">{
                             plan.topOne.startTime != undefined && plan.topOne.endTime != undefined
                                 ?
-                            `${dateConversion(plan.topOne.availableDate)} ${changeTimeFormat(plan.topOne.startTime)} ~ ${changeTimeFormat(plan.topOne.endTime)}`
+                                `${dateConversion(plan.topOne.availableDate)} ${changeTimeFormat(plan.topOne.startTime)} ~ ${changeTimeFormat(plan.topOne.endTime)}`
                                 :
-                            dateConversion(plan.topOne.availableDate)
+                                dateConversion(plan.topOne.availableDate)
                         }</StyledTitleSpan>
                     </Title>
                 )
