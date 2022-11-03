@@ -54,6 +54,7 @@ const MakeRoom: NextPage = () => {
     const viewport = useViewport()
 
     const [stepIndex, setStepIndex] = useState(0)
+    const [prevIndex, setPrevIndex] = useState(-1)
 
     // each step value
     const [appointmentName, setAppointmentName] = useState("")
@@ -87,8 +88,10 @@ const MakeRoom: NextPage = () => {
                     onClick={() => {
                         if (stepIndex == 0)
                             router.push(`/${router.query.locale}/`)
-                        else
+                        else {
+                            setPrevIndex(stepIndex)
                             setStepIndex(step => step - 1)
+                        }
                     }}
                 >
                     <ArrowBackIosNewIcon sx={{ color: "#333333" }} fontSize="small" />
@@ -96,7 +99,7 @@ const MakeRoom: NextPage = () => {
 
                 <Title>약속 일정 만들기</Title>
             </Navbar>
-            <ProgressBar filled={(stepIndex + 1) / steps.length} />
+            <ProgressBar from={Math.floor((prevIndex+1) / steps.length * 100)} to={Math.floor((stepIndex + 1) / steps.length * 100)} />
             <Background>
                 <VStack mt={"56px"} mb={ viewport === 'mobile' ? "200px" : "0px"}>
                     {steps[stepIndex]}
@@ -113,6 +116,7 @@ const MakeRoom: NextPage = () => {
                                 sendRoomRequest()
                             else {
                                 MixpanelTracking.getInstance().buttonClicked(`make-room: ${stepIndex + 1}단계 다음`)
+                                setPrevIndex(stepIndex)
                                 setStepIndex(step => step + 1)
                             }
                         }}
