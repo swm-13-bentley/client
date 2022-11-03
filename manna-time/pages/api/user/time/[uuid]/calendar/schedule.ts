@@ -18,7 +18,7 @@ export default async function getCalendarSchedule(
             res.status(200).json(result.data)
         })
         .catch((error) => {
-            console.log('error is : ', error)
-            res.status(error.response.data.status || 500).end(error.response.data.error)
+            console.log('error is : ', error.response)
+            res.status(error.response.status || 500).end(error.response.data)
         })
 };

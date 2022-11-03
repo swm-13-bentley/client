@@ -17,6 +17,6 @@ export default async function getSeperatedSchedule(
     })
     .catch((error) => {
       console.log('error is : ',error)
-      res.status(error.response.data.status || 500).end(error.response.data.error)
+      res.status(error.response.status || 500).end(error.response.data)
     })
 };
