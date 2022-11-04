@@ -114,8 +114,9 @@ function Navbar() {
                                 </button>)
                                 :
                                 (<div className={`${styles.div} ${styles.hd_login}`}>
-                                    <Link className={styles.a} onClick={pushLogin} to="login">로그인</Link>
-                                    <Link className={styles.a} onClick={pushLogin} to="login">회원가입</Link>
+                                    <button>
+                                        <Link className={styles.a} onClick={pushLogin} to="login">로그인/회원가입</Link>
+                                    </button>
                                     <div className={`${styles.div} ${styles.tooltip}`}>프리미엄 서비스가 무료!</div>
                                 </div>)
                         }
@@ -202,4 +203,4 @@ function Navbar() {
     );
 }
 
-export default Navbar
+export default React.memo(Navbar)

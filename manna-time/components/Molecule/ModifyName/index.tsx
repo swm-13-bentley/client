@@ -37,15 +37,17 @@ const ModifyName = ({ name, onCancle }: { name: string, onCancle: () => void }) 
             .catch((e) => { console.log(e) })
     }
 
-    return (<div style={{ marginTop: "8px" }}>
+    return (<VStack style={{ marginTop: "8px", textAlign:"left" }}>
         <InputBox
             placeholder={"김언제"}
             id={"modify-name"}
             setValue={setNewName}
             value={newName}
         />
-        <Description style={{ marginTop: "8px", marginBottom: "20px" }}>다른 참여자가 나를 알아볼 수 있도록 작성해주세요</Description>
-        <HStack>
+        <Description style={{ marginTop: "8px", marginBottom: "20px", width: "100%", maxWidth: "350px" }}>
+            다른 참여자가 나를 알아볼 수 있도록 작성해주세요 (최대 15자)
+        </Description>
+        <HStack style={{maxWidth:"350px", width:"100%"}}>
             <div className="w-2/5">
                 <FullButton
                     onClick={onCancle}
@@ -60,7 +62,7 @@ const ModifyName = ({ name, onCancle }: { name: string, onCancle: () => void }) 
             >수정 완료</FullButton>
         </HStack>
 
-    </div>)
+    </VStack>)
 }
 
 export default ModifyName

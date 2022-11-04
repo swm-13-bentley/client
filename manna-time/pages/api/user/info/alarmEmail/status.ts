@@ -1,15 +1,17 @@
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export default async function modifyName(
+export default async function changeAlarmStatus(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     const { token } = req.headers
-    const { name } = req.body
+    const { email, receiveEmail } = req.body
+    console.log('wtf:',receiveEmail)
     axios.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/username`, {
-            newUsername: name
+        `${process.env.NEXT_PUBLIC_API_URL}/user/alarmEmail/status`, {
+            email: email,
+            receiveEmail: receiveEmail
         },
         { headers: { 'Authorization': `Bearer ${token}` } }
     )
