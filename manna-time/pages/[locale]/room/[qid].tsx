@@ -271,7 +271,7 @@ const Room: NextPage = function () {
             router.push({
                 pathname: '/ko/login',
                 query: {
-                    redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=false`,
+                    redirect: `/ko/enter-room?qid=${qid}&dayOnly=false`,
                     participantName: name,
                     roomUuid: qid
                 }

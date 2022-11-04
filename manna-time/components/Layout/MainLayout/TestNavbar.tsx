@@ -63,7 +63,7 @@ function Navbar() {
     }
 
     const pushMyPage = () => {
-        // router.push('/ko/user/my-page')
+        router.push('/ko/user/my-page')
     }
 
     return (
@@ -110,12 +110,13 @@ function Navbar() {
                                 ?
                                 (<button className={`h-min leading-none ${styles.div} ${styles.user_box}`} onClick={pushMyPage}>
                                     <Image className={`${styles.div} ${styles.profile}`} src={profileIcon} alt="profile"></Image>
-                                    <h2 className={`${styles.h2}`}>{decodedToken.sub}님</h2>
+                                    <h2 className={`${styles.h2}`}>{decodedToken.sub} 님</h2>
                                 </button>)
                                 :
                                 (<div className={`${styles.div} ${styles.hd_login}`}>
-                                    <Link className={styles.a} onClick={pushLogin} to="login">로그인</Link>
-                                    <Link className={styles.a} onClick={pushLogin} to="login">회원가입</Link>
+                                    <button>
+                                        <Link className={styles.a} onClick={pushLogin} to="login">로그인/회원가입</Link>
+                                    </button>
                                     <div className={`${styles.div} ${styles.tooltip}`}>프리미엄 서비스가 무료!</div>
                                 </div>)
                         }
@@ -129,9 +130,9 @@ function Navbar() {
                                         ?
                                         <div className={`${styles.div} ${styles.user_box}`}>
                                             <Image className={`${styles.div} ${styles.profile}`} src={profileIcon} alt="profile" width="50px" height="50px"></Image>
-                                            <button className="text-left">
+                                            <button className="text-left" onClick={pushMyPage}>
                                                 <div className={`ml-3`}>
-                                                    <h2 className={`${styles.h2}`}>{decodedToken.sub}님</h2>
+                                                    <h2 className={`${styles.h2}`}>{decodedToken.sub} 님</h2>
                                                     <p className={`${styles.p}`}>{decodedToken.email}</p>
                                                 </div>
                                             </button>
@@ -202,4 +203,4 @@ function Navbar() {
     );
 }
 
-export default Navbar
+export default React.memo(Navbar)

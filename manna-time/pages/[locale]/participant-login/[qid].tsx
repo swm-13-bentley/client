@@ -25,13 +25,13 @@ const ParticipantLogin: NextPage = () => {
         if (qid != undefined && isLoggedIn) {
             router.push(
                 {
-                    pathname: `/${router.query.locale}/user/enter-room`,
+                    pathname: `/${router.query.locale}/enter-room`,
                     query: {
                         dayOnly: dayOnly == 'true' ? 'true' : 'false',
                         qid: qid
                     }
                 },
-                `/${router.query.locale}/user/enter-room`
+                `/${router.query.locale}/enter-room`
             );
         }
     },[qid,dayOnly])
@@ -56,7 +56,7 @@ const ParticipantLogin: NextPage = () => {
                         router.push({
                             pathname: `/ko/login`,
                             query: {
-                                redirect: `/ko/user/enter-room?qid=${qid}&dayOnly=${dayOnly=='true' ? 'true' : 'false'}`
+                                redirect: `/ko/enter-room?qid=${qid}&dayOnly=${dayOnly=='true' ? 'true' : 'false'}`
                             }
                         },'/ko/login')
                     }}
