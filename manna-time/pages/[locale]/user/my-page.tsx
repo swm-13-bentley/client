@@ -81,12 +81,12 @@ const MyPage = () => {
                     isModalShown && <SignOutModal/>
                 }
                 <HStack className=' mt-10 mb-5 gap-3'>
-                    <Image src={profileIcon} alt="profile" width="60px" height="60px"></Image>
+                    <Image src={profileIcon} alt="profile" height="100%" width="100%"></Image>
                     <div className={`text-left`}>
                         <Headline1>{name} 님</Headline1>
                         <Body1>{email}</Body1>
                     </div>
-                    <div className=" absolute right-5 w-full top-12">
+                    <div className=" relative right-0 w-full bottom-5">
                         <BasicButton onClick={pushLogout}>로그아웃</BasicButton>
                     </div>
                 </HStack>
