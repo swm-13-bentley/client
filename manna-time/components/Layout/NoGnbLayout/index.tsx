@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 interface NoGnbProps {
     title: string
     children: React.ReactNode
+    redirect?: string
 }
 
 const Navbar = styled.div`
@@ -36,7 +37,7 @@ letter-spacing: -0.003em;
 color: #333333;
 `
 
-const NoGnbLayout = ({title, children}: NoGnbProps) => {
+const NoGnbLayout = ({title, children, redirect}: NoGnbProps) => {
     const router = useRouter()
 
     return (<>
@@ -44,7 +45,10 @@ const NoGnbLayout = ({title, children}: NoGnbProps) => {
             <IconButton
                 sx={{ position: 'fixed', left: '15px' }}
                 onClick={() => {
-                    router.back()
+                    if (redirect != undefined)
+                        router.push(redirect)
+                    else
+                        router.back()
                 }}
             >
                 <ArrowBackIosNewIcon sx={{ color: "#333333" }} fontSize="small" />

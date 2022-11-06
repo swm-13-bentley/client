@@ -16,6 +16,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import tooltipIcon from "@/public/images/tooltip.svg"
 import useViewport from "@/hooks/useViewport"
+import { useRecoilValue } from "recoil"
+import { isLoggedInState } from "@/src/state/UserInfo"
 
 interface RoomInfo {
     title: string
@@ -34,6 +36,7 @@ const Invitation: NextPage = () => {
     const [entryUri, setEntryUri] = useState("")
     const [loginUri, setLoginUri] = useState("")
     const [srcUrl, setSrcUrl] = useState("")
+    const isLoggedIn = useRecoilValue(isLoggedInState)
 
     useEffect(() => {
         if (qid != undefined) {
@@ -99,16 +102,37 @@ const Invitation: NextPage = () => {
                 <Image src={tooltipIcon} alt="tooltip" />
                 <FullButton
                     onClick={() => {
-                        MixpanelTracking.getInstance().track("invitation: 초대하기", {roomUuid: qid, dayOnly: dayOnly})
+                        MixpanelTracking.getInstance().track("invitation: 초대하기", { roomUuid: qid, dayOnly: dayOnly })
                         copyTextUrl(process.env.NEXT_PUBLIC_SERVICE_URL + entryUri + '?invitation=true')
                     }}
                 >초대하기</FullButton>
                 <FullButton style="secondary"
                     onClick={() => {
-                        MixpanelTracking.getInstance().track("invitation: 입장하기", {roomUuid: qid, dayOnly: dayOnly})
+                        MixpanelTracking.getInstance().track("invitation: 입장하기", { roomUuid: qid, dayOnly: dayOnly })
                         router.push(loginUri)
                     }}
                 >입장하기</FullButton>
+                <FullButton style="white-black"
+                    onClick={() => {
+                        MixpanelTracking.getInstance().track("invitation: 인원 알림 받기", { roomUuid: qid, dayOnly: dayOnly })
+                        
+                        if (isLoggedIn)
+                            router.push({
+                                pathname: '/ko/invitation/alarm',
+                                query: {
+                                    qid: qid,
+                                    redirect: router.asPath
+                                }
+                            }, '/ko/invitation/alarm')
+                        else
+                            router.push({
+                                pathname: '/ko/login',
+                                query: {
+                                    redirect: `/ko/invitation/alarm?qid=${qid}&redirect=${router.asPath}`
+                                }
+                            }, '/ko/login')
+                    }}
+                >인원 알림 받기</FullButton>
             </BasicButtonContainer>
         </Background>
     </>)
