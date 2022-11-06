@@ -56,6 +56,17 @@ const Login = () => {
         }
     }
 
+    const onLoginClick = () => {
+        if (navigator.userAgent.indexOf('KAKAO') >= 0)
+            alert('구글 정책으로 카카오톡 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
+        else if (navigator.userAgent.indexOf('Instagram') >= 0)
+            alert('구글 정책으로 인스타그램 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
+        else if (navigator.userAgent.indexOf('[FB') >= 0)
+            alert('구글 정책으로 페이스북 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
+        else
+            window.open(authUrl, "self", 'popup')
+    }
+
     // 팝업창으로부터 message 받아 local storage 저장
     useEffect(() => {
         //SSR이기 때문에 window객체가 undefined로 설정. -> DOM 형성 후 실행이 되는 useEffect 사용해야 함
@@ -116,7 +127,9 @@ const Login = () => {
                 <Body2 >약속 일정을 만들고 만날 시간을 함께 정해요</Body2>
             </VStack>
             <FullButton style="white-black"
-                onClick={() => { window.open(authUrl, "self", 'popup') }}
+                onClick={() => {
+                    onLoginClick()
+                }}
             >
                 <Image src={googleIcon} alt="google-icon"/>
                 <StyledP>Google 계정으로 로그인</StyledP>
