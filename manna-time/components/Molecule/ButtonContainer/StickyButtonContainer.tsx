@@ -14,7 +14,7 @@ const MobileDiv = styled.div`
     align-items: center;
     justify-content: center;
     position: fixed;
-    bottom: 80px;
+    bottom: 40px;
     margin: auto;
     left: 20px;
     right: 20px;
