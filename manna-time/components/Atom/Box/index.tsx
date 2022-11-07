@@ -1,4 +1,7 @@
+import useIsClient from "@/hooks/useIsClient"
 import { Box, styled } from "@mui/system"
+import { getEventListeners } from "events"
+import { useEffect, useState } from "react"
 
 interface BoxProps {
     style?: 'primary' | 'secondary' | 'skyblue'
@@ -94,7 +97,33 @@ interface InputBoxProps {
     value: string
 }
 
+const getHeight = () => window.innerHeight
+  || document.documentElement.clientHeight 
+  || document.body.clientHeight;
+
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
+    const [innerHeight, setInnerHeight] = useState(0)
+
+    function handleResize() {
+        if (innerHeight > window.innerHeight)
+            document.querySelector('input')?.focus()
+        else if (innerHeight <= window.innerHeight)
+            document.querySelector('input')?.blur()
+    }
+    
+    useEffect(() => {
+        setInnerHeight(getHeight())
+    }, [])
+    
+    useEffect(() => {
+        if (innerHeight > 0)
+            window.addEventListener('resize', handleResize)
+
+        return () => {
+            window.removeEventListener('resize', handleResize)
+        }
+    },[innerHeight])
+    
     if (id === 'password') {
         return <StyledInput
         value={value}

@@ -24,6 +24,9 @@ import { DateCriteria, getFilteredSchedule } from "@/utils/date/convertGroup"
 import { ScreenLockRotationRounded } from "@mui/icons-material"
 import styled from "@emotion/styled"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
+import "react-multi-date-picker/styles/layouts/mobile.css"
+import { months, weekDays } from "@/utils/dateFormat"
+
 
 const dateRangeFormat = "YYYY-MM-DD"
 
@@ -132,6 +135,9 @@ const Room: NextPage = function () {
                                 </Center>
                                 <Center mt="20px" mb="12px">
                                     <Calendar className="rmdp-mobile"
+                                        currentDate={new DateObject(roomInfo.dates[0])}
+                                        months={months}
+                                        weekDays={weekDays}
                                         multiple
                                         value={selectedDates}
                                         onChange={(dateObjects: DateObject[]) => {
@@ -148,8 +154,16 @@ const Room: NextPage = function () {
                                                 let color = "#333333"
                                                 let border = "none"
                                                 let backgroundColor = "#ffffff"
+
+                                                let isSunday = (0 == date.weekDay.index)
+                                                let isSaturday = (6 == date.weekDay.index)
+
+                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSaturday) {
+                                                    color= "#0074D9"
+                                                }
                                                 
-                                                const flag = (selectedDate.filter((d) => { return isSameDate(date, d) }).length > 0)
+                                                const flag = (selectedDates.filter((d) => { return isSameDate(date, new DateObject(d)) }).length > 0)
                                                 if (flag) {
                                                     backgroundColor = "#ffffff"
                                                     border = "3px solid #00D8F8"

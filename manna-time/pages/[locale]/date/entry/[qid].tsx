@@ -32,6 +32,9 @@ import { convertDateCriteria, convertIndividualCriteria, DateCriteria, getFilter
 import styled from "@emotion/styled";
 import {css, keyframes} from "@emotion/react";
 import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
+import "react-multi-date-picker/styles/layouts/mobile.css"
+import { months, weekDays } from "@/utils/dateFormat";
+
 
 
 const dateRangeFormat = "YYYY-MM-DD"
@@ -138,6 +141,9 @@ const Entry: NextPage = function () {
                                 </Center>
                                 <Center mt="20px">
                                     <Calendar className="rmdp-mobile"
+                                        currentDate={new DateObject(roomInfo.dates[0])}
+                                        months={months}
+                                        weekDays={weekDays}
                                         onChange={
                                             (date: DateObject) => {
                                                 if (roomInfo.participants.length == 0) {
@@ -162,6 +168,14 @@ const Entry: NextPage = function () {
                                                 let opacity = 0
                                                 let color = "#333333"
                                                 let border = "none"
+                                                let isSunday = (0 == date.weekDay.index)
+                                                let isSaturday = (6 == date.weekDay.index)
+
+                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSaturday) {
+                                                    color= "#0074D9"
+                                                }
+                                                
                                                 if (filteredSchedule[formattedDate]) {
                                                     opacity = filteredSchedule[formattedDate].length / roomInfo.participants.length
                                                     color = "#ffffff"
