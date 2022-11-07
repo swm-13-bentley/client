@@ -16,6 +16,8 @@ import { useRecoilState } from "recoil"
 import { DateOnlyLoginState } from "@/src/state"
 import DateOnlyCard from "@/components/Atom/ModalCard/DateOnlyCard"
 import { resolveHref } from "next/dist/shared/lib/router/router"
+import "react-multi-date-picker/styles/layouts/mobile.css"
+
 
 const dateRangeFormat = "YYYY-MM-DD"
 

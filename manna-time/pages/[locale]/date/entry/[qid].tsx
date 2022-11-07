@@ -32,6 +32,8 @@ import { convertDateCriteria, convertIndividualCriteria, DateCriteria, getFilter
 import styled from "@emotion/styled";
 import {css, keyframes} from "@emotion/react";
 import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
+import "react-multi-date-picker/styles/layouts/mobile.css"
+
 
 
 const dateRangeFormat = "YYYY-MM-DD"

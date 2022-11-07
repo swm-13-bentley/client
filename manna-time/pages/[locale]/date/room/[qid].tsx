@@ -24,6 +24,8 @@ import { DateCriteria, getFilteredSchedule } from "@/utils/date/convertGroup"
 import { ScreenLockRotationRounded } from "@mui/icons-material"
 import styled from "@emotion/styled"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
+import "react-multi-date-picker/styles/layouts/mobile.css"
+
 
 const dateRangeFormat = "YYYY-MM-DD"
 
