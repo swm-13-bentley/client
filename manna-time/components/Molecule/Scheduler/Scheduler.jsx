@@ -41,7 +41,7 @@ const Scheduler = forwardRef((props, ref) => {
     }
   }))
 
-  let startDate, endDate, startTime, endTime, isGroup;
+  let roomDates, startDate, endDate, startTime, endTime, isGroup;
   let groupSchedule, totalNum, groupFilterChecked, participantNames // 필터 누를 때마다 그룹스케줄
   let isDisabled = false
   let calendarEvents = [] //비회원 캘린더 내 스케줄
@@ -86,7 +86,7 @@ const Scheduler = forwardRef((props, ref) => {
   
   } else {
     // props args
-
+    roomDates = props.roomInfo.dates.map((date)=>new Date(date))
     startDate = new Date(props.roomInfo.dates[0])
     endDate = new Date(props.roomInfo.dates[props.roomInfo.dates.length - 1])
     startTime = props.roomInfo.startTime
@@ -196,13 +196,19 @@ const Scheduler = forwardRef((props, ref) => {
   }
 
   let validDaysList = []
+  let roomDatesIndex = 0
   let weeks = tableList.map(
     days => {
       let firstDay = days[0].getDay();
       let monday = new Date(days[0].getTime() - (firstDay - (firstDay == 0 ? -6 : 1)) * (24 * 60 * 60 * 1000));
       let validDays = [false, false, false, false, false, false, false];
       days.forEach(
-        day => validDays[(day.getDay() + 6) % 7] = true
+        day => {
+          if (roomDatesIndex < roomDates.length && roomDates[roomDatesIndex].getTime() == day.getTime()) {
+            validDays[(day.getDay() + 6) % 7] = true
+            roomDatesIndex += 1
+          }
+        }
       );
       validDaysList.push(validDays);
       return [
