@@ -1,4 +1,5 @@
 import { Box, styled } from "@mui/system"
+import { useEffect, useState } from "react"
 
 interface BoxProps {
     style?: 'primary' | 'secondary' | 'skyblue'
@@ -95,6 +96,15 @@ interface InputBoxProps {
 }
 
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
+    const [visualViewPort, setVisualViewPort] = useState(0)
+    useEffect(() => {
+        setVisualViewPort(window.innerHeight)
+        window.addEventListener('resize', () => {
+            if (visualViewPort < window.innerHeight)
+                document.querySelector('input')?.blur();
+        })
+    },[])
+    
     if (id === 'password') {
         return <StyledInput
         value={value}
