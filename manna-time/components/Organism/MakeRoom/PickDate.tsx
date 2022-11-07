@@ -48,12 +48,12 @@ const PickDate = ({ value, setValue }: PickDateProps) => {
     };
 
     return (<>
-        <VStack className="mt-12 mb-10">
+        <VStack className="mt-6 mb-5">
             <Headline2 className="mb-4">날짜를 선택해주세요</Headline2>
             <Body1>약속을 잡기 원하는 후보 날짜들을 선택하세요</Body1>
         </VStack>
 
-        <VStack style={{marginBottom: "20px"}}>
+        <VStack style={{ marginBottom: "10px" }}>
             <Calendar
                 shadow={false}
                 className="rmdp-mobile"
@@ -75,12 +75,27 @@ const PickDate = ({ value, setValue }: PickDateProps) => {
                         }
                     }
                 }}
-                mapDays={({ date }) => {
-                    let props = { className: "" }
-                    let isWeekend = [0, 6].includes(date.weekDay.index)
+                mapDays={({ date, isSameDate, selectedDate }) => {
+                    let props = { className: "", style:{} }
+                    let isSunday = (0 == date.weekDay.index)
+                    let isSaturday = (6 == date.weekDay.index)
 
-                    if (isWeekend) props.className = "highlight-red"
-
+                    if (isSunday) props.className = "highlight-red"
+                    if (isSaturday) {
+                        props.style = {
+                            color: "#0074D9"
+                        }
+                    }
+                    
+                    const flag = (value.filter((d) => { return isSameDate(date, new DateObject(d)) }).length > 0)
+                    if (flag) {
+                        let backgroundColor = "#0074D9"
+                        let color= "#FFFFFF"
+                        props.style = {
+                            backgroundColor: backgroundColor,
+                            color: color
+                        }
+                    }
                     return props
                 }}
                 zIndex={0}

@@ -164,6 +164,14 @@ const Entry: NextPage = function () {
                                                 let opacity = 0
                                                 let color = "#333333"
                                                 let border = "none"
+                                                let isSunday = (0 == date.weekDay.index)
+                                                let isSaturday = (6 == date.weekDay.index)
+
+                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSaturday) {
+                                                    color= "#0074D9"
+                                                }
+                                                
                                                 if (filteredSchedule[formattedDate]) {
                                                     opacity = filteredSchedule[formattedDate].length / roomInfo.participants.length
                                                     color = "#ffffff"

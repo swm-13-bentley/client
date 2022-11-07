@@ -150,8 +150,16 @@ const Room: NextPage = function () {
                                                 let color = "#333333"
                                                 let border = "none"
                                                 let backgroundColor = "#ffffff"
+
+                                                let isSunday = (0 == date.weekDay.index)
+                                                let isSaturday = (6 == date.weekDay.index)
+
+                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSaturday) {
+                                                    color= "#0074D9"
+                                                }
                                                 
-                                                const flag = (selectedDate.filter((d) => { return isSameDate(date, d) }).length > 0)
+                                                const flag = (selectedDates.filter((d) => { return isSameDate(date, new DateObject(d)) }).length > 0)
                                                 if (flag) {
                                                     backgroundColor = "#ffffff"
                                                     border = "3px solid #00D8F8"
