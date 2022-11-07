@@ -12,6 +12,7 @@ import "react-multi-date-picker/styles/layouts/mobile.css"
 import React from "react"
 import { useRecoilState } from "recoil"
 import { DatePickerFilterState } from "@/src/state/DatePickerFilter"
+import { months, weekDays } from "@/utils/dateFormat"
 interface PickDateProps {
     value: string[]
     setValue(value: string[]): void
@@ -55,6 +56,8 @@ const PickDate = ({ value, setValue }: PickDateProps) => {
 
         <VStack style={{ marginBottom: "10px" }}>
             <Calendar
+                months={months}
+                weekDays={weekDays}
                 shadow={false}
                 className="rmdp-mobile"
                 multiple={filter == 'multiple'}

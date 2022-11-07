@@ -25,6 +25,7 @@ import { ScreenLockRotationRounded } from "@mui/icons-material"
 import styled from "@emotion/styled"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 import "react-multi-date-picker/styles/layouts/mobile.css"
+import { months, weekDays } from "@/utils/dateFormat"
 
 
 const dateRangeFormat = "YYYY-MM-DD"
@@ -134,6 +135,9 @@ const Room: NextPage = function () {
                                 </Center>
                                 <Center mt="20px" mb="12px">
                                     <Calendar className="rmdp-mobile"
+                                        currentDate={new DateObject(roomInfo.dates[0])}
+                                        months={months}
+                                        weekDays={weekDays}
                                         multiple
                                         value={selectedDates}
                                         onChange={(dateObjects: DateObject[]) => {

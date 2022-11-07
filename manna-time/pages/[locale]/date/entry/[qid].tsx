@@ -33,6 +33,7 @@ import styled from "@emotion/styled";
 import {css, keyframes} from "@emotion/react";
 import AnimatedTooltip from "@/components/Atom/AnimatedTooltip";
 import "react-multi-date-picker/styles/layouts/mobile.css"
+import { months, weekDays } from "@/utils/dateFormat";
 
 
 
@@ -140,6 +141,9 @@ const Entry: NextPage = function () {
                                 </Center>
                                 <Center mt="20px">
                                     <Calendar className="rmdp-mobile"
+                                        currentDate={new DateObject(roomInfo.dates[0])}
+                                        months={months}
+                                        weekDays={weekDays}
                                         onChange={
                                             (date: DateObject) => {
                                                 if (roomInfo.participants.length == 0) {
