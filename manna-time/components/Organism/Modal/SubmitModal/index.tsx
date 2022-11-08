@@ -89,7 +89,10 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
     const modalStep = [
         <CheckPage
             onSubmit={() => {
-                submitMySchedule(schedule)
+                if (dayOnly)
+                    submitDaySchedule(schedule)
+                else
+                    submitMySchedule(schedule)
             }}
             key="submit-check" />,
         <AlarmPage
@@ -157,6 +160,44 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
                 })
         }
 
+    }
+
+    function submitDaySchedule(props: any) {
+        let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/day/room/' + qid
+
+        if (isLoggedIn) {
+            axios.post(
+                `/api/user/date/${qid}/submit`,
+                {
+                    "participantName": name,
+                    "availableDates": props
+                },
+                { headers: { token: `${token}` } }
+            )
+                .then((result) => {
+                    setStepIndex(index => index + 2)
+                })
+                .catch((e) => {
+                    console.log(e)
+                    alert('일정등록이 실패하였습니다!')
+                })
+        } else {
+            axios({
+                method: 'post',
+                url: srcUrl + '/participant/available',
+                data: {
+                    "participantName": name,
+                    "availableDates": props
+                }
+            })
+                .then((result) => {
+                    setStepIndex(index => index + 1)
+                })
+                .catch((e) => {
+                    // console.log(e.response)
+                    alert('일정등록이 실패하였습니다! 관리자에게 문의하세요')
+                })
+        }
     }
 }
 

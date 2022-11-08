@@ -56,6 +56,7 @@ const MyPage = () => {
     }
 
     useEffect(() => {
+        setIsModalShown(false)
         if (isLoggedIn) {
             axios.get('/api/user/info/alarmEmail/all', {
                 headers: { token: token }
