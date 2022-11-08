@@ -48,12 +48,12 @@ const Plans: NextPage = function () {
                 onChange={setTab}
             >
                 <Background>
-                    {
-                        tab == 0 && <UncomfirmedPlanContainer plans={unconfirmedPlans} />
-                    }
-                    {
-                        tab == 1 && <ComfirmedPlanContainer plans={confirmedPlans}/>
-                    }
+                    <div className={tab == 0 ? "" : "hidden"}>
+                        <UncomfirmedPlanContainer plans={unconfirmedPlans} />
+                    </div>
+                    <div className={tab == 1 ? "" : "hidden"}>
+                        <ComfirmedPlanContainer plans={confirmedPlans}/>
+                    </div>
                 </Background>
             </TabLayout>
         </NoGnbLayout>
