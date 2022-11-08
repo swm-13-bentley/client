@@ -162,16 +162,16 @@ function Navbar() {
                             }
 
                             <ul className={styles.ul}>
-                                <li className={styles.li}>
-                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={() => {
+                                <li className={`align-middle ${styles.li}`}>
+                                    <button className={`${styles.a}`} style={{display:"flex",fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={() => {
                                         window.location.href = `/ko/make-room`;
                                     }}>
-                                        <Image src={gnbIcon1} alt="약속 만들기" />
+                                        <Image src={gnbIcon1} alt="약속 만들기" className=" align-middle" />
                                         약속 만들기
                                     </button>
                                 </li>
                                 <li className={styles.li}>
-                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={()=>{pushMyPlans()}}>
+                                    <button className={styles.a} style={{display:"flex", fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={()=>{pushMyPlans()}}>
                                         <Image src={gnbIcon2} alt="내 약속" />내 약속
                                     </button>
                                 </li>
@@ -182,7 +182,7 @@ function Navbar() {
                                     </button>
                                 </li> */}
                                 <li className={styles.li}>
-                                    <button className={styles.a} style={{fontWeight:"400", fontSize:"18px"}} onClick={() => setIsFeedbackShown(true)}>
+                                    <button className={styles.a} style={{display: "flex", fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={() => setIsFeedbackShown(true)}>
                                         <Image src={gnbIcon4} alt="피드백 보내기" />
                                         피드백 보내기
                                     </button>
