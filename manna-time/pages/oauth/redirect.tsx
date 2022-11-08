@@ -13,15 +13,9 @@ background-color: var(--ds-background-blanket,rgba(255,255,255,1));
 
 const Redirect = () => {
     const router = useRouter()
-    function flutterOnReady() {
-        window.flutter_inappwebview?.callHandler('flutterClose');
-    }
 
     useEffect(() => {
-        window.addEventListener("flutterInAppWebViewPlatformReady", flutterOnReady)
-        return () => {
-            window.removeEventListener("flutterInAppWebViewPlatformReady", flutterOnReady)
-        }
+        window.flutter_inappwebview?.callHandler('flutterClose');
     },[])
 
     if (typeof (router.query.accessToken) === 'string' && window.opener != null) {
