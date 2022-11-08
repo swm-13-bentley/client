@@ -158,7 +158,7 @@ const Room: NextPage = function () {
                                                 let isSunday = (0 == date.weekDay.index)
                                                 let isSaturday = (6 == date.weekDay.index)
 
-                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSunday) color = "#cc0303"
                                                 if (isSaturday) {
                                                     color= "#0074D9"
                                                 }
