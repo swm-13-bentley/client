@@ -14,13 +14,10 @@ background-color: var(--ds-background-blanket,rgba(255,255,255,1));
 const Redirect = () => {
     const router = useRouter()
 
-    useEffect(() => {
-        window.flutter_inappwebview?.callHandler('flutterClose');
-    },[])
-
     if (typeof (router.query.accessToken) === 'string' && window.opener != null) {
         window.opener.postMessage(router.query.accessToken)
         window.close()
+        window.flutter_inappwebview?.callHandler('flutterClose');
     }
 
     return (<>
