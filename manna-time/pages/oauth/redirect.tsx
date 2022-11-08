@@ -1,5 +1,6 @@
 import styled from "@emotion/styled"
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 
 const Board = styled.div`
 position: fixed;
@@ -16,6 +17,7 @@ const Redirect = () => {
     if (typeof (router.query.accessToken) === 'string' && window.opener != null) {
         window.opener.postMessage(router.query.accessToken)
         window.close()
+        window.flutter_inappwebview?.callHandler('flutterClose');
     }
 
     return (<>

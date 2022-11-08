@@ -1,4 +1,5 @@
 import { FullButton } from "@/components/Atom/Button"
+import ShimmerContainer from "@/components/Atom/Shimmer/ShimmerContainer"
 import FilterGroup from "@/components/Molecule/FilterGroup"
 import { ConfirmedPlan } from "@/components/Molecule/Plan"
 import { ConfirmedPlanProps } from "@/components/Molecule/Plan/Confirmed"
@@ -11,7 +12,7 @@ import { useEffect, useState } from "react"
 import { useRecoilValue } from "recoil"
 import EmptyPlan from "../EmptyPlan"
 
-const ComfirmedPlanContainer = ({ plans }: { plans: ConfirmedPlanProps[] }) => {
+const ComfirmedPlanContainer = ({ plans, isLoader }: { plans: ConfirmedPlanProps[], isLoader: boolean }) => {
     const router = useRouter()
     const filterNames = ["전체", "시간대", "날짜"]
 
@@ -36,6 +37,21 @@ const ComfirmedPlanContainer = ({ plans }: { plans: ConfirmedPlanProps[] }) => {
         }
     }, [filterChecked, confirmedPlans])
 
+    const PlansContainer = () => {
+        if (showingConfirmed.length == 0)
+            return <EmptyPlan type={"confirmed"} />
+        else if (showingConfirmed.length > 0)
+            return (
+                <VStack gap="12px" mb="80px">
+                    {showingConfirmed.map((plan, index) => {
+                        return (<ConfirmedPlan plan={plan} key={plan.roomUuid}
+                        />)
+                    })}
+                </VStack>
+            )
+        else return <></>
+    }
+
     return (
         <>
             <div className=" mt-16 mb-7">
@@ -47,16 +63,11 @@ const ComfirmedPlanContainer = ({ plans }: { plans: ConfirmedPlanProps[] }) => {
                     }} />
             </div>
             {
-                showingConfirmed.length == 0
+                isLoader
                     ?
-                <EmptyPlan type={"confirmed"} />
+                    <ShimmerContainer />
                     :
-                <VStack gap="12px" mb="80px">
-                    {showingConfirmed.map((plan, index) => {
-                        return (<ConfirmedPlan plan={plan} key={plan.roomUuid}
-                        />)
-                    })}
-                </VStack>
+                    <PlansContainer/>
             }
         </>
     )

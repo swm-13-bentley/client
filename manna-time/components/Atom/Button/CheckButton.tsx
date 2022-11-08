@@ -55,7 +55,8 @@ const CheckButton = ({ children, checked, onClick }: CheckButtonProps) => {
     return (
         <BorderBox>
             <button
-                className="w-full text-left"
+                className="w-full text-left flex"
+                style={{gap:"6px"}}
                 onClick={onClick}
             >
                 {children}
