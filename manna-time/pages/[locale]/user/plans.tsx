@@ -55,22 +55,10 @@ const Plans: NextPage = function () {
             >
                 <Background>
                     <div className={tab == 0 ? "" : "hidden"}>
-                        {
-                            isUnconfirmedLoader
-                                ?
-                                <ShimmerContainer />
-                                :
-                                <UncomfirmedPlanContainer plans={unconfirmedPlans} />
-                        }
+                        <UncomfirmedPlanContainer plans={unconfirmedPlans} isLoader={isUnconfirmedLoader} />
                     </div>
                     <div className={tab == 1 ? "" : "hidden"}>
-                        {
-                            isConfirmedLoader
-                                ?
-                                <ShimmerContainer />
-                                :
-                                <ComfirmedPlanContainer plans={confirmedPlans} />
-                        }
+                        <ComfirmedPlanContainer plans={confirmedPlans} isLoader={isConfirmedLoader} />
                     </div>
                 </Background>
             </TabLayout>

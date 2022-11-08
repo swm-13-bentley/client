@@ -1,4 +1,5 @@
 import { FullButton } from "@/components/Atom/Button"
+import ShimmerContainer from "@/components/Atom/Shimmer/ShimmerContainer"
 import FilterGroup from "@/components/Molecule/FilterGroup"
 import { UnconfirmedPlan } from "@/components/Molecule/Plan"
 import { UnConfirmedPlan } from "@/components/Molecule/Plan/Unconfirmed"
@@ -10,7 +11,7 @@ import { useEffect, useState } from "react"
 import { useRecoilValue } from "recoil"
 import EmptyPlan from "../EmptyPlan"
 
-const UncomfirmedPlanContainer = ({ plans }: { plans: UnConfirmedPlan[] }) => {
+const UncomfirmedPlanContainer = ({ plans, isLoader }: { plans: UnConfirmedPlan[], isLoader: boolean }) => {
     const router = useRouter()
     const token = useRecoilValue(tokenState)
     const filterNames = ["전체", "시간대", "날짜"]
@@ -42,7 +43,7 @@ const UncomfirmedPlanContainer = ({ plans }: { plans: UnConfirmedPlan[] }) => {
             { headers: { token: token, uuid: id } }
         )
             .then((result) => {
-                console.log('result: ',result)
+                console.log('result: ', result)
                 let newPlans = [...unconfirmedPlans]
                 const itemToFind = newPlans.find(item => { return item.roomUuid == id })
                 if (itemToFind != undefined) {
@@ -51,7 +52,21 @@ const UncomfirmedPlanContainer = ({ plans }: { plans: UnConfirmedPlan[] }) => {
                     setUnconfirmedPlans(newPlans)
                 }
             })
-            .catch((e)=>{console.log(e)})
+            .catch((e) => { console.log(e) })
+    }
+
+    const plansContainer = () => {
+        if (showingUnconfirmed.length == 0)
+            return (<EmptyPlan type={"unconfirmed"} />)
+        else if (showingUnconfirmed.length > 0)
+            return (
+                <VStack gap="12px">
+                    {showingUnconfirmed.map((plan, index) => {
+                        return (<UnconfirmedPlan plan={plan} key={plan.roomUuid} onDelete={() => onItemDelete(plan.roomUuid)}
+                        />)
+                    })}
+                </VStack>
+            )
     }
 
     return (
@@ -65,16 +80,11 @@ const UncomfirmedPlanContainer = ({ plans }: { plans: UnConfirmedPlan[] }) => {
                     }} />
             </div>
             {
-                showingUnconfirmed.length == 0
+                isLoader
                     ?
-                <EmptyPlan type={"unconfirmed"} />
+                    <ShimmerContainer />
                     :
-                <VStack gap="12px">
-                    {showingUnconfirmed.map((plan, index) => {
-                        return (<UnconfirmedPlan plan={plan} key={plan.roomUuid} onDelete={()=>onItemDelete(plan.roomUuid)}
-                        />)
-                    })}
-                </VStack>
+                    {plansContainer}
             }
             <VStack w="100%" className=" mt-10 mb-20">
                 <FullButton style="secondary"
