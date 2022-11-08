@@ -37,7 +37,7 @@ const ComfirmedPlanContainer = ({ plans, isLoader }: { plans: ConfirmedPlanProps
         }
     }, [filterChecked, confirmedPlans])
 
-    const plansContainer = () => {
+    const PlansContainer = () => {
         if (showingConfirmed.length == 0)
             return <EmptyPlan type={"confirmed"} />
         else if (showingConfirmed.length > 0)
@@ -49,6 +49,7 @@ const ComfirmedPlanContainer = ({ plans, isLoader }: { plans: ConfirmedPlanProps
                     })}
                 </VStack>
             )
+        else return <></>
     }
 
     return (
@@ -66,7 +67,7 @@ const ComfirmedPlanContainer = ({ plans, isLoader }: { plans: ConfirmedPlanProps
                     ?
                     <ShimmerContainer />
                     :
-                    { plansContainer }
+                    <PlansContainer/>
             }
         </>
     )

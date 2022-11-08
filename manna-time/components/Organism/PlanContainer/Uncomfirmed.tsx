@@ -55,7 +55,7 @@ const UncomfirmedPlanContainer = ({ plans, isLoader }: { plans: UnConfirmedPlan[
             .catch((e) => { console.log(e) })
     }
 
-    const plansContainer = () => {
+    const PlansContainer = () => {
         if (showingUnconfirmed.length == 0)
             return (<EmptyPlan type={"unconfirmed"} />)
         else if (showingUnconfirmed.length > 0)
@@ -67,6 +67,7 @@ const UncomfirmedPlanContainer = ({ plans, isLoader }: { plans: UnConfirmedPlan[
                     })}
                 </VStack>
             )
+        else return <></>
     }
 
     return (
@@ -84,7 +85,7 @@ const UncomfirmedPlanContainer = ({ plans, isLoader }: { plans: UnConfirmedPlan[
                     ?
                     <ShimmerContainer />
                     :
-                    {plansContainer}
+                    <PlansContainer/>
             }
             <VStack w="100%" className=" mt-10 mb-20">
                 <FullButton style="secondary"
