@@ -11,6 +11,7 @@ import UncomfirmedPlanContainer from "@/components/Organism/PlanContainer/Uncomf
 import { UnConfirmedPlan } from "@/components/Molecule/Plan/Unconfirmed"
 import ComfirmedPlanContainer from "@/components/Organism/PlanContainer/Confirmed"
 import { ConfirmedPlanProps } from "@/components/Molecule/Plan/Confirmed"
+import ShimmerContainer from "@/components/Atom/Shimmer/ShimmerContainer"
 
 const Plans: NextPage = function () {
     const token = useRecoilValue(tokenState)
@@ -19,12 +20,16 @@ const Plans: NextPage = function () {
     const [unconfirmedPlans, setUnconfirmedPlans] = useState<UnConfirmedPlan[]>([])
     const [confirmedPlans, setConfirmedPlans] = useState<ConfirmedPlanProps[]>([])
 
+    const [isUnconfirmedLoader, setIsUnconfirmedLoader] = useState(true)
+    const [isConfirmedLoader, setIsConfirmedLoader] = useState(true)
+
     useEffect(() => {
         axios.get(
             '/api/user/plans/unconfirmed',
             { headers: { token: `${token}` } }
         ).then((response) => {
             setUnconfirmedPlans(response.data)
+            setIsUnconfirmedLoader(false)
         }).catch((e) => {
             alert('대기중 약속을 불러오는 중 오류가 발생했습니다. 관리자에게 문의하세요')
         })
@@ -34,6 +39,7 @@ const Plans: NextPage = function () {
             { headers: { token: `${token}` } }
         ).then((response) => {
             setConfirmedPlans(response.data)
+            setIsConfirmedLoader(false)
         }).catch((e) => {
             alert('확정된 약속을 불러오는 중 오류가 발생했습니다. 관리자에게 문의하세요')
         })
@@ -49,10 +55,22 @@ const Plans: NextPage = function () {
             >
                 <Background>
                     <div className={tab == 0 ? "" : "hidden"}>
-                        <UncomfirmedPlanContainer plans={unconfirmedPlans} />
+                        {
+                            isUnconfirmedLoader
+                                ?
+                                <ShimmerContainer />
+                                :
+                                <UncomfirmedPlanContainer plans={unconfirmedPlans} />
+                        }
                     </div>
                     <div className={tab == 1 ? "" : "hidden"}>
-                        <ComfirmedPlanContainer plans={confirmedPlans}/>
+                        {
+                            isConfirmedLoader
+                                ?
+                                <ShimmerContainer />
+                                :
+                                <ComfirmedPlanContainer plans={confirmedPlans} />
+                        }
                     </div>
                 </Background>
             </TabLayout>
