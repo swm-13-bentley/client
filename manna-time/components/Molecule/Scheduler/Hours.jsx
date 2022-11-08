@@ -48,7 +48,7 @@ const hours = [
   { realTime: "23:00", id: 46, toggled: false, time: "23" },
   { realTime: "23:30", id: 47, toggled: false, time: "" },
   // 다음날 - 새벽 고려
-  { id: 48, toggled: false, time: "0" },
+  { realTime: "24:00", id: 48, toggled: false, time: "0" },
   { id: 49, toggled: false, time: "" },
   { id: 50, toggled: false, time: "1" },
   { id: 51, toggled: false, time: "" },

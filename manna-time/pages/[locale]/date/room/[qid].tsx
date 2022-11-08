@@ -26,6 +26,8 @@ import styled from "@emotion/styled"
 import { isLoggedInState, tokenState } from "@/src/state/UserInfo"
 import "react-multi-date-picker/styles/layouts/mobile.css"
 import { months, weekDays } from "@/utils/dateFormat"
+import { ModalState } from "@/src/state/Modal"
+import SubmitModal from "@/components/Organism/Modal/SubmitModal"
 
 
 const dateRangeFormat = "YYYY-MM-DD"
@@ -61,11 +63,16 @@ const Room: NextPage = function () {
     const [selectedDates, setSelectedDates] = useState<string[]>([])
     let [groupFilterChecked, setGroupFilterChecked] = useState(null)
     const [filteredSchedule, setFilteredSchedule] = useState<DateCriteria | null>(null)
+    const [isModalShown, setIsModalShown] = useRecoilState(ModalState)
     let scheduleRef = useRef()
 
     let srcUrl = process.env.NEXT_PUBLIC_API_URL + '/day/room/' + qid
     let textUrl = process.env.NEXT_PUBLIC_SERVICE_URL + '/ko/date/entry/' + qid + '?invitation=true'
 
+    useEffect(() => {
+        setIsModalShown(false)
+    }, [])
+    
     useEffect(() => {
         axios.get(srcUrl)
             .then((result) => {
@@ -82,7 +89,7 @@ const Room: NextPage = function () {
             if (isLoggedIn) {
                 axios.get(
                     `/api/user/date/${qid}/seperate`,
-                    { headers: { token: `${token}`} }
+                    { headers: { token: `${token}` } }
                 )
                     .then((result) => {
                         setParticipantName(result.data.myself.participantName)
@@ -102,10 +109,10 @@ const Room: NextPage = function () {
                         setGroupNamesExceptMe(result.data.others.reduce((allNames, obj) => {
                             allNames.push(obj.participantName)
                             return allNames
-                        },[]))
+                        }, []))
                         setGroupFilterChecked(Array(result.data.others.length).fill(true))
                     })
-                    .catch((e)=> {console.log(e)})
+                    .catch((e) => { console.log(e) })
             }
         }
     }, [srcUrl, isLoggedIn]);
@@ -117,6 +124,9 @@ const Room: NextPage = function () {
 
     return (
         <>
+            {
+                isModalShown && <SubmitModal isLoggedIn={isLoggedIn} dayOnly={true} schedule={selectedDates} />
+            }
             <TabLayout
                 value={tab}
                 tabLabel={["내 일정", "약속 정보"]}
@@ -147,7 +157,7 @@ const Room: NextPage = function () {
                                         mapDays={({ date, selectedDate, isSameDate }) => {
                                             const formattedDate = date.format(dateRangeFormat)
                                             let isDateRange = roomInfo.dates.includes(formattedDate)
-                                            
+
                                             if (isDateRange) {
                                                 let props = { className: "", disabled: false, style: {} }
                                                 let opacity = 0
@@ -158,11 +168,11 @@ const Room: NextPage = function () {
                                                 let isSunday = (0 == date.weekDay.index)
                                                 let isSaturday = (6 == date.weekDay.index)
 
-                                                if (isSunday) props.className = "highlight-red"
+                                                if (isSunday) color = "#cc0303"
                                                 if (isSaturday) {
-                                                    color= "#0074D9"
+                                                    color = "#0074D9"
                                                 }
-                                                
+
                                                 const flag = (selectedDates.filter((d) => { return isSameDate(date, new DateObject(d)) }).length > 0)
                                                 if (flag) {
                                                     backgroundColor = "#ffffff"
@@ -173,15 +183,15 @@ const Room: NextPage = function () {
                                                     color = "#ffffff"
                                                     backgroundColor = `rgba(0, 86, 224, ${opacity})`
                                                 }
-                                                
+
                                                 props.style = {
                                                     backgroundColor: backgroundColor,
                                                     color: color,
                                                     border: border
                                                 }
                                                 // let isWeekend = [0, 6].includes(date.weekDay.index)
-                                                
-                                                
+
+
                                                 return props
                                             }
                                             else return {
@@ -190,9 +200,9 @@ const Room: NextPage = function () {
                                             }
                                         }}
                                         zIndex={1}
-                                        />
+                                    />
                                 </Center>
-                                    <StyledP>약속 가능한 날짜들을 선택해주세요</StyledP>
+                                <StyledP>약속 가능한 날짜들을 선택해주세요</StyledP>
                             </Background>
 
                             <Background>
@@ -200,7 +210,7 @@ const Room: NextPage = function () {
                                     <FullButton style="primary"
                                         onClick={() => {
                                             MixpanelTracking.getInstance().buttonClicked("date/room/내일정: 내 일정 등록하기")
-                                            submitMySchedule(selectedDates)
+                                            setIsModalShown(true)
                                         }}
                                     >내 일정 등록/수정하기</FullButton>
                                 </BasicButtonContainer>
@@ -234,27 +244,6 @@ const Room: NextPage = function () {
             </TabLayout>
         </>
     )
-
-    function submitMySchedule(mySchedule: string[]) {
-        axios({
-            method: 'post',
-            url: srcUrl + '/participant/available',
-            data: {
-                "participantName": participantName,
-                "availableDates": mySchedule
-            }
-        })
-            .then((result) => {
-                alert('일정이 등록되었습니다.')
-                router.push(`/${router.query.locale}/date/entry/${qid}`);
-
-            })
-            .catch((e) => {
-                // console.log(e.response)
-                alert('일정등록이 실패하였습니다! 관리자에게 문의하세요')
-            })
-
-    }
 
 }
 
