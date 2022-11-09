@@ -20,6 +20,8 @@ import axios from "axios";
 import EmailAlarm, { AlarmEmail } from "@/components/Molecule/EmailAlarm";
 import { ModalState } from "@/src/state/Modal";
 import SignOutModal from "@/components/Organism/Modal/SignOutModal";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
+import { Skeleton } from "@mui/material";
 
 const Description = styled.p`
     font-style: normal;
@@ -47,11 +49,13 @@ const MyPage = () => {
 
 
     const pushLogout = () => {
+        MixpanelTracking.getInstance().buttonClicked("my-page: 로그아웃")
         setToken("")
         router.push('/')
     }
 
     const pushPrivacyPolicy = () => {
+        MixpanelTracking.getInstance().buttonClicked("my-page: 개인정보 처리 방침")
         router.push('/ko/privacy-policy')
     }
 
@@ -102,7 +106,10 @@ const MyPage = () => {
                                 <>
                                     <Subhead3 className="min-w-max">{name}</Subhead3>
                                     <div className="relative w-full right-0 bottom-5">
-                                        <BasicButton onClick={() => { setModify(true) }}>수정</BasicButton>
+                                        <BasicButton onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("my-page: 이름 수정")
+                                            setModify(true)
+                                        }}>수정</BasicButton>
                                     </div>
                                 </>
                             }
@@ -134,18 +141,27 @@ const MyPage = () => {
                 <div className="mt-10 mb-10">
                     <Subhead2>알림 설정</Subhead2>
                     <Description style={{ marginBottom: "30px", marginTop: "8px" }}>약속 확정 시 등록된 메일로 알림을 보내드려요</Description>
-                    {alarmEmails.map((alarmEmail, index) => {
+                    {
+                        alarmEmails.length > 0
+                        ?
+                        alarmEmails.map((alarmEmail, index) => {
                         return (<EmailAlarm
                             key={`alarm-email-${index}`}
                             alarmEmail={alarmEmail} />)
-                    })}
+                        })
+                        :
+                        <Skeleton width="30%"/>
+                    }
                 </div>
                 <Line color={"lightgrey"} />
                 <div className="mt-10 mb-10 text-left w-full">
                     <button className="block" onClick={pushPrivacyPolicy}>
                         <Body2>개인정보 처리 방침</Body2>
                     </button>
-                    <button className="block mt-5" onClick={()=>{setIsModalShown(true)}}>
+                    <button className="block mt-5" onClick={() => {
+                        MixpanelTracking.getInstance().buttonClicked("my-page: 회원 탈퇴")
+                        setIsModalShown(true)
+                    }}>
                         <Body2>회원 탈퇴</Body2>
                     </button>
                 </div>

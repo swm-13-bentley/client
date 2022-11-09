@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useRecoilValue } from "recoil";
 import { tokenState } from "@/src/state/UserInfo";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 
 export interface AlarmEmail {
     email: string
@@ -34,6 +35,7 @@ const EmailAlarm = ({ alarmEmail }: { alarmEmail: AlarmEmail }) => {
     }
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        MixpanelTracking.getInstance().track("my-page: 알림 설정 라디오",{checked: event.target.checked, email: alarmEmail.email})  
         setChecked(event.target.checked);
         sendRequest(event.target.checked)
     };

@@ -3,6 +3,7 @@ import { BasicButton } from "@/components/Atom/Button"
 import Line from "@/components/Atom/Line"
 import ConfirmModal from "@/components/Organism/Modal/ConfirmModal";
 import { ModalState } from "@/src/state/Modal";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 import styled from "@emotion/styled"
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useEffect, useState } from "react";
@@ -91,6 +92,7 @@ const Rank = ({ rank, time, participants, startTime, endTime, date }: RankProps)
                     onClick={() => {
                         setThisClicked(true)
                         setIsModalShown(true)
+                        MixpanelTracking.getInstance().buttonClicked(`${startTime==undefined? 'date/' : ''}entry/순위: 확정`)       
                     }}
                 >확정</BasicButton>
             </div>

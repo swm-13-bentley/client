@@ -14,6 +14,7 @@ import { useRecoilState } from "recoil";
 import { ModalState } from "@/src/state/Modal";
 import DeleteModal from "@/components/Organism/Modal/DeleteModal";
 import axios from "axios";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 
 export interface UnConfirmedPlan {
     count: number
@@ -172,6 +173,7 @@ const Unconfirmed = ({ plan, onDelete }: { plan: UnConfirmedPlan, onDelete:()=>v
             }
             <FullButton size="x-small" style="white-black"
                 onClick={() => {
+                    MixpanelTracking.getInstance().buttonClicked("plans/대기중인약속: 일정 확인하러 가기")
                     if (plan.isDayOnly)
                         router.push(`/${router.query.locale}/date/entry/${plan.roomUuid}`)
                     else
