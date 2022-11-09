@@ -280,13 +280,13 @@ const Scheduler = forwardRef((props, ref) => {
 
   const [currTot, changeCurrTot] = useState({ cellsTot: tableState });
   const [currIdx, changeCurrIdx] = useState({ index: 0 });
-  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString().slice(5, -1).split(' ').join('') });
-  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString().slice(5, -1).split(' ').join('') });
+  const [monText, changeMonText] = useState({ text: weeks[0][0].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [tueText, changeTueText] = useState({ text: weeks[0][1].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [wedText, changeWedText] = useState({ text: weeks[0][2].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [thuText, changeThuText] = useState({ text: weeks[0][3].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [friText, changeFriText] = useState({ text: weeks[0][4].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [satText, changeSatText] = useState({ text: weeks[0][5].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
+  const [sunText, changeSunText] = useState({ text: weeks[0][6].toLocaleDateString('ko-KR').slice(5, -1).split(' ').join('') });
   const dayTexts = [monText, tueText, wedText, thuText, friText, satText, sunText];
   const dayChanges = [changeMonText, changeTueText, changeWedText, changeThuText, changeFriText, changeSatText, changeSunText];
 
