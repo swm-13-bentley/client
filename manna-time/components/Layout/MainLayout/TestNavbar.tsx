@@ -17,6 +17,7 @@ import gnbIcon4 from '@/public/icons/navbar/ico_gnb4.svg'
 import profileIcon from '@/public/icons/navbar/profile.svg'
 import { decodedTokenState, isLoggedInState, tokenState } from "@/src/state/UserInfo";
 import { useRouter } from "next/router";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 
 function Navbar() {
     const router = useRouter()
@@ -38,6 +39,8 @@ function Navbar() {
     }, [flag])
 
     const pushLogin = () => {
+        MixpanelTracking.getInstance().buttonClicked("GNB: 로그인/회원가입")
+
         setMenuOpen(false)
         router.push({
             pathname: '/ko/login',
@@ -48,6 +51,8 @@ function Navbar() {
     }
 
     const pushMyPlans = () => {
+        MixpanelTracking.getInstance().buttonClicked("GNB: 내 약속")
+
         setMenuOpen(false)
         // todo: 로그인 안된 경우
         if (!isLoggedIn) {
@@ -63,6 +68,8 @@ function Navbar() {
     }
 
     const pushMyPage = () => {
+        MixpanelTracking.getInstance().buttonClicked("GNB: 마이페이지")
+
         router.push('/ko/user/my-page')
     }
 
@@ -72,14 +79,18 @@ function Navbar() {
             <header id={styles.header}>
                 <div className={`${styles.div} ${styles.inner} ${styles.clearfix}`}>
                     <h1 className={styles.h1}>
-                        <button className={`h-min leading-none ${styles.a}`} onClick={() => { window.location.href = "/" }}>
+                        <button className={`h-min leading-none ${styles.a}`} onClick={() => {
+                            MixpanelTracking.getInstance().buttonClicked("GNB: 언제만나 로고")
+                            window.location.href = "/"
+                        }}>
                             <Image src={logo} alt="Mannatime" />
                         </button>
                     </h1>
                     <nav id={styles.nav} className={styles.only_pc}>
                         <ul className={styles.ul}>
                             <li className={styles.li}>
-                                <button className={styles.a} style={{fontWeight:"400", fontSize:"14px"}} onClick={() => {
+                                <button className={styles.a} style={{ fontWeight: "400", fontSize: "14px" }} onClick={() => {
+                                    MixpanelTracking.getInstance().buttonClicked("GNB: 약속 만들기")
                                     window.location.href = `/ko/make-room`;
                                 }}>약속 만들기</button>
                             </li>
@@ -87,15 +98,16 @@ function Navbar() {
                             {
                                 isLoggedIn && (
                                     <>
-                                        <li className={styles.li}><button style={{fontWeight:"400", fontSize:"14px"}} className={styles.a} onClick={()=>{pushMyPlans()}}>내 약속</button></li>
+                                        <li className={styles.li}><button style={{ fontWeight: "400", fontSize: "14px" }} className={styles.a} onClick={() => { pushMyPlans() }}>내 약속</button></li>
                                         {/* <li className={styles.li}><button style={{fontWeight:"400", fontSize:"14px"}} className={styles.a}>캘린더 관리</button></li> */}
                                     </>
                                 )
                             }
 
                             <li className={styles.li}>
-                                <button className={styles.a} style={{fontWeight:"400", fontSize:"14px"}}
+                                <button className={styles.a} style={{ fontWeight: "400", fontSize: "14px" }}
                                     onClick={() => {
+                                        MixpanelTracking.getInstance().buttonClicked("GNB: 피드백 보내기")
                                         setIsFeedbackShown(true)
                                     }}
                                 >피드백 보내기</button>
@@ -163,15 +175,16 @@ function Navbar() {
 
                             <ul className={styles.ul}>
                                 <li className={`align-middle ${styles.li}`}>
-                                    <button className={`${styles.a}`} style={{display:"flex",fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={() => {
+                                    <button className={`${styles.a}`} style={{ display: "flex", fontWeight: "400", fontSize: "18px", gap: "6px" }} onClick={() => {
                                         window.location.href = `/ko/make-room`;
+                                        MixpanelTracking.getInstance().buttonClicked("GNB: 약속 만들기")
                                     }}>
                                         <Image src={gnbIcon1} alt="약속 만들기" className=" align-middle" />
                                         약속 만들기
                                     </button>
                                 </li>
                                 <li className={styles.li}>
-                                    <button className={styles.a} style={{display:"flex", fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={()=>{pushMyPlans()}}>
+                                    <button className={styles.a} style={{ display: "flex", fontWeight: "400", fontSize: "18px", gap: "6px" }} onClick={() => { pushMyPlans() }}>
                                         <Image src={gnbIcon2} alt="내 약속" />내 약속
                                     </button>
                                 </li>
@@ -182,7 +195,11 @@ function Navbar() {
                                     </button>
                                 </li> */}
                                 <li className={styles.li}>
-                                    <button className={styles.a} style={{display: "flex", fontWeight:"400", fontSize:"18px", gap:"6px"}} onClick={() => setIsFeedbackShown(true)}>
+                                    <button className={styles.a} style={{ display: "flex", fontWeight: "400", fontSize: "18px", gap: "6px" }}
+                                        onClick={() => {
+                                            MixpanelTracking.getInstance().buttonClicked("GNB: 피드백 보내기")
+                                            setIsFeedbackShown(true)
+                                        }}>
                                         <Image src={gnbIcon4} alt="피드백 보내기" />
                                         피드백 보내기
                                     </button>
@@ -190,7 +207,7 @@ function Navbar() {
                             </ul>
                             {/* TODO: 로그인 후    */}
                             {
-                                isLoggedIn && <span className={styles.hd_logout} onClick={()=>{setToken("")}}>로그아웃</span>
+                                isLoggedIn && <span className={styles.hd_logout} onClick={() => { setToken("") }}>로그아웃</span>
                             }
 
                         </div>

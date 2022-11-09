@@ -16,6 +16,7 @@ import { decodedTokenState, tokenState } from "@/src/state/UserInfo"
 import { isArray } from "lodash"
 import _ from "lodash"
 import axios from "axios"
+import { MixpanelTracking } from "@/utils/sdk/mixpanel"
 
 const CenterScreen = styled.div`
 display: flex;
@@ -57,12 +58,16 @@ const Login = () => {
     }
 
     const onLoginClick = () => {
+        MixpanelTracking.getInstance().buttonClicked("login: 구글 계정으로 로그인")
+
         if (navigator.userAgent.indexOf('KAKAO') >= 0)
             alert('구글 정책으로 카카오톡 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
         else if (navigator.userAgent.indexOf('Instagram') >= 0)
             alert('구글 정책으로 인스타그램 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
         else if (navigator.userAgent.indexOf('[FB') >= 0)
             alert('구글 정책으로 페이스북 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
+        else if (navigator.userAgent.indexOf('everytimeApp') >= 0)
+            alert('구글 정책으로 에브리타임 인앱에서는 로그인이 불가합니다😢 크롬, 사파리 등 다른 브라우저를 이용해주세요.')
         else
             window.open(authUrl, "self", 'popup')
     }

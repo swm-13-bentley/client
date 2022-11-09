@@ -9,6 +9,7 @@ import { FullButton } from "@/components/Atom/Button";
 import { Rank } from "@/components/Organism/RankContainer";
 import { useRouter } from "next/router";
 import { changeDateToKorean, changeTimeFormat, dateConversion, getKoDateRange } from "@/utils/changeFormat";
+import { MixpanelTracking } from "@/utils/sdk/mixpanel";
 
 export interface ConfirmedPlanProps {
     roomTitle: string
@@ -131,6 +132,7 @@ const Confirmed = ({ plan }: { plan: ConfirmedPlanProps }) => {
             </div>
             <FullButton size="x-small" style="white-black"
                 onClick={() => {
+                    MixpanelTracking.getInstance().buttonClicked("plans/확정된약속: 일정 확인하러 가기")
                     if (plan.isDayOnly)
                         router.push(`/${router.query.locale}/date/entry/${plan.roomUuid}`)
                     else
