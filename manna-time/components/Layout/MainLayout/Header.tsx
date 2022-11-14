@@ -36,7 +36,7 @@ const Header: React.FC<Props> = function ({ title, service }: Props) {
                 <meta property="og:title" content="언제만나 - 약속시간 확정 서비스" />
                 <meta property="og:description" content="단체 약속을 간편하게, 언제만나!" />
                 <meta property="og:url" content="https://mannatime.io/" />
-                <meta property="og:image" content="https://mannatime.io/images/og_background2.png" />
+                <meta property="og:image" content="/images/og_background2.png" />
 
                 <meta name="twitter:card" content="summary" />
                 <meta name="twitter:url" content="https://mannatime.io/" />
