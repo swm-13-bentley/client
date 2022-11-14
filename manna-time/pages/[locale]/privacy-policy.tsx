@@ -29,7 +29,6 @@ const Policy = () => {
                     <li className="li4"><span className="s2" /><span className="s1">&lt;홈페이지 회원가입 및 관리&gt;와 관련한 개인정보는 수집.이용에 관한 동의일로부터&lt;3년&gt;까지 위 이용목적을 위하여 보유.이용됩니다.</span></li>
                     <li className="li4"><span className="s2" /><span className="s1">보유근거 : 개인정보보호법 제35조-제39조</span></li>
                     <li className="li4"><span className="s2" /><span className="s1">관련법령 : 신용정보의 수집/처리 및 이용 등에 관한 기록 : 3년</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">예외사유 :<span className="Apple-converted-space">&nbsp;</span></span></li>
                 </ul>
                 <p className="p3"><span className="s1" /><br /></p>
                 <p className="p3"><span className="s1" /><br /></p>
@@ -128,18 +127,18 @@ const Policy = () => {
                 <p className="p2"><span className="s1">① 언제만나(mannatime) 은(는) 개인정보 처리에 관한 업무를 총괄해서 책임지고, 개인정보 처리와 관련한 정보주체의 불만처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.</span></p>
                 <ul className="ul1">
                     <li className="li4"><span className="s2" /><span className="s1">▶ 개인정보 보호책임자<span className="Apple-converted-space">&nbsp;</span></span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">성명 :현성환</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">직책 :개발자</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">직급 :없음</span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">성명 : 현성환</span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">직책 : 개발자</span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">직급 : 없음</span></li>
                     <li className="li4"><span className="s2" /><span className="s1">연락처 :010-9102-7865, mincho.gu2gong@gmail.com,<span className="Apple-converted-space">&nbsp;</span></span></li>
                 </ul>
                 <p className="p2"><span className="s1">※ 개인정보 보호 담당부서로 연결됩니다.</span></p>
                 <p className="p1"><span className="s1" /><br /></p>
                 <ul className="ul1">
                     <li className="li4"><span className="s2" /><span className="s1">▶ 개인정보 보호 담당부서</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">부서명 :</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">담당자 :</span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">연락처 :, ,<span className="Apple-converted-space">&nbsp;</span></span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">부서명 : 정보보안팀</span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">담당자 : 현성환</span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">연락처 : 010-9102-7865<span className="Apple-converted-space">&nbsp;</span></span></li>
                 </ul>
                 <p className="p2"><span className="s1">② 정보주체께서는 언제만나(mannatime) 의 서비스(또는 사업)을 이용하시면서 발생한 모든 개인정보 보호 관련 문의, 불만처리, 피해구제 등에 관한 사항을 개인정보 보호책임자 및 담당부서로 문의하실 수 있습니다. 언제만나(mannatime) 은(는) 정보주체의 문의에 대해 지체 없이 답변 및 처리해드릴 것입니다.</span></p>
                 <p className="p2"><span className="s1">제12조(개인정보의 열람청구를 접수·처리하는 부서)<br />
@@ -147,9 +146,9 @@ const Policy = () => {
                         &lt; 언제만나(mannatime) &gt;은(는) 정보주체의 개인정보 열람청구가 신속하게 처리되도록 노력하겠습니다.<span className="Apple-converted-space">&nbsp;</span></span></p>
                 <ul className="ul1">
                     <li className="li4"><span className="s2" /><span className="s1">▶ 개인정보 열람청구 접수·처리 부서<span className="Apple-converted-space">&nbsp;</span></span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">부서명 :<span className="Apple-converted-space">&nbsp;</span></span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">담당자 :<span className="Apple-converted-space">&nbsp;</span></span></li>
-                    <li className="li4"><span className="s2" /><span className="s1">연락처 : , ,<span className="Apple-converted-space">&nbsp;</span></span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">부서명 : 정보보안팀<span className="Apple-converted-space">&nbsp;</span></span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">담당자 : 현성환<span className="Apple-converted-space">&nbsp;</span></span></li>
+                    <li className="li4"><span className="s2" /><span className="s1">연락처 : 010-9102-7865<span className="Apple-converted-space">&nbsp;</span></span></li>
                 </ul>
                 <p className="p3"><span className="s1" /><br /></p>
                 <p className="p3"><span className="s1" /><br /></p>
