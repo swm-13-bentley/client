@@ -35,8 +35,8 @@ const Plans: NextPage = function () {
         })
 
         axios.get(
-            '/api/user/plans/confirmed',
-            { headers: { token: `${token}` } }
+            `${process.env.NEXT_PUBLIC_API_URL}/user/myRoom/confirmed`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         ).then((response) => {
             setConfirmedPlans(response.data)
             setIsConfirmedLoader(false)

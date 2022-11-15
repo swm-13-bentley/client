@@ -7,7 +7,7 @@ export default async function changeAlarmStatus(
 ) {
     const { token } = req.headers
     const { email, receiveEmail } = req.body
-    console.log('wtf:',receiveEmail)
+
     axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/user/alarmEmail/status`, {
             email: email,

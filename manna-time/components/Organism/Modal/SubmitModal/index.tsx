@@ -128,12 +128,12 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
     function submitMySchedule(props: any) {
         if (isLoggedIn) {
             axios.post(
-                `/api/user/time/${qid}/submit`,
+                `${process.env.NEXT_PUBLIC_API_URL}/user/room/${qid}/participant/available`,
                 {
                     "participantName": name,
                     "available": props
                 },
-                { headers: { token: `${token}` } }
+                { headers: { 'Authorization': `Bearer ${token}` } }
             )
                 .then((result) => {
                     setStepIndex(index => index + 2)
@@ -167,12 +167,12 @@ const SubmitModal = ({ isLoggedIn, dayOnly, schedule }: ModalProps) => {
 
         if (isLoggedIn) {
             axios.post(
-                `/api/user/date/${qid}/submit`,
+                `${process.env.NEXT_PUBLIC_API_URL}/user/day/room/${qid}/participant/available`,
                 {
                     "participantName": name,
                     "availableDates": props
                 },
-                { headers: { token: `${token}` } }
+                { headers: { 'Authorization': `Bearer ${token}` } }
             )
                 .then((result) => {
                     setStepIndex(index => index + 2)

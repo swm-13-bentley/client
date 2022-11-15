@@ -22,13 +22,11 @@ const ModifyName = ({ name, onCancle }: { name: string, onCancle: () => void }) 
     const [token, setToken] = useRecoilState(tokenState)
 
     const onSubmit = () => {
-        axios.patch('/api/user/info/name',
-            { name: newName },
+        axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user/username`,
             {
-                headers: {
-                    token: token
-                }
-            }
+                newUsername: newName
+            },
+            { headers: { 'Authorization': `Bearer ${token}` } }
         )
             .then((response) => {
                 setToken(response.data.newJwtToken)
@@ -37,7 +35,7 @@ const ModifyName = ({ name, onCancle }: { name: string, onCancle: () => void }) 
             .catch((e) => { console.log(e) })
     }
 
-    return (<VStack style={{ marginTop: "8px", textAlign:"left" }}>
+    return (<VStack style={{ marginTop: "8px", textAlign: "left" }}>
         <InputBox
             placeholder={"김언제"}
             id={"modify-name"}
@@ -47,7 +45,7 @@ const ModifyName = ({ name, onCancle }: { name: string, onCancle: () => void }) 
         <Description style={{ marginTop: "8px", marginBottom: "20px", width: "100%", maxWidth: "350px" }}>
             다른 참여자가 나를 알아볼 수 있도록 작성해주세요 (최대 15자)
         </Description>
-        <HStack style={{maxWidth:"350px", width:"100%"}}>
+        <HStack style={{ maxWidth: "350px", width: "100%" }}>
             <div className="w-2/5">
                 <FullButton
                     onClick={onCancle}

@@ -72,7 +72,7 @@ const Room: NextPage = function () {
     useEffect(() => {
         setIsModalShown(false)
     }, [])
-    
+
     useEffect(() => {
         axios.get(srcUrl)
             .then((result) => {
@@ -88,8 +88,8 @@ const Room: NextPage = function () {
         if (qid != undefined) {
             if (isLoggedIn) {
                 axios.get(
-                    `/api/user/date/${qid}/seperate`,
-                    { headers: { token: `${token}` } }
+                    `${process.env.NEXT_PUBLIC_API_URL}/user/day/room/${qid}/group/seperate`,
+                    { headers: { 'Authorization': `Bearer ${token}` } }
                 )
                     .then((result) => {
                         setParticipantName(result.data.myself.participantName)

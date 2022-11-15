@@ -24,12 +24,13 @@ const Alarm: NextPage = function () {
     const [count, setCount] = useState(0)
 
     const onAlarmClick = () => {
-        axios.patch('/api/user/alarm', {
-            uuid: qid as string,
-            count: count
-        }, {
-            headers: { token: token }
-        })
+        axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/user/room/alarm`, {
+            roomUuid: qid as string,
+            alarmNumber: count
+        },
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        )
             .then((response) => {
                 setIsModalShown(true)
             })
@@ -42,7 +43,7 @@ const Alarm: NextPage = function () {
         <NoGnbLayout title={""} redirect={redirect as string}>
             <Background>
                 {
-                    isModalShown && <AlarmModal redirect={redirect as string}/>
+                    isModalShown && <AlarmModal redirect={redirect as string} />
                 }
                 <VStack style={{
                     position: 'fixed',
