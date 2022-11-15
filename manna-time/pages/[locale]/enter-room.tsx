@@ -21,8 +21,8 @@ const EnterRoom = () => {
     useEffect(() => {
         if (qid != undefined && isLoggedIn) {
             if (dayOnly == 'true') {
-                axios.post(`/api/user/date/${qid}/entry`, {},
-                    { headers: { token: token } }
+                axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/day/room/${qid}/entry`, {},
+                    { headers: { 'Authorization': `Bearer ${token}` } }
                 )
                     .then((res) => {
                         // console.log(res)
@@ -32,8 +32,8 @@ const EnterRoom = () => {
                         console.log(e)
                     })
             } else if (dayOnly == 'false' || dayOnly == undefined) {
-                axios.post(`/api/user/time/${qid}/entry`, {},
-                    { headers: { token: token } }
+                axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/room/${qid}/entry`, {},
+                    { headers: { 'Authorization': `Bearer ${token}` } }
                 )
                     .then((res) => {
                         // console.log(res)
@@ -47,7 +47,7 @@ const EnterRoom = () => {
     }, [qid, dayOnly])
 
     return (<VStack mt="100px" gap="20px">
-        <CircularProgress style={{color: "#5194FF"}} color="inherit"></CircularProgress>
+        <CircularProgress style={{ color: "#5194FF" }} color="inherit"></CircularProgress>
         <Body1> 내 일정을 불러오는 중입니다...</Body1>
     </VStack>)
 }

@@ -108,9 +108,9 @@ const Room: NextPage = function () {
         if (qid != undefined) {
             if (isLoggedIn) {
                 axios.get(
-                    `/api/user/time/${qid}/seperate`,
-                    { headers: { token: `${token}`} }
-                )
+                    `${process.env.NEXT_PUBLIC_API_URL}/user/room/${qid}/group/seperate`,
+                    { headers: { 'Authorization': `Bearer ${token}` } }
+                  )
                     .then((result) => {
                         setParticipantName(result.data.myself.participantName)
                         setGroupSchedule(result.data.others)
@@ -252,8 +252,11 @@ const Room: NextPage = function () {
     function linkGoogleCalendar() {
         if (isLoggedIn) {
             setIsLoading(true)
-            axios.get(`/api/user/time/${qid}/calendar/schedule`,
-                { headers: { token: `${token}` } }
+            axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/user/calendar?roomUuid=${qid}`,
+                {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                }
             )
                 .then((result) => {
                     setCalendarEvents(result.data.scheduleList)

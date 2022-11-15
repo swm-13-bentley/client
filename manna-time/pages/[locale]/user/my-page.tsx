@@ -62,9 +62,10 @@ const MyPage = () => {
     useEffect(() => {
         setIsModalShown(false)
         if (isLoggedIn) {
-            axios.get('/api/user/info/alarmEmail/all', {
-                headers: { token: token }
-            })
+            axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/user/alarmEmail/all`, 
+                { headers: { 'Authorization': `Bearer ${token}` } }
+            )
                 .then((response) => {
                     setAlarmEmails(response.data)
                 })

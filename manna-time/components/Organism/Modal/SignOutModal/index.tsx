@@ -81,9 +81,10 @@ const SignOutModal = () => {
     ]
 
     const signOutRequest = () => {
-        axios.delete('/api/user/info/signout', {
-            headers: { token: token }
-        })
+        axios.delete(
+            `${process.env.NEXT_PUBLIC_API_URL}/sign/out`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        )
             .then((request) => {
                 setToken("")
                 setStepIndex(index => index + 1)

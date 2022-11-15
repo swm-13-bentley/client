@@ -25,18 +25,18 @@ const Plans: NextPage = function () {
 
     useEffect(() => {
         axios.get(
-            '/api/user/plans/unconfirmed',
-            { headers: { token: `${token}` } }
+            `${process.env.NEXT_PUBLIC_API_URL}/user/myRoom/unConfirmed`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         ).then((response) => {
             setUnconfirmedPlans(response.data)
             setIsUnconfirmedLoader(false)
         }).catch((e) => {
-            alert('대기중 약속을 불러오는 중 오류가 발생했습니다. 관리자에게 문의하세요')
+            alert('대기중 약속을 불러오는 중 오류가 발생했습니다.  관리자에게 문의하세요')
         })
 
         axios.get(
-            '/api/user/plans/confirmed',
-            { headers: { token: `${token}` } }
+            `${process.env.NEXT_PUBLIC_API_URL}/user/myRoom/confirmed`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         ).then((response) => {
             setConfirmedPlans(response.data)
             setIsConfirmedLoader(false)

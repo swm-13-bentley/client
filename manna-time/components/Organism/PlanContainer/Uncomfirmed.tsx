@@ -38,9 +38,9 @@ const UncomfirmedPlanContainer = ({ plans, isLoader }: { plans: UnConfirmedPlan[
     }, [filterChecked, unconfirmedPlans])
 
     const onItemDelete = (id: string) => {
-        console.log(id)
-        axios.post('/api/user/plans/delete', {},
-            { headers: { token: token, uuid: id } }
+        axios.delete(
+            `${process.env.NEXT_PUBLIC_API_URL}/user/room/${id}/exit`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         )
             .then((result) => {
                 console.log('result: ', result)

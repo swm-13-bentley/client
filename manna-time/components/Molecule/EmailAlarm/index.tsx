@@ -19,12 +19,12 @@ const EmailAlarm = ({ alarmEmail }: { alarmEmail: AlarmEmail }) => {
     const token = useRecoilValue(tokenState)
 
     const sendRequest = (status: boolean) => {
-        axios.patch('/api/user/info/alarmEmail/status',
-            {
+        axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/user/alarmEmail/status`, {
                 email: alarmEmail.email,
                 receiveEmail: status
             },
-            { headers: { token: token } }
+            { headers: { 'Authorization': `Bearer ${token}` } }
         )
             .then((response) => {
                 // console.log(response)
