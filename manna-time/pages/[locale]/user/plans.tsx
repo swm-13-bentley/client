@@ -31,7 +31,7 @@ const Plans: NextPage = function () {
             setUnconfirmedPlans(response.data)
             setIsUnconfirmedLoader(false)
         }).catch((e) => {
-            alert('대기중 약속을 불러오는 중 오류가 발생했습니다. 관리자에게 문의하세요')
+            alert('대기중 약속을 불러오는 중 오류가 발생했습니다.  관리자에게 문의하세요')
         })
 
         axios.get(
