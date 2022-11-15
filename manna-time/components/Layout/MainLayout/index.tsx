@@ -47,7 +47,7 @@ function Layout({ children }: ScriptProps, { userAgent }: AppProps & { userAgent
             // console.log(decodedToken)
         }
 
-        if(navigator.userAgent.toLowerCase().indexOf('Android') != -1){
+        if (navigator.userAgent.toLowerCase().indexOf('android') != -1) {
             if (navigator.userAgent.match(/inapp|NAVER|KAKAOTALK|Snapchat|Line|WirtschaftsWoche|Thunderbird|Instagram|everytimeApp|WhatsApp|Electron|wadiz|AliApp|zumapp|iPhone(.*)Whale|Android(.*)Whale|kakaostory|band|twitter|DaumApps|DaumDevice\/mobile|FB_IAB|FB4A|FBAN|FBIOS|FBSS|SamsungBrowser\/[^1]/i)
                 && window.flutter_inappwebview == undefined) {
                 document.body.innerHTML = '';
