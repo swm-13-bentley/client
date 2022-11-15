@@ -25,8 +25,8 @@ const Plans: NextPage = function () {
 
     useEffect(() => {
         axios.get(
-            '/api/user/plans/unconfirmed',
-            { headers: { token: `${token}` } }
+            `${process.env.NEXT_PUBLIC_API_URL}/user/myRoom/unConfirmed`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
         ).then((response) => {
             setUnconfirmedPlans(response.data)
             setIsUnconfirmedLoader(false)
