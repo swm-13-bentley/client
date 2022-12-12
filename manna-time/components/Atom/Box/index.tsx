@@ -98,8 +98,8 @@ interface InputBoxProps {
 }
 
 const getHeight = () => window.innerHeight
-  || document.documentElement.clientHeight 
-  || document.body.clientHeight;
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
 
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
     const [innerHeight, setInnerHeight] = useState(0)
@@ -110,11 +110,11 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
         else if (innerHeight <= window.innerHeight)
             document.querySelector('input')?.blur()
     }
-    
+
     useEffect(() => {
         setInnerHeight(getHeight())
     }, [])
-    
+
     useEffect(() => {
         if (innerHeight > 0)
             window.addEventListener('resize', handleResize)
@@ -122,18 +122,18 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    },[innerHeight])
-    
+    }, [innerHeight])
+
     if (id === 'password') {
         return <StyledInput
-        value={value}
-        onChange={(e) => { setValue(e.target.value) }}
-        size={350}
-        maxLength={20}
-        placeholder={placeholder}
-        type="password"
-        id={id}
-        name={id}
+            value={value}
+            onChange={(e) => { setValue(e.target.value) }}
+            size={350}
+            maxLength={20}
+            placeholder={placeholder}
+            type="password"
+            id={id}
+            name={id}
         />
     } else {
         return <StyledInput
@@ -164,7 +164,8 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
                 }
             }}
             autoFocus
-            required />
+            required
+        />
     }
 }
 
