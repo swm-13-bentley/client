@@ -108,7 +108,7 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
     function handleResize() {
         // if (innerHeight > window.innerHeight)
         //     document.querySelector('input')?.focus()
-        if (initialInnerHeight < window.innerHeight)
+        if (initialInnerHeight <= window.innerHeight)
             document.querySelector('input')?.blur()
     }
 
