@@ -117,13 +117,13 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
     }, [])
 
     useEffect(() => {
-        if (innerHeight > 0)
+        if (initialInnerHeight > 0)
             window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    }, [innerHeight])
+    }, [initialInnerHeight])
 
     if (id === 'password') {
         return <StyledInput
