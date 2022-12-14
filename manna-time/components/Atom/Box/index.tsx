@@ -164,7 +164,6 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
                     nextButton.style.visibility = 'visible'
                 }
             }}
-            autoFocus
             required
         />
     }
