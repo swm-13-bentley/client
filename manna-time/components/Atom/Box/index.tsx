@@ -102,17 +102,18 @@ const getHeight = () => window.innerHeight
     || document.body.clientHeight;
 
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
-    const [innerHeight, setInnerHeight] = useState(0)
+    const [initialInnerHeight, setInitialInnerHeight] = useState(0)
 
+    // 보이는 창이 길어지면, input에다 focus 걸어서 다음 Button 보이게 함
     function handleResize() {
-        if (innerHeight > window.innerHeight)
-            document.querySelector('input')?.focus()
-        else if (innerHeight <= window.innerHeight)
+        // if (innerHeight > window.innerHeight)
+        //     document.querySelector('input')?.focus()
+        if (initialInnerHeight < window.innerHeight)
             document.querySelector('input')?.blur()
     }
 
     useEffect(() => {
-        setInnerHeight(getHeight())
+        setInitialInnerHeight(getHeight())
     }, [])
 
     useEffect(() => {
