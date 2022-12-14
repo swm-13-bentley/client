@@ -98,42 +98,45 @@ interface InputBoxProps {
 }
 
 const getHeight = () => window.innerHeight
-  || document.documentElement.clientHeight 
-  || document.body.clientHeight;
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
 
 const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
-    const [innerHeight, setInnerHeight] = useState(0)
+    const [prevInnerHeight, setPrevInnerHeight] = useState(0)
 
+    // 보이는 창이 길어지면, input에다 focus 걸어서 다음 Button 보이게 함
+    // 짧아지면, 반대로
     function handleResize() {
-        if (innerHeight > window.innerHeight)
-            document.querySelector('input')?.focus()
-        else if (innerHeight <= window.innerHeight)
+        const nowInnerHeight = window.innerHeight
+        if (prevInnerHeight > nowInnerHeight)
+            setPrevInnerHeight(nowInnerHeight)
+        else if (prevInnerHeight < nowInnerHeight)
             document.querySelector('input')?.blur()
     }
-    
+
     useEffect(() => {
-        setInnerHeight(getHeight())
+        setPrevInnerHeight(getHeight())
     }, [])
-    
+
     useEffect(() => {
-        if (innerHeight > 0)
+        if (prevInnerHeight > 0)
             window.addEventListener('resize', handleResize)
 
         return () => {
             window.removeEventListener('resize', handleResize)
         }
-    },[innerHeight])
-    
+    }, [prevInnerHeight])
+
     if (id === 'password') {
         return <StyledInput
-        value={value}
-        onChange={(e) => { setValue(e.target.value) }}
-        size={350}
-        maxLength={20}
-        placeholder={placeholder}
-        type="password"
-        id={id}
-        name={id}
+            value={value}
+            onChange={(e) => { setValue(e.target.value) }}
+            size={350}
+            maxLength={20}
+            placeholder={placeholder}
+            type="password"
+            id={id}
+            name={id}
         />
     } else {
         return <StyledInput
@@ -163,7 +166,8 @@ const InputBox = ({ placeholder, id, setValue, value }: InputBoxProps) => {
                     nextButton.style.visibility = 'visible'
                 }
             }}
-            required />
+            required
+        />
     }
 }
 
